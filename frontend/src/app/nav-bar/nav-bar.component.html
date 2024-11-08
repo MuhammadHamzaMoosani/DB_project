@@ -1,0 +1,49 @@
+<!-- <login-checker (userLoggedIn)="logincheck($event)" [nav_bar]="true"></login-checker> -->
+<div class="my-nav">
+    <nav>  
+        <div>
+            <img src="assets/imgs/nav_bar/iba_logo.png" width="100%">
+        </div>
+        <div class="title">
+            <ul>
+                <li><a [ngClass]="{'active':activeIndex==1}" [ngStyle]="{'pointer-events':activeIndex==1? 'none':'auto'}" href="" (click)="active(1)"><h6>Home</h6></a></li>
+                <div class="dropdown">
+                       
+                        <li><a [ngClass]="{'active':activeIndex==2}" [ngStyle]="{'pointer-events':activeIndex==2? 'none':'auto'}" href="Request" (click)="active(2)"><div class="text_icon"><h6>Topics</h6><mat-icon>arrow_drop_down</mat-icon></div></a>
+                        <div class="dropdown-content">
+                            <a href="#">Link 1</a>
+                            <a href="#">Link 2</a>
+                            <a href="#">Link 3</a>
+                          </div>
+                    </li>
+                </div>
+                <div class="dropdown">
+                       
+                    <li><a [ngClass]="{'active':activeIndex==2}" [ngStyle]="{'pointer-events':activeIndex==2? 'none':'auto'}" href="Request" (click)="active(2)"><div class="text_icon"><h6>Program</h6><mat-icon>arrow_drop_down</mat-icon></div></a>
+                    <div class="dropdown-content">
+                        <a href="#">Link 1</a>
+                        <a href="#">Link 2</a>
+                        <a href="#">Link 3</a>
+                      </div>
+                </li>
+            </div>
+                <li><a [ngClass]="{'active':activeIndex==4}" [ngStyle]="{'pointer-events':activeIndex==4? 'none':'auto'}" href="FAQ" (click)="active(4)"><h6>Explore</h6></a></li>
+                <li><a [ngClass]="{'active':activeIndex==7}" [ngStyle]="{'pointer-events':activeIndex==7? 'none':'auto'}" href="Donors" (click)="active(7)"><h6>Bookmarked</h6></a></li>
+            </ul>
+        </div>
+        <div class="nav-item">
+            <ul *ngIf="!login;else logged">
+                <li><a [ngClass]="{'active':activeIndex==5}" [ngStyle]="{'pointer-events':activeIndex==5? 'none':'auto'}" href="login" (click)="active(5)" ><h6>Sign In</h6></a></li>
+                <li><a [ngClass]="{'active':activeIndex==6}" [ngStyle]="{'pointer-events':activeIndex==6? 'none':'auto'}" href="signup" (click)="active(6)"><h6>Sign Up</h6></a></li>
+            </ul>
+            <ng-template #logged>
+                <ul>
+                    <li><a [ngClass]="{'active':activeIndex==5}" [ngStyle]="{'pointer-events':activeIndex==5? 'none':'auto'}" href="logged/home" (click)="active(5)" ><h6>Profile</h6></a></li>
+                    <li><a [ngClass]="{'active':activeIndex==6}" [ngStyle]="{'pointer-events':activeIndex==6? 'none':'auto'}" href="login" (click)="active(6)" (click)="signOut()"><h6>Sign-Out</h6></a></li>
+                </ul>
+            </ng-template>
+        </div>
+        
+      </nav>
+</div>
+<div class="spacer"></div>
