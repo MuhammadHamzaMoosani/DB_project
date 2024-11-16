@@ -8,9 +8,7 @@
     height: -webkit-fill-available;
     overflow: hidden;
     position: relative;
-    display: flex;
-    justify-content: center; /* Centers input horizontally */
-    align-items: center; /* Centers input vertically */
+
   }
   
   .image img {
@@ -19,11 +17,93 @@
     object-fit: cover; /* ensures the image scales without distortion */
   }
   .overlay-input {
-    position: absolute; /* Keeps input on top of the image */
-    padding: 8px;
-    width: 80%; /* Adjust width as needed */
+    display: flex;
+    position: absolute;
+    padding: 0.5vw 0.3vw;
+    top: 250px;
+    right: 19px;
+    width: 30%;
+    height: auto;
     box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #cccccc4f;
+    border-radius: 15px;
+    background-color: #4a393977;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+.overlay-text{
+  font-style: italic;
+  color: #FEFEFE;
+  font-size: 1.1vw;
+  text-align: center;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  padding-bottom: 0.6vw;
+}
+.input_field {
+  background-color: rgba(255, 255, 255, 0.788);
+  width: 80%;
+  height: 30px; /* Set a fixed height for better control */
+  margin-bottom: 10px;
+  border-radius: 15px;
+  border: 1px solid #cccccc4f;
+  display: flex;
+  margin: auto;
+  align-items: center; /* Centers content vertically within the input container */
+}
+.menu
+{
+  position:absolute;
+  right:24.4vw;
+}
+.search
+{
+  position:absolute;
+  right:3.4vw;
+}
+.input-group {
+  display:flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 5px; /* Adds some padding around the input and icon */
+}
+
+input::placeholder {
+  color: #888;
+  text-align: center;
+  line-height: 1.5; /* Matches input line-height to vertically center */
+}
+.body
+{
+  padding: 3vw 2vw;
+}
+.body h2
+{
+  text-decoration: underline;
+}
+.body h6
+{
+  font-size: 1.4vw;
+  margin: 0;
+}
+.body p
+{
+  margin: 0;
+  font-size: small;
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 20%;
+  background-color: #720404;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+.container {
+  padding: 2px 8px 8px 8px;
+  color: white
 }
