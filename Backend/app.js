@@ -18,4 +18,10 @@ Tables.createTables()
 app.use(express.json()); 
 app.use('/users',userRoutes);
 app.use('/course',courseRoutes);
+app.use('/:id', courseRoutes);
+app.use('/explore', courseRoutes);
+// Catch-all handler for undefined routes
+app.use((req, res) => {
+    res.status(404).send('Route not found');
+  });
 app.listen(200);

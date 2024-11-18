@@ -1,24 +1,42 @@
+const multer = require('multer');
 const db=require('../util/database')
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage(); // Store file in memory
+const upload = multer({ storage });
 
 module.exports=class Courses
 {
-    constructor(Course_ID,Course_Code,Course_name,Course_type,Program,Semester_year,Course_description,Resources,Course_Status)
+    constructor(Course_ID,Course_Code,Course_name,Course_type,Program,Semester_year,Course_description,Resources,Course_Status, Course_image, Views, Bookmarks, Downloads, Popularity_Score)
     {
         this.Course_ID=Course_ID;
         this.Course_Code=Course_Code;
-        this.Course_name=Course_name
-        this.Course_type=Course_type
-        this.Program=Program
-        this.Semester_year=Semester_year
-        this.Course_description=Course_description
-        this.Resources=Resources
-        this.Course_Status=Course_Status
+        this.Course_name=Course_name;
+        this.Course_type=Course_type;
+        this.Program=Program;
+        this.Semester_year=Semester_year;
+        this.Course_description=Course_description;
+        this.Resources=Resources;
+        this.Course_Status=Course_Status;
+        this.Course_image=Course_image;
+        this.Views=Views;
+        this.Bookmarks=Bookmarks;
+        this.Downloads=Downloads;
+        this.Popularity_Score=Popularity_Score;
 
+    }
+    static async uploadFile(course_id, material_type, material_description, fileBuffer) {
+        const sql = `
+            INSERT INTO course_material (Course_ID, Material_Type, Material_Description, Material_File)
+            VALUES (?, ?, ?, ?)
+        `;
+        const values = [course_id, material_type, material_description, fileBuffer];
+        return db.execute(sql, values);
     }
     save()
     {
-        const sql='INSERT INTO course VALUES(?,?,?,?,?)';
-        const values=[this.Course_ID,this.Course_Code,this.Course_name,this.Course_type,this.Program,this.Semester_year,this.Course_description,this.Resources,this.Course_Status];
+        const sql='INSERT INTO course VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        const values=[this.Course_ID,this.Course_Code,this.Course_name,this.Course_type,this.Program,this.Semester_year,this.Course_description,this.Resources,this.Course_Status, this.Views, this.Bookmarks, this.Downloads, this.Popularity_Score];
         return db.execute(sql,values)
     }
     update(User_name,User_email,User_password,User_ID)
@@ -60,6 +78,39 @@ module.exports=class Courses
                     END;`
         return db.query(sql);
     }
+    static fetchCourseDetails(Course_ID) {
+        const sql = `CALL FetchCourseDetails(?)`; // my stored procedure
+        return db.execute(sql, [Course_ID]); 
+    }
+    static fetchCoursebyProgram(Program_name) {
+        const sql = `
+                    SELECT * 
+                    FROM courses 
+                    WHERE Program = ?; `;
+        db.execute(sql, [Program_name])
+        .then(([rows, fields]) => {
+        console.log(rows); // The result set returned by the procedure
+        })
+        .catch(err => {
+            console.error('Error fetching by program:', err);
+        });
+    }
+    static updatePopularityScores() {
+        const sql = `
+                    UPDATE courses 
+                    SET popularity_score = (views * 0.5) + (downloads * 0.3) + (bookmarks *     0.2); `; 
+        return db.execute(sql);
+    }
+    static fetchTopCourses(limit = 10) {
+        const sql = `SELECT * FROM Course ORDER BY Popularity_Score DESC LIMIT ?`;
+        return db.execute(sql, [limit]);
+    }
+    static async fetchCourseByTopic(topics) {
+        const tags = topics
+        const sql = `SELECT * FROM course WHERE JSON_OVERLAPS(topic_tags, ?)`;
+        const [rows] = await db.execute(sql, [tags]);
+    }
+
 };
 (async function defineTrigger() {
     try {
@@ -71,5 +122,14 @@ module.exports=class Courses
       } else {
         // console.error('Error creating trigger:', err);
       }
+    }
+  })();
+  (async function testFetchCourseDetails() {
+    try {
+      const Course_ID = 1; // Replace with a valid ID from your Course table
+      const [rows] = await db.execute(`CALL FetchCourseDetails(?)`, [Course_ID]);
+      console.log('Course Details:', rows[0]);
+    } catch (err) {
+      console.error('Error calling procedure:', err.message);
     }
   })();

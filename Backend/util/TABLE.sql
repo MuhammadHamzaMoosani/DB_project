@@ -1,12 +1,6 @@
--- Department table
-CREATE TABLE IF NOT EXISTS Department (
-    Department_ID int PRIMARY KEY,
-    Department_Name varchar(255) NOT NULL
-);
-
 -- Course table
 CREATE TABLE IF NOT EXISTS Course (
-    Course_ID int PRIMARY KEY,
+    Course_ID int AUTO_INCREMENT PRIMARY KEY,
     Course_Code varchar(255),
     Course_name varchar(255) NOT NULL,
     Course_type ENUM('Under-Graduate', 'Graduate', 'Post_Graduate') NOT NULL,
@@ -14,26 +8,20 @@ CREATE TABLE IF NOT EXISTS Course (
     Semester_Year varchar(255),
     Course_description varchar(255),
     Resources varchar(2083),
-    Course_Status ENUM('Active', 'Archived') NOT NULL
+    Course_Status ENUM('Active', 'Archived') NOT NULL,
+    Course_image LONGBLOB,
+    Topics JSON, 
+    Views int DEFAULT 0,
+    Bookmarks int DEFAULT 0,
+    Downloads int DEFAULT 0,
+    Popularity_Score float DEFAULT 0
 );
 
 -- Instructor table
 CREATE TABLE IF NOT EXISTS Instructor (
-    Instructor_ID int PRIMARY KEY,
+    Instructor_ID int AUTO_INCREMENT PRIMARY KEY,
     Instructor_name varchar(255) NOT NULL,
-    Instructor_email varchar(255),
-    Department_ID int NOT NULL,
-    FOREIGN KEY (Department_ID) REFERENCES Department(Department_ID)
-);
-
--- Course Metrics table
-CREATE TABLE IF NOT EXISTS Course_Metrics (
-    Course_Metric_ID int PRIMARY KEY,
-    Course_ID int NOT NULL,
-    Views int DEFAULT 0,
-    Bookmarks int DEFAULT 0,
-    Downloads int DEFAULT 0,
-    FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
+    Instructor_email varchar(255)
 );
 
 -- Course Instructor table
@@ -47,19 +35,19 @@ CREATE TABLE IF NOT EXISTS Course_Instructor (
 
 -- Course Material table
 CREATE TABLE IF NOT EXISTS Course_Material (
-    Material_ID int PRIMARY KEY,
+    Material_ID int AUTO_INCREMENT PRIMARY KEY,
     Course_ID int NOT NULL,
     Material_type ENUM('Course_Outline', 'Lecture Notes', 'Assignment', 'Lab', 'Quiz', 'Exam', 'Project', 'Video') NOT NULL,
     Material_Description varchar(255),
-    Material_File varchar(2083),
+    Material_File LONGBLOB,
     Material_Link varchar(2083),
-    Additional_resources varchar(2083),
+    Additional_resources LONGBLOB,
     FOREIGN KEY (Course_ID) REFERENCES Course(Course_ID)
 );
 
 -- Users table
 CREATE TABLE IF NOT EXISTS Users (
-    User_ID int PRIMARY KEY,
+    User_ID int AUTO_INCREMENT PRIMARY KEY,
     User_name varchar(255),
     User_email varchar(255),
     User_password varchar(255),
@@ -68,7 +56,7 @@ CREATE TABLE IF NOT EXISTS Users (
 
 -- Bookmark table
 CREATE TABLE IF NOT EXISTS Bookmark (
-    Bookmark_ID int PRIMARY KEY,
+    Bookmark_ID int AUTO_INCREMENT PRIMARY KEY,
     User_ID int,
     Course_ID int,
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
@@ -77,13 +65,14 @@ CREATE TABLE IF NOT EXISTS Bookmark (
 
 -- Bookmark Material table
 CREATE TABLE IF NOT EXISTS Bookmark_Material (
-    Bookmark_Material_ID int PRIMARY KEY,
+    Bookmark_Material_ID int AUTO_INCREMENT PRIMARY KEY,
     Material_ID int,
     Bookmark_ID int,
     Material_Type varchar(255),
     FOREIGN KEY (Material_ID) REFERENCES Course_Material(Material_ID),
     FOREIGN KEY (Bookmark_ID) REFERENCES Bookmark(Bookmark_ID)
 );
+
 CREATE TABLE IF NOT EXISTS DELETED_USERS
 (
     User_ID int PRIMARY KEY,
@@ -93,3 +82,65 @@ CREATE TABLE IF NOT EXISTS DELETED_USERS
     User_Type ENUM('Admin', 'Student') NOT NULL,
    	deletedDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()
 );
+
+-- Course
+INSERT INTO Course (Course_Code, Course_name, Course_type, Program, Semester_Year, Course_description, Resources, Course_Status, Topics) VALUES
+('CS101', 'Introduction to Programming', 'Under-Graduate', 'BSCS', 'Fall 2024', 'Learn programming basics', 'https://example.com/cs101', 'Active', '["JavaScript", "Programming", "Basics"]'),
+('MATH201', 'Linear Algebra', 'Under-Graduate', 'BSMath', 'Spring 2024', 'Study of matrices and vectors', 'https://example.com/math201', 'Active', '["Algebra", "Vectors", "Maths", "Linear"]'),
+('MGT211', 'Business Communication', 'Under-Graduate', 'BBA', 'Fall 2024', 'Successful communication techniques.', 'https://example.com/mgt211', 'Active', '["Communication", "Business"]'),
+('CSE341', 'Operating Systems', 'Under-Graduate', 'BSCS', 'Fall 2024', 'Understand principles and concepts governing the functions of operating systems.', 'https://example.com/cse341', 'Active', NULL),
+('CSE472', 'Introduction to Machine Learning', 'Under-Graduate', 'BSCS', 'Fall 2024', 'Learn machine learning algorithms for classification and regression', 'https://example.com/cse472', 'Active', NULL),
+('CSE331', 'Software Engineering', 'Under-Graduate', 'BSCS', 'Fall 2024', 'A learning of different types of developments processes, SDLCs, Agile Development, Software Architectures, etc', 'https://example.com/cse331', 'Active', NULL)
+;
+
+-- -- Instructor
+-- -- INSERT INTO Instructor (Instructor_name, Instructor_email) VALUES
+-- -- ('Dr. Alice', 'alice@example.com'),
+-- -- ('Dr. Bob', 'bob@example.com'),
+
+
+-- -- Course Instructor
+-- -- INSERT INTO Course_Instructor (Course_ID, Instructor_ID) VALUES
+-- -- (1, 1),
+-- -- (2, 2);
+
+-- -- Course Material
+-- -- INSERT INTO Course_Material (Course_ID, Material_type, Material_Description, Material_File, Material_Link, Additional_resources) VALUES
+-- -- (1, 'Course_Outline', 'Programming course outline', NULL, 'https://example.com/cs101-outline', NULL),
+-- -- (2, 'Lecture Notes', 'Linear Algebra Lecture 1 Notes', NULL, 'https://example.com/math201-lecture1', NULL);
+
+-- -- -- Users
+-- -- INSERT INTO Users (User_name, User_email, User_password, User_Type) VALUES
+-- -- ('John Doe', 'john.doe@example.com', 'password123', 'Student'),
+-- -- ('Jane Admin', 'jane.admin@example.com', 'adminpassword', 'Admin');
+
+-- -- -- Bookmark
+-- -- INSERT INTO Bookmark (User_ID, Course_ID) VALUES
+-- -- (1, 1);
+
+-- -- -- Bookmark Material
+-- -- INSERT INTO Bookmark_Material (Material_ID, Bookmark_ID, Material_Type) VALUES
+-- -- (1, 1, 'Course_Outline');
+
+-- Procedure to View Course Details
+CREATE PROCEDURE FetchCourseDetails(IN input_course_ID INT)
+BEGIN
+    SELECT 
+        Course_ID,
+        Course_Code,
+        Course_name,
+        Course_type,
+        Program,
+        Semester_Year,
+        Course_description,
+        Resources,
+        Course_Status
+    FROM 
+        Course
+    WHERE 
+        Course_ID = input_course_ID;
+    -- To update course views                        
+    UPDATE Course 
+    SET Views = Views + 1 
+    WHERE Course_ID = input_course_ID; 
+END ;
