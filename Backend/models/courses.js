@@ -124,12 +124,12 @@ module.exports=class Courses
       }
     }
   })();
-  (async function testFetchCourseDetails() {
-    try {
-      const Course_ID = 1; // Replace with a valid ID from your Course table
-      const [rows] = await db.execute(`CALL FetchCourseDetails(?)`, [Course_ID]);
-      console.log('Course Details:', rows[0]);
-    } catch (err) {
-      console.error('Error calling procedure:', err.message);
-    }
-  })();
+//   (async function testFetchCourseDetails() {
+//     try {
+//       const Course_ID = 1; // Replace with a valid ID from your Course table
+//       const [rows] = await db.execute(`CALL FetchCourseDetails(?)`, [Course_ID]);
+//       console.log('Course Details:', rows[0]);
+//     } catch (err) {
+//       console.error('Error calling procedure:', err.message);
+//     }
+//   })();

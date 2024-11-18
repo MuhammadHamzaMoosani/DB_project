@@ -1,0 +1,134 @@
+.heading_box
+{
+    background-color: #650909;
+    padding: 2vw 1.25vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+}
+.heading_box
+{
+    color:white
+}
+.heading_box p
+{
+    padding-left: 2vw;
+    color: #FFA0A0;
+    font-size: 0.9vw;
+}
+.headingIcon
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.body
+{
+    padding: 3vw 3vw 1vw 1vw;
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+    align-items: baseline;
+}
+.body h4
+{
+    color: #444444;
+}
+.body p
+{
+    font-family: 'Times New Roman', serif;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.6;
+    text-align: justify;
+}
+.content
+{
+    gap: 1.5vw;
+    display: flex;
+    flex-direction: column;
+    padding: 1vw;
+}
+.resource_list
+{
+    display:flex;
+    flex-direction: column;
+    gap: 2vw;
+}
+.courseOutline
+{
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+.courseOutline p
+{
+    padding-left: 1vw;
+}
+
+.button
+{
+    padding-left: 1vw;
+}
+.outline
+{
+    font-size: 1.1vw;
+    font-weight: bold;
+    color: white;
+    background-color: #650909;
+    border: 1px solid #0a090980;
+    padding: 1vw 2.5vw;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+}
+.outline:hover {
+    background-color: #7a0b0b;
+  }
+.topicIcon
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.dropdown-content {
+    display: flex;
+    flex-direction: column ;
+    padding-left: 1vw;
+}
+a
+{
+    text-decoration: none;
+    color: black;
+}
+.courseInstructor p
+{
+    padding-left: 1vw;
+
+}
+.resoruce_button
+{
+    width: 15vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+.resoruce_button button
+{
+    font-size: 1.1vw;
+    font-weight: bold;
+    color: white;
+    background-color:#6d1a24;
+    border: 1px solid #0a090980;
+    padding: 1vw 2.5vw;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+.resoruce_button button:hover
+{
+    background-color: #7a0b0b;
+
+}

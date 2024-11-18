@@ -1,0 +1,64 @@
+<div class="main">
+    <div class="heading_box">
+        <div class="headingIcon">
+            <h2>DATABASE MANAGEMENT SYSTEM</h2>
+            <mat-icon *ngIf="!bookmarked" class="bookmark" (click)="bookmark()">bookmark</mat-icon>
+            <mat-icon *ngIf="bookmarked" class="bookmark" (click)="bookmark()">bookmark_added</mat-icon>
+        </div>
+        <div class="course_details">
+            <p>CS702| IBA SCHOOL OF MATHEMATICS AND COMPUTER SCIENCE</p>
+        </div>
+    </div>
+    <div class="body">
+        <div class="resource_list">
+            <div class="resoruce_button">
+                <button>Lecture Notes</button>
+                <button>Assignments</button>
+                <button>Student Notes</button>
+                <button>Past Projects</button>
+                <button>Examinations</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="courseOutline">
+                <div>
+                    <h4>
+                        COURSE DESCRIPTION
+                    </h4>
+                    <p>
+                        An introduction to Database Management Systems (DBMS) covering core concepts such as data modeling, relational databases, SQL, normalization, and transaction management. Learn to design, query, 
+                        and manage databases efficiently.
+                    </p>
+                </div>
+                <div class="button">
+                    <button class="outline">
+                        Download Course Outline
+                    </button>
+                </div>
+            </div>
+            <div class="dropdown">
+                <div class="topicIcon">
+                    <h4>
+                        Topics 
+                    </h4>
+                    <mat-icon *ngIf="show" (click)="show=!show">arrow_drop_down</mat-icon>
+                    <mat-icon *ngIf="!show" (click)="show=!show">arrow_drop_up</mat-icon>
+                </div>
+                <div *ngIf="show" class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            <div class="courseInstructor">
+                <h4>Course Instructor</h4>
+                <p>
+                    Ms. Abeera Tariq
+                </p>
+                <p>
+                    Dr Imran Khan
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

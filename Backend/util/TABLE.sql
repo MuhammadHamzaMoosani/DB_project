@@ -83,28 +83,20 @@ CREATE TABLE IF NOT EXISTS DELETED_USERS
    	deletedDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()
 );
 
--- Course
-INSERT INTO Course (Course_Code, Course_name, Course_type, Program, Semester_Year, Course_description, Resources, Course_Status, Topics) VALUES
-('CS101', 'Introduction to Programming', 'Under-Graduate', 'BSCS', 'Fall 2024', 'Learn programming basics', 'https://example.com/cs101', 'Active', '["JavaScript", "Programming", "Basics"]'),
-('MATH201', 'Linear Algebra', 'Under-Graduate', 'BSMath', 'Spring 2024', 'Study of matrices and vectors', 'https://example.com/math201', 'Active', '["Algebra", "Vectors", "Maths", "Linear"]'),
-('MGT211', 'Business Communication', 'Under-Graduate', 'BBA', 'Fall 2024', 'Successful communication techniques.', 'https://example.com/mgt211', 'Active', '["Communication", "Business"]'),
-('CSE341', 'Operating Systems', 'Under-Graduate', 'BSCS', 'Fall 2024', 'Understand principles and concepts governing the functions of operating systems.', 'https://example.com/cse341', 'Active', NULL),
-('CSE472', 'Introduction to Machine Learning', 'Under-Graduate', 'BSCS', 'Fall 2024', 'Learn machine learning algorithms for classification and regression', 'https://example.com/cse472', 'Active', NULL),
-('CSE331', 'Software Engineering', 'Under-Graduate', 'BSCS', 'Fall 2024', 'A learning of different types of developments processes, SDLCs, Agile Development, Software Architectures, etc', 'https://example.com/cse331', 'Active', NULL)
-;
 
--- -- Instructor
+
+-- -- -- Instructor
 -- -- INSERT INTO Instructor (Instructor_name, Instructor_email) VALUES
 -- -- ('Dr. Alice', 'alice@example.com'),
--- -- ('Dr. Bob', 'bob@example.com'),
+-- -- ('Dr. Bob', 'bob@example.com');
 
 
--- -- Course Instructor
+-- -- -- Course Instructor
 -- -- INSERT INTO Course_Instructor (Course_ID, Instructor_ID) VALUES
 -- -- (1, 1),
 -- -- (2, 2);
 
--- -- Course Material
+-- -- -- Course Material
 -- -- INSERT INTO Course_Material (Course_ID, Material_type, Material_Description, Material_File, Material_Link, Additional_resources) VALUES
 -- -- (1, 'Course_Outline', 'Programming course outline', NULL, 'https://example.com/cs101-outline', NULL),
 -- -- (2, 'Lecture Notes', 'Linear Algebra Lecture 1 Notes', NULL, 'https://example.com/math201-lecture1', NULL);
@@ -122,25 +114,25 @@ INSERT INTO Course (Course_Code, Course_name, Course_type, Program, Semester_Yea
 -- -- INSERT INTO Bookmark_Material (Material_ID, Bookmark_ID, Material_Type) VALUES
 -- -- (1, 1, 'Course_Outline');
 
--- Procedure to View Course Details
-CREATE PROCEDURE FetchCourseDetails(IN input_course_ID INT)
-BEGIN
-    SELECT 
-        Course_ID,
-        Course_Code,
-        Course_name,
-        Course_type,
-        Program,
-        Semester_Year,
-        Course_description,
-        Resources,
-        Course_Status
-    FROM 
-        Course
-    WHERE 
-        Course_ID = input_course_ID;
-    -- To update course views                        
-    UPDATE Course 
-    SET Views = Views + 1 
-    WHERE Course_ID = input_course_ID; 
-END ;
+-- -- Procedure to View Course Details
+-- CREATE PROCEDURE FetchCourseDetails(IN input_course_ID INT)
+-- BEGIN
+--     SELECT 
+--         Course_ID,
+--         Course_Code,
+--         Course_name,
+--         Course_type,
+--         Program,
+--         Semester_Year,
+--         Course_description,
+--         Resources,
+--         Course_Status
+--     FROM 
+--         Course
+--     WHERE 
+--         Course_ID = input_course_ID;
+--     -- To update course views                        
+--     UPDATE Course 
+--     SET Views = Views + 1 
+--     WHERE Course_ID = input_course_ID; 
+-- END ;
