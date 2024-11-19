@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS Course (
     Downloads int DEFAULT 0,
     Popularity_Score float DEFAULT 0
 );
-
+ALTER TABLE Course 
+MODIFY Course_image VARCHAR(2083);
 -- Instructor table
 CREATE TABLE IF NOT EXISTS Instructor (
     Instructor_ID int AUTO_INCREMENT PRIMARY KEY,

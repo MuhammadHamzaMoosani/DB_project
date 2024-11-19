@@ -1,0 +1,7 @@
+<form #f="ngForm" (ngSubmit)="submit(f)">
+    <div class="signup" *ngFor="let element of form; let i = index" [ngStyle]="{'width':element.type=='checkbox' ? '100%':'45%'}">
+        <ng-container *ngIf="element.type === 'input'">
+
+        </ng-container>
+    </div>
+</form>

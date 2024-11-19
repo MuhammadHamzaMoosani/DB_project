@@ -1,12 +1,16 @@
-<div class="main">
+<div *ngIf="!course" class="loader">
+    <mat-spinner></mat-spinner>
+  </div>
+  
+<div class="main" *ngIf="course">
     <div class="heading_box">
         <div class="headingIcon">
-            <h2>DATABASE MANAGEMENT SYSTEM</h2>
+            <h2>{{course.Course_name | uppercase}}</h2>
             <mat-icon *ngIf="!bookmarked" class="bookmark" (click)="bookmark()">bookmark</mat-icon>
             <mat-icon *ngIf="bookmarked" class="bookmark" (click)="bookmark()">bookmark_added</mat-icon>
         </div>
         <div class="course_details">
-            <p>CS702| IBA SCHOOL OF MATHEMATICS AND COMPUTER SCIENCE</p>
+            <p>{{course.Course_Code}} | {{course.Program}}</p>
         </div>
     </div>
     <div class="body">
@@ -26,8 +30,7 @@
                         COURSE DESCRIPTION
                     </h4>
                     <p>
-                        An introduction to Database Management Systems (DBMS) covering core concepts such as data modeling, relational databases, SQL, normalization, and transaction management. Learn to design, query, 
-                        and manage databases efficiently.
+                        {{course.Course_description}}
                     </p>
                 </div>
                 <div class="button">
