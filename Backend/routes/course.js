@@ -9,6 +9,15 @@ const Courses=require('../models/courses')
 const storage = multer.memoryStorage(); // Store files in memory
 const upload = multer({ storage });
 // File upload route
+
+
+
+// Test GET route for /courses
+router.get('/', Course.getCourse);
+// Route to get popular courses
+// router.get('/landing', Course.getPopularCourses);
+
+// Get popular courses on Landing page
 router.post('/upload', upload.single('file'), async (req, res) => {
     const { course_id, material_type, material_description } = req.body;
     const file = req.file;
@@ -26,9 +35,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     }
 });
 
-
-// Test GET route for /courses
-router.get('/', Course.getCourse);
 router.get('/:id', async (req, res) => {
     try {
         const courseID = req.params.id; // Extract Course_ID from the URL parameter
@@ -50,26 +56,5 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Route to get popular courses
-router.get('/explore', async (req, res) => {
-    try {
-        // Update popularity scores
-        await Courses.updatePopularityScores();
-
-        // Fetch top 10 courses
-        const [courses] = await Courses.fetchTopCourses();
-
-        res.status(200).json({
-            message: 'Top courses fetched successfully.',
-            data: courses
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: 'Error fetching popular courses.',
-            error: err.message
-        });
-    }
-});
 
 module.exports = router;

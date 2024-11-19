@@ -108,10 +108,10 @@ module.exports=class Courses
             throw err; // Throw the error so it propagates correctly.
         }
     }
-    static async fetchTopCourses(limit = 10) {
-        const sql = `SELECT * FROM Course ORDER BY Popularity_Score DESC LIMIT ?`;
+    static async fetchTopCourses() {
+        const sql = `SELECT * FROM Course ORDER BY Popularity_Score DESC LIMIT 10`;
         try {
-            const [courses] = await db.execute(sql, [limit]);
+            const [courses] = await db.execute(sql);
             console.log("Fetched top courses:", courses);
             return courses;
         } catch (err) {

@@ -55,11 +55,28 @@ module.exports=class Users
                     END;`
         return db.query(sql);
     }
+    static createProcedure(Course_ID)
+    {
+        const sql=`CALL FetchCourseDetails(?)`;
+        return db.execute(sql, [Course_ID]);
+    }
 };
 (async function defineTrigger() {
     try {
       await module.exports.createTrigger();
       console.log('Trigger "after_product_delete" created successfully.');
+    } catch (err) {
+      if (err.code === 'ER_SP_ALREADY_EXISTS') {
+        // console.log('Trigger "after_product_delete" already exists.');
+      } else {
+        // console.error('Error creating trigger:', err);
+      }
+    }
+  })();
+  (async function defineProcedure() {
+    try {
+      await module.exports.createProcedure();
+      console.log('Procedure "FetchCourseDetails" created successfully.');
     } catch (err) {
       if (err.code === 'ER_SP_ALREADY_EXISTS') {
         // console.log('Trigger "after_product_delete" already exists.');
