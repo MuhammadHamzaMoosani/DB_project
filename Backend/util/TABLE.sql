@@ -1,3 +1,4 @@
+USE ibacoursearchieve;
 -- Course table
 CREATE TABLE IF NOT EXISTS Course (
     Course_ID int AUTO_INCREMENT PRIMARY KEY,
@@ -83,12 +84,10 @@ CREATE TABLE IF NOT EXISTS DELETED_USERS
    	deletedDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()
 );
 
-
-
--- -- -- Instructor
--- -- INSERT INTO Instructor (Instructor_name, Instructor_email) VALUES
--- -- ('Dr. Alice', 'alice@example.com'),
--- -- ('Dr. Bob', 'bob@example.com');
+-- -- Instructor
+-- INSERT INTO Instructor (Instructor_name, Instructor_email) VALUES
+-- ('Dr. Alice', 'alice@example.com'),
+-- ('Dr. Bob', 'bob@example.com');
 
 
 -- -- -- Course Instructor
@@ -114,25 +113,26 @@ CREATE TABLE IF NOT EXISTS DELETED_USERS
 -- -- INSERT INTO Bookmark_Material (Material_ID, Bookmark_ID, Material_Type) VALUES
 -- -- (1, 1, 'Course_Outline');
 
--- -- Procedure to View Course Details
--- CREATE PROCEDURE FetchCourseDetails(IN input_course_ID INT)
--- BEGIN
---     SELECT 
---         Course_ID,
---         Course_Code,
---         Course_name,
---         Course_type,
---         Program,
---         Semester_Year,
---         Course_description,
---         Resources,
---         Course_Status
---     FROM 
---         Course
---     WHERE 
---         Course_ID = input_course_ID;
---     -- To update course views                        
---     UPDATE Course 
---     SET Views = Views + 1 
---     WHERE Course_ID = input_course_ID; 
--- END ;
+-- Procedure to View Course Details
+CREATE PROCEDURE FetchCourseDetails(IN input_course_ID INT)
+BEGIN
+    SELECT 
+        Course_ID,
+        Course_Code,
+        Course_name,
+        Course_type,
+        Program,
+        Semester_Year,
+        Course_description,
+        Resources,
+        Course_Status,
+        Course_image
+    FROM 
+        Course
+    WHERE 
+        Course_ID = input_course_ID;
+    -- To update course views                        
+    UPDATE Course 
+    SET Views = Views + 1 
+    WHERE Course_ID = input_course_ID; 
+END ;

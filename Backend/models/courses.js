@@ -27,7 +27,7 @@ module.exports=class Courses
     }
     static async uploadFile(course_id, material_type, material_description, fileBuffer) {
         const sql = `
-            INSERT INTO course_material (Course_ID, Material_Type, Material_Description, Material_File)
+            INSERT INTO Course_Material (Course_ID, Material_Type, Material_Description, Material_File)
             VALUES (?, ?, ?, ?)
         `;
         const values = [course_id, material_type, material_description, fileBuffer];
@@ -35,13 +35,13 @@ module.exports=class Courses
     }
     save()
     {
-        const sql='INSERT INTO course VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        const sql='INSERT INTO Course VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)';
         const values=[this.Course_ID,this.Course_Code,this.Course_name,this.Course_type,this.Program,this.Semester_year,this.Course_description,this.Resources,this.Course_Status, this.Views, this.Bookmarks, this.Downloads, this.Popularity_Score];
         return db.execute(sql,values)
     }
     update(User_name,User_email,User_password,User_ID)
     {
-        const sql=`UPDATE users
+        const sql=`UPDATE Users
                     set User_name=?,User_email=?,User_password=?
                     where User_ID=?` ;
         const values=[User_name,User_email,User_password,User_ID]
@@ -56,12 +56,12 @@ module.exports=class Courses
     }
     static fetchAll()
     {
-        const sql='SELECT * from course';
+        const sql='SELECT * from Course';
         return db.execute(sql)
     }
     static delete(id)
     {
-        const sql=`Delete from users 
+        const sql=`Delete from Users 
                     where User_ID=?`;
         const values=[id];
         return db.execute(sql,values);
@@ -85,7 +85,7 @@ module.exports=class Courses
     static fetchCoursebyProgram(Program_name) {
         const sql = `
                     SELECT * 
-                    FROM courses 
+                    FROM Course 
                     WHERE Program = ?; `;
         db.execute(sql, [Program_name])
         .then(([rows, fields]) => {
@@ -95,19 +95,33 @@ module.exports=class Courses
             console.error('Error fetching by program:', err);
         });
     }
-    static updatePopularityScores() {
+    static async updatePopularityScores() {
         const sql = `
-                    UPDATE courses 
-                    SET popularity_score = (views * 0.5) + (downloads * 0.3) + (bookmarks *     0.2); `; 
-        return db.execute(sql);
+                    UPDATE Course
+                    SET Popularity_Score = (Views * 0.5) + (Downloads * 0.3) + (Bookmarks * 0.2); `; 
+        try {
+            const [result] = await db.execute(sql);
+            console.log("Popularity scores updated:", result);
+            return result;
+        } catch (err) {
+            console.error("Error updating popularity scores:", err);
+            throw err; // Throw the error so it propagates correctly.
+        }
     }
-    static fetchTopCourses(limit = 10) {
+    static async fetchTopCourses(limit = 10) {
         const sql = `SELECT * FROM Course ORDER BY Popularity_Score DESC LIMIT ?`;
-        return db.execute(sql, [limit]);
+        try {
+            const [courses] = await db.execute(sql, [limit]);
+            console.log("Fetched top courses:", courses);
+            return courses;
+        } catch (err) {
+            console.error("Error fetching top courses:", err);
+            throw err;
+        }
     }
     static async fetchCourseByTopic(topics) {
         const tags = topics
-        const sql = `SELECT * FROM course WHERE JSON_OVERLAPS(topic_tags, ?)`;
+        const sql = `SELECT * FROM Course WHERE JSON_OVERLAPS(topic_tags, ?)`;
         const [rows] = await db.execute(sql, [tags]);
     }
 
