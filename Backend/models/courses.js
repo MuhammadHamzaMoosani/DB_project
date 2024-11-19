@@ -109,15 +109,17 @@ module.exports=class Courses
         }
     }
     static async fetchTopCourses() {
-        const sql = `SELECT * FROM Course ORDER BY Popularity_Score DESC LIMIT 10`;
-        try {
-            const [courses] = await db.execute(sql);
-            console.log("Fetched top courses:", courses);
-            return courses;
-        } catch (err) {
-            console.error("Error fetching top courses:", err);
-            throw err;
-        }
+        const sql = `SELECT * FROM Course ORDER BY Popularity_Score DESC LIMIT 5`;
+        return db.execute(sql)
+        // try {
+        //     console.log
+        //     const [courses] = await db.execute(sql);
+        //     console.log("Fetched top courses:", courses);
+        //     return courses;
+        // } catch (err) {
+        //     console.error("Error fetching top courses:", err);
+        //     throw err;
+        // }
     }
     static async fetchCourseByTopic(topics) {
         const tags = topics

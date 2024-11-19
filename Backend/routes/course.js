@@ -15,7 +15,7 @@ const upload = multer({ storage });
 // Test GET route for /courses
 router.get('/', Course.getCourse);
 // Route to get popular courses
-// router.get('/landing', Course.getPopularCourses);
+router.get('/landing', Course.getPopularCourses);
 
 // Get popular courses on Landing page
 router.post('/upload', upload.single('file'), async (req, res) => {

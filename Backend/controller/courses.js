@@ -21,22 +21,22 @@ exports.getCourse=(req,res,next)=>
                 })
     }
 
-// exports.getPopularCourses = (req, res, next) => {
-//     Course.updatePopularityScores().then(() => {
-//             return Course.fetchTopCourses(); // Fetch after updating scores
-//         })
-//         .then(([courses]) => {
-//             console.log("Fetched Courses:", courses); // Debugging: Check what the database is returning
-//             res.status(200).json({
-//                 success: true,
-//                 Courses: courses, // Corrected: No extra array wrapping
-//             });
-//         })
-//         .catch(err => {
-//             console.error("Error in getPopularCourses:", err);
-//             res.status(401).json({
-//                 success: false,
-//                 message: err.message,
-//             });
-//         });
-// };
+exports.getPopularCourses = (req, res, next) => {
+    Course.updatePopularityScores().then(() => {
+            return Course.fetchTopCourses(); // Fetch after updating scores
+        })
+        .then(([courses]) => {
+            console.log("Fetched Courses:", courses); // Debugging: Check what the database is returning
+            res.status(200).json({
+                success: true,
+                Courses: courses, // Corrected: No extra array wrapping
+            });
+        })
+        .catch(err => {
+            console.error("Error in getPopularCourses:", err);
+            res.status(401).json({
+                success: false,
+                message: err.message,
+            });
+        });
+};
