@@ -12,23 +12,26 @@
     </div>
     <div class="body">
         <h2>Popular Courses</h2>
-        <div class="course-list">
-            <div class="card">
+        <div class="course-list" >
+            <div class="card" *ngFor="let course of courses; let i = index" (click)="navigate(i)">
+                <img [src]=course.Course_image alt="Avatar" style="width:100%; height:50% ">
+                <div class="container">
+                  <h6>{{course.Course_name | uppercase }}</h6> 
+                  <p class="code">{{course.Course_Code}}</p>
+                  <div class="program_year">
+                      <p>{{course.Program}}</p> 
+                      <p>{{course.Semester_Year}}</p> 
+                  </div>
+                </div>
+            </div>
+            <!-- <div class="card">
                 <img src="assets/imgs/HomePage/Database.png" alt="Avatar" style="width:100%">
                 <div class="container">
                   <h6>DATABASE MANAGEMENT SYSTEM</h6> 
                   <p class="code">CS702</p>
                   <p>IBA SCHOOL OF MATHEMATICS AND COMPUTER SCIENCE</p> 
                 </div>
-            </div>
-            <div class="card">
-                <img src="assets/imgs/HomePage/Database.png" alt="Avatar" style="width:100%">
-                <div class="container">
-                  <h6>DATABASE MANAGEMENT SYSTEM</h6> 
-                  <p class="code">CS702</p>
-                  <p>IBA SCHOOL OF MATHEMATICS AND COMPUTER SCIENCE</p> 
-                </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

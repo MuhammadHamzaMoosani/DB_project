@@ -1,15 +1,15 @@
--- USE ibacoursearchieve;
--- -- Course table
+USE ibacoursearchieve;
+-- Course table
 -- CREATE TABLE IF NOT EXISTS Course (
 --     Course_ID int AUTO_INCREMENT PRIMARY KEY,
 --     Course_Code varchar(255),
 --     Course_name varchar(255) NOT NULL,
 --     Course_type ENUM('Under-Graduate', 'Graduate', 'Post_Graduate') NOT NULL,
 --     Program ENUM('BSCS', 'BSECO', 'BSAF', 'BSEM', 'BSSS', 'BBA', 'BSMath') NOT NULL,
---     School ENUM('SMCS', 'SSSE', 'SBS') NOT NULL,
+--     School ENUM('School of Mathematics and Computer Sciences', 'School of Social Sciences and Economics', 'School of Business Studies') NOT NULL,
 --     Semester_Year varchar(255),
 --     Course_description varchar(255),
---     Course_outline LONGBLOB,
+--     Course_Outline LONGBLOB,
 --     Course_Status ENUM('Active', 'Archived') NOT NULL,
 --     Course_image LONGBLOB,
 --     Topics JSON, 
