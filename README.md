@@ -45,7 +45,7 @@ To get started, clone this repository to your local machine and unlock a treasur
 ```bash
 git clone https://github.com/yourusername/IBA-Course-Archive.git
 ```
-##**Running Both Frontend and Backend Together**##
+**Running Both Frontend and Backend Together**
 1.First, start the backend:
 
 ```bash
