@@ -133,6 +133,10 @@ a
     text-align: center;
     width: 100%;
 }
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5; /* Optional: Make it visibly disabled */
+}
 .resoruce_button button:hover
 {
     background-color: #7a0b0b;

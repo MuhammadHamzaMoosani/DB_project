@@ -1,27 +1,53 @@
-<div class="main">
+<div *ngIf="!courses" class="loader">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="main" *ngIf="courses">
     <div class="image">
         <img src="assets/imgs/HomePage/iba_building.jpg" alt="" >
-        <div class="overlay-input">
+        <!-- <div class="overlay-input">
             <p class="overlay-text">"Access free lecture notes, exams, past resources, and videos from IBA courses. Discover in-depth material across various subjects, guided by expert instructors." </p>
             <div class="input-group">
                 <input type="text" placeholder="Enter text here" class="input_field">
                 <mat-icon class="menu">menu</mat-icon>
                 <mat-icon class="search">search</mat-icon>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="body">
+      <div class="searchButton">
+        <mat-form-field appearance="outline">
+            <input
+              type="text"
+              matInput
+              [matAutocomplete]="auto"
+              [formControl]="myControl"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              (optionSelected)="onOptionSelected($event)"
+            >
+              <mat-option
+                *ngFor="let option of filteredOptions | async;let i = index" [value]="option"
+                [value]="option"
+              >
+                {{ option.Course_name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        <button (click)="search()" >Search</button>
+      </div>
         <h2>Popular Courses</h2>
         <div class="course-list" >
             <div class="card" *ngFor="let course of courses; let i = index" (click)="navigate(i)">
                 <img [src]=course.Course_image alt="Avatar" style="width:100%; height:50% ">
                 <div class="container">
                   <h6>{{course.Course_name | uppercase }}</h6> 
-                  <p class="code">{{course.Course_Code}}</p>
                   <div class="program_year">
-                      <p>{{course.Program}}</p> 
+                      <p class="code">{{course.Course_Code}}</p>
                       <p>{{course.Semester_Year}}</p> 
                   </div>
+                  <p>{{course.School}}</p>
                 </div>
             </div>
             <!-- <div class="card">

@@ -6,11 +6,13 @@
     <div class="heading_box">
         <div class="headingIcon">
             <h2>{{course.Course_name | uppercase}}</h2>
-            <mat-icon *ngIf="!bookmarked" class="bookmark" (click)="bookmark()">bookmark</mat-icon>
-            <mat-icon *ngIf="bookmarked" class="bookmark" (click)="bookmark()">bookmark_added</mat-icon>
+            <ng-container *ngIf="logged">
+                <mat-icon *ngIf="!bookmarked" class="bookmark" (click)="bookmark()">bookmark</mat-icon>
+                <mat-icon *ngIf="bookmarked" class="bookmark" (click)="bookmark()">bookmark_added</mat-icon>
+            </ng-container>
         </div>
         <div class="course_details">
-            <p>{{course.Course_Code}} | {{course.Program}}</p>
+            <p>{{course.Course_Code}} | {{course.School}}</p>
         </div>
     </div>
     <div class="body">
@@ -34,8 +36,11 @@
                     </p>
                 </div>
                 <div class="button">
-                    <button class="outline">
+                    <button *ngIf="course.Course_Outline" class="outline" (click)="downloadPdf()">
                         Download Course Outline
+                    </button> 
+                    <button *ngIf="!course.Course_Outline" class="outline" disabled>
+                        No course outline available
                     </button>
                 </div>
             </div>
@@ -48,18 +53,13 @@
                     <mat-icon *ngIf="!show" (click)="show=!show">arrow_drop_up</mat-icon>
                 </div>
                 <div *ngIf="show" class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                    <p *ngFor="let topic of course.Topics" >{{topic}}</p>
                 </div>
             </div>
             <div class="courseInstructor">
                 <h4>Course Instructor</h4>
                 <p>
-                    Ms. Abeera Tariq
-                </p>
-                <p>
-                    Dr Imran Khan
+                    {{course.Instructor_name}}
                 </p>
             </div>
         </div>

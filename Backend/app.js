@@ -2,6 +2,7 @@ const express=require('express')
 const app=express()
 const db=require('./util/database')
 const Tables=require('./util/createTables')
+const Insert=require('./util/updateCourse')
 const userRoutes = require('./routes/user');
 const courseRoutes = require('./routes/course');
 const cors = require('cors'); 
@@ -15,6 +16,16 @@ Tables.createTables()
     {
         console.log('Table creation error:',err)
     })
+// Insert.updateCourseOutline()
+// .then(result=>
+//     {
+//         console.log('Table created successfully:', result);
+//     })
+// .catch(err=>
+//     {
+//         console.log('Table creation error:',err)
+//     })
+
 app.use(cors({
     origin: 'http://localhost:4200', // Replace with your frontend URL or '*' to allow all origins
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allowed HTTP methods

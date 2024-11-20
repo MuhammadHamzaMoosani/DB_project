@@ -33,47 +33,33 @@ module.exports=class Courses
         const values=[this.Course_ID,this.Course_Code,this.Course_name,this.Course_type,this.Program,this.Semester_year,this.Course_description,this.Course_Outline,this.Course_Status, this.School];
         return db.execute(sql,values)
     }
-    update(User_name,User_email,User_password,User_ID)
-    {
-        const sql=`UPDATE Users
-                    set User_name=?,User_email=?,User_password=?
-                    where User_ID=?` ;
-        const values=[User_name,User_email,User_password,User_ID]
-        return db.execute(sql,values);
-    }
-    static findByEmailPassword(email,password)
-    {
-        const sql=`Select User_Type from Users
-                    where User_email=? and User_password=?`;
-        const values=[email,password]
-        return db.execute(sql,values);
-    }
+   
     static fetchAll()
     {
         const sql='SELECT * from Course';
         return db.execute(sql)
     }
-    static delete(id)
-    {
-        const sql=`Delete from Users 
-                    where User_ID=?`;
-        const values=[id];
-        return db.execute(sql,values);
-    }   
-    static createTrigger()
-    {
-        const sql=`
-                    CREATE TRIGGER logDeletedUsers
-                    AFTER DELETE ON users
-                    For each row
-                    BEGIN
-                        INSERT INTO Deleted_Users (User_ID, User_name, User_email, User_password, User_Type, deletedDate)
-                        values(OLD.User_ID,OLD.User_name,OLD.User_email,OLD.User_password,OLD.User_Type,NOW());
-                    END;`
-        return db.query(sql);
-    }
+    // static delete(id)
+    // {
+    //     const sql=`Delete from Users 
+    //                 where User_ID=?`;
+    //     const values=[id];
+    //     return db.execute(sql,values);
+    // }   
+    // static createTrigger()
+    // {
+    //     const sql=`
+    //                 CREATE TRIGGER logDeletedUsers
+    //                 AFTER DELETE ON users
+    //                 For each row
+    //                 BEGIN
+    //                     INSERT INTO Deleted_Users (User_ID, User_name, User_email, User_password, User_Type, deletedDate)
+    //                     values(OLD.User_ID,OLD.User_name,OLD.User_email,OLD.User_password,OLD.User_Type,NOW());
+    //                 END;`
+    //     return db.query(sql);
+    // }
     static fetchCourseDetails(Course_ID) {
-        const sql = `CALL FetchCourseDetails(?)`; // my stored procedure
+        const sql = `CALL FetchCourseDetails_Instructor(?)`; // my stored procedure
         return db.execute(sql, [Course_ID]); 
     }
     static fetchCoursebyProgram(Program_name) {

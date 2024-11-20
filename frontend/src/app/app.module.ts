@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
@@ -13,6 +13,10 @@ import { FormsComponent } from './forms/forms.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { provideHttpClient } from '@angular/common/http';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AsyncPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,12 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     AppRoutingModule,
     MatIconModule,
     FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    AsyncPipe,
     RouterModule.forRoot([
       {path:'',component:HomepageComponent},
       {path:'course/:course/:id',component:CoursepageComponent},
@@ -39,7 +48,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     provideAnimationsAsync(),
     provideClientHydration(),
     provideHttpClient(),
-    provideAnimationsAsync('noop')
   ],
   bootstrap: [AppComponent]
 })

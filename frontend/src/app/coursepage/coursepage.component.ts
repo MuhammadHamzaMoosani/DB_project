@@ -13,6 +13,8 @@ export class CoursepageComponent implements OnInit {
   show:boolean=false
   course: any;
   id:number=-1
+  pdfUrl: string | null = null;
+  logged:boolean=false
   bookmark()
   {
     this.bookmarked=!this.bookmarked;
@@ -32,6 +34,11 @@ export class CoursepageComponent implements OnInit {
             this.course=res.data
             console.log(this.course[0])
             this.course=this.course[0]
+            console.log(this.course)
+            if(this.course.Course_Outline)
+              this.pdfUrl = this.createPdfUrl(this.course.Course_Outline.data);
+            console.log(this.pdfUrl)
+
           },
         error:er=>
           {
@@ -45,5 +52,29 @@ export class CoursepageComponent implements OnInit {
           }
       }
     )
+  }
+  createPdfUrl(bufferData: number[]): string {
+    // Convert buffer array into Uint8Array
+    const byteArray = new Uint8Array(bufferData);
+
+    // Create a Blob from the binary data
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+    // Generate a URL for the Blob
+    return URL.createObjectURL(blob);
+  }
+  downloadPdf(): void {
+    if (this.pdfUrl) {
+      // Create an anchor element to simulate the download
+      const a = document.createElement('a');
+      a.href = this.pdfUrl; // Set the blob URL
+      a.download = 'Course_Outline.pdf'; // Set the file name for the download
+      a.click(); // Trigger the download
+  
+      // Clean up the object URL after download to free memory
+      URL.revokeObjectURL(this.pdfUrl);
+    } else {
+      console.error('PDF URL is not available.');
+    }
   }
 }
