@@ -40,6 +40,10 @@ The IBA Course Archive empowers students to:
 
 ## **Get Started**
 
-Visit the IBA Course Archive and unlock a treasure trove of academic resources tailored to enhance your learning journey!
+To get started, clone this repository to your local machine and unlock a treasure trove of academic resources!
 
----
+```bash
+git clone https://github.com/yourusername/IBA-Course-Archive.git
+
+First ensure that backend is functioning then ensure the frontend.Refer to the frontend and backend readme for any problems
+
