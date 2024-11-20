@@ -44,6 +44,7 @@ To get started, clone this repository to your local machine and unlock a treasur
 
 ```bash
 git clone https://github.com/yourusername/IBA-Course-Archive.git
+```
 
 First ensure that backend is functioning then ensure the frontend.Refer to the frontend and backend readme for any problems
 
