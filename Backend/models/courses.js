@@ -7,7 +7,7 @@ const upload = multer({ storage });
 
 module.exports=class Courses
 {
-    constructor(Course_ID,Course_Code,Course_name,Course_type,Program,Semester_year,Course_description,Resources,Course_Status, Course_image, Views, Bookmarks, Downloads, Popularity_Score)
+    constructor(Course_ID,Course_Code,Course_name,Course_type,Program,Semester_year,Course_description,Course_Outline,Course_Status, Course_image, School)
     {
         this.Course_ID=Course_ID;
         this.Course_Code=Course_Code;
@@ -16,13 +16,10 @@ module.exports=class Courses
         this.Program=Program;
         this.Semester_year=Semester_year;
         this.Course_description=Course_description;
-        this.Resources=Resources;
+        this.Course_Outline=Course_Outline;
         this.Course_Status=Course_Status;
         this.Course_image=Course_image;
-        this.Views=Views;
-        this.Bookmarks=Bookmarks;
-        this.Downloads=Downloads;
-        this.Popularity_Score=Popularity_Score;
+        this.School=School;
 
     }
     static async uploadFile(course_id, material_type, material_description, fileBuffer) {
@@ -35,8 +32,8 @@ module.exports=class Courses
     }
     save()
     {
-        const sql='INSERT INTO Course VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)';
-        const values=[this.Course_ID,this.Course_Code,this.Course_name,this.Course_type,this.Program,this.Semester_year,this.Course_description,this.Resources,this.Course_Status, this.Views, this.Bookmarks, this.Downloads, this.Popularity_Score];
+        const sql='INSERT INTO Course VALUES(?,?,?,?,?,?,?,?,?,?)';
+        const values=[this.Course_ID,this.Course_Code,this.Course_name,this.Course_type,this.Program,this.Semester_year,this.Course_description,this.Course_Outline,this.Course_Status, this.School];
         return db.execute(sql,values)
     }
     update(User_name,User_email,User_password,User_ID)

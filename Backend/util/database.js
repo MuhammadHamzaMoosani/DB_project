@@ -9,7 +9,6 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
     multipleStatements: true,
     waitForConnections: true,
-    connectTimeout: 10000
 });
 
 // Ensure the connection uses the correct database context
