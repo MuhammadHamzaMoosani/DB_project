@@ -23,16 +23,13 @@ module.exports=class Courses
 
     }
     static async uploadFile(course_id, material_type, material_description, fileBuffer) {
-        const sql = `
-            INSERT INTO Course_Material (Course_ID, Material_Type, Material_Description, Material_File)
-            VALUES (?, ?, ?, ?)
-        `;
+        const sql = `CALL insertCourseMaterial(?,?,?,?)`;
         const values = [course_id, material_type, material_description, fileBuffer];
         return db.execute(sql, values);
     }
     save()
     {
-        const sql='INSERT INTO Course VALUES(?,?,?,?,?,?,?,?,?,?)';
+        const sql='CALL insertIntoCourse(?,?,?,?,?,?,?,?,?,?)';
         const values=[this.Course_ID,this.Course_Code,this.Course_name,this.Course_type,this.Program,this.Semester_year,this.Course_description,this.Course_Outline,this.Course_Status, this.School];
         return db.execute(sql,values)
     }
@@ -80,10 +77,7 @@ module.exports=class Courses
         return db.execute(sql, [Course_ID]); 
     }
     static fetchCoursebyProgram(Program_name) {
-        const sql = `
-                    SELECT * 
-                    FROM Course 
-                    WHERE Program = ?; `;
+        const sql = `CALL fetchByProgram(?)`;
         db.execute(sql, [Program_name])
         .then(([rows, fields]) => {
         console.log(rows); // The result set returned by the procedure
@@ -93,11 +87,9 @@ module.exports=class Courses
         });
     }
     static async updatePopularityScores() {
-        const sql = `
-                    UPDATE Course
-                    SET Popularity_Score = (Views * 0.5) + (Downloads * 0.3) + (Bookmarks * 0.2); `; 
+        const sql = `CALL updatePopularity()`; 
         try {
-            const [result] = await db.execute(sql);
+            const result = await db.execute(sql);
             console.log("Popularity scores updated:", result);
             return result;
         } catch (err) {
@@ -105,18 +97,18 @@ module.exports=class Courses
             throw err; // Throw the error so it propagates correctly.
         }
     }
+    
     static async fetchTopCourses() {
-        const sql = `SELECT * FROM Course ORDER BY Popularity_Score DESC LIMIT 5`;
+        const sql = `CALL fetchPopularCourses()`;
         return db.execute(sql)
-        // try {
-        //     console.log
-        //     const [courses] = await db.execute(sql);
-        //     console.log("Fetched top courses:", courses);
-        //     return courses;
-        // } catch (err) {
-        //     console.error("Error fetching top courses:", err);
-        //     throw err;
-        // }
+        .then(([rows]) => {
+            console.log(rows); // The result set returned by the procedure
+            return rows;
+            })
+            .catch(err => {
+                console.error('Error fetching popular courses:', err);
+                throw err;
+            });
     }
     static async fetchCourseByTopic(topics) {
         const tags = topics
@@ -137,12 +129,3 @@ module.exports=class Courses
       }
     }
   })();
-//   (async function testFetchCourseDetails() {
-//     try {
-//       const Course_ID = 1; // Replace with a valid ID from your Course table
-//       const [rows] = await db.execute(`CALL FetchCourseDetails(?)`, [Course_ID]);
-//       console.log('Course Details:', rows[0]);
-//     } catch (err) {
-//       console.error('Error calling procedure:', err.message);
-//     }
-//   })();
