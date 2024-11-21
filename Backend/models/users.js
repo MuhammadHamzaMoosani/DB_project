@@ -12,13 +12,13 @@ module.exports=class Users
     }
     save()
     {
-        const sql='INSERT INTO users VALUES(?,?,?,?,?)';
-        const values=[this.User_ID,this.User_name,this.User_email,this.User_password,this.User_Type];
+        const sql='INSERT INTO Users (User_name, User_email, User_password, User_Type) VALUES (?, ?, ?, ?)';
+        const values=[this.User_name,this.User_email,this.User_password,this.User_Type];
         return db.execute(sql,values)
     }
     update(User_name,User_email,User_password,User_ID)
     {
-        const sql=`UPDATE users
+        const sql=`UPDATE Users
                     set User_name=?,User_email=?,User_password=?
                     where User_ID=?` ;
         const values=[User_name,User_email,User_password,User_ID]
@@ -38,7 +38,7 @@ module.exports=class Users
     }
     static delete(id)
     {
-        const sql=`Delete from users 
+        const sql=`Delete from Users 
                     where User_ID=?`;
         const values=[id];
         return db.execute(sql,values);
@@ -47,7 +47,7 @@ module.exports=class Users
     {
         const sql=`
                     CREATE TRIGGER logDeletedUsers
-                    AFTER DELETE ON users
+                    AFTER DELETE ON Users
                     For each row
                     BEGIN
                         INSERT INTO Deleted_Users (User_ID, User_name, User_email, User_password, User_Type, deletedDate)

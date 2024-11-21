@@ -73,14 +73,30 @@ exports.loginUser=(req,res,next)=>
                 })
         })
 }
-// exports.signUp=(req,res,next)=>
-//     {
-//         const email = req.body.email;
-//         const password = req.body.password;
-//         const name=req.body.name
-//         const User_Type=Student
-//         const user=new User(,)
-//         User.save(email,password)
-//         .then(([response])=>
-//     }
+exports.signUp=(req,res,next)=>
+    {
+        const email = req.body.User_email;
+        const password = req.body.User_password;
+        const name=req.body.User_name;
+        const User_Type='Student'
+        const user=new User(11,name,email,password,User_Type)
+        user.save(email,password)
+        .then(([response])=>
+            {
+                res.status(200).json(
+                    {
+                        success:true,
+                        response:response
+                    })
+            })
+        .catch((err)=>
+            {
+                console.log(err)
+                res.status(401).json(
+                    {
+                        success:false,
+                        messsage:err
+                    })
+            })
+    }
     

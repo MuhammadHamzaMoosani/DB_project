@@ -5,5 +5,6 @@ const User=require('../controller/user')
 
 router.get('/',User.getUsers);
 router.post('/login',User.loginUser);
+router.post('/signUp',User.signUp)
 router.delete('/delete',User.deleteUser);
 module.exports = router;
