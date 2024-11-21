@@ -68,6 +68,7 @@ exports.uploadFileController = (req, res, next) => {
 
 exports.getCourseByProgram = (Program, res) => {
     Course.fetchCoursebyProgram(Program).then(([rows]) => {
+        console.log(rows)
         if (rows && rows.length > 0) {
             // Send the course details as response
             res.status(200).json({

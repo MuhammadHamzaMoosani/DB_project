@@ -64,13 +64,8 @@ module.exports=class Courses
     }
     static fetchCoursebyProgram(Program_name) {
         const sql = `CALL fetchByProgram(?)`;
-        db.execute(sql, [Program_name])
-        .then(([rows, fields]) => {
-        console.log(rows); // The result set returned by the procedure
-        })
-        .catch(err => {
-            console.error('Error fetching by program:', err);
-        });
+       return db.execute(sql, [Program_name])
+        
     }
     static async updatePopularityScores() {
         const sql = `CALL updatePopularity()`; 

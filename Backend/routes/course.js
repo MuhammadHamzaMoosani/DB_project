@@ -17,7 +17,7 @@ router.get('/landing', Course.getPopularCourses);
 router.post('/upload', upload.single('file'), Course.uploadFileController);
 router.get('/:program', (req, res) => {
     const { program } = req.params; // Extract 'id' from the URL parameter
-    Course.getCourseByID(program, res); // Pass 'id' and 'res' to the controller
+    Course.getCourseByProgram(program, res); // Pass 'id' and 'res' to the controller
 });
 // Fet Course by Course_ID
 router.get('/:id', (req, res) => {

@@ -141,19 +141,19 @@ USE ibacoursearchieve;
 -- BEGIN
 --     -- Fetch Course Details and Instructor Name
 --     SELECT 
---         c.Course_ID,
---         c.Course_Code,
---         c.Course_name,
---         c.Course_type,
---         c.Program,
---         c.School,
---         c.Semester_Year,
---         c.Course_description,
---         c.Course_Outline,
---         c.Course_Status,
---         c.Course_image,
---         c.Topics,
---         i.Instructor_name
+        -- c.Course_ID,
+        -- c.Course_Code,
+        -- c.Course_name,
+        -- c.Course_type,
+        -- c.Program,
+        -- c.School,
+        -- c.Semester_Year,
+        -- c.Course_description,
+        -- c.Course_Outline,
+        -- c.Course_Status,
+        -- c.Course_image,
+        -- c.Topics,
+        -- i.Instructor_name
 --     FROM 
 --         Course c
 --     JOIN Course_Instructor ci ON c.Course_ID = ci.Course_ID -- Assuming the join table is `CourseInstructor`
