@@ -73,4 +73,14 @@ exports.loginUser=(req,res,next)=>
                 })
         })
 }
+// exports.signUp=(req,res,next)=>
+//     {
+//         const email = req.body.email;
+//         const password = req.body.password;
+//         const name=req.body.name
+//         const User_Type=Student
+//         const user=new User(,)
+//         User.save(email,password)
+//         .then(([response])=>
+//     }
     

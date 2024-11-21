@@ -66,6 +66,25 @@ exports.uploadFileController = (req, res, next) => {
      });
 }
 
+exports.getCourseByProgram = (Program, res) => {
+    Course.fetchCoursebyProgram(Program).then(([rows]) => {
+        if (rows && rows.length > 0) {
+            // Send the course details as response
+            res.status(200).json({
+                message: 'Courses by program fetched successfully.',
+                data: rows[0] // Assuming the first row contains the course details
+            });
+        } else {
+            // If no course is found
+            res.status(404).json({ message: 'Course not found' });
+        }
+        
+    })
+    .catch((err) => {
+        // Handle errors
+        res.status(500).json({ message: 'Error fetching course by program', error: err.message });
+    });
+}
 // Get course by id
 exports.getCourseByID = (courseID, res) => {
 
