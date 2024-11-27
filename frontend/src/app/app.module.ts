@@ -20,6 +20,10 @@ import { AsyncPipe } from '@angular/common';
 import { SignInPageComponent } from './sign-in-page/sign-in-page.component';
 import { ResourceReuseableComponent } from './resource-reuseable/resource-reuseable.component';
 import { LectureNotesComponent } from './lecture-notes/lecture-notes.component';
+import { AssignmentsComponent } from './assignments/assignments.component';
+import { StudentNotesComponent } from './student-notes/student-notes.component';
+import { PastProjectComponent } from './past-project/past-project.component';
+import { ExamComponent } from './exam/exam.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,11 @@ import { LectureNotesComponent } from './lecture-notes/lecture-notes.component';
     PagenotfoundComponent,
     SignInPageComponent,
     ResourceReuseableComponent,
-    LectureNotesComponent
+    LectureNotesComponent,
+    AssignmentsComponent,
+    StudentNotesComponent,
+    PastProjectComponent,
+    ExamComponent
   ],
   imports: [
     BrowserModule,
@@ -48,10 +56,10 @@ import { LectureNotesComponent } from './lecture-notes/lecture-notes.component';
       {path:'',component:HomepageComponent},
       {path:'course/:course/:id',component:CoursepageComponent},
       {path:'course/:course/:id/LectureNotes',component:LectureNotesComponent},
-      {path:'course/:course/:id/Assignments',component:CoursepageComponent},
-      {path:'course/:course/:id/StudentNotes',component:CoursepageComponent},
-      {path:'course/:course/:id/PastProjects',component:CoursepageComponent},
-      {path:'course/:course/:id/Exam',component:CoursepageComponent},
+      {path:'course/:course/:id/Assignments',component:AssignmentsComponent},
+      {path:'course/:course/:id/StudentNotes',component:StudentNotesComponent},
+      {path:'course/:course/:id/PastProjects',component:PastProjectComponent},
+      {path:'course/:course/:id/Exam',component:ExamComponent},
       {path:'SignIn',component:SignInPageComponent},
       { path: '**', component:PagenotfoundComponent },
     ])

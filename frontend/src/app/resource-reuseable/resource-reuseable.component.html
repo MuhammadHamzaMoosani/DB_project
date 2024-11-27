@@ -49,10 +49,10 @@
             <mat-icon class="close-btn" (click)="close()">
                 close
             </mat-icon>
-            <h3>Add New Lecture</h3>
+            <h3>Add New {{resourceType}}</h3>
         </div>
         <form>
-            <label for="lecture-title">Lecture Title:</label>
+            <label for="lecture-title">{{resourceType}} Title:</label>
             <input type="text" id="lecture-title" placeholder="Enter lecture title" required>
             <label for="lecture-file">Upload File:</label>
             <input type="file" id="lecture-file" required>

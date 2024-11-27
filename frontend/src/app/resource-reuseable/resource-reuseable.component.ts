@@ -17,6 +17,7 @@ close() {
   constructor(private router:Router,private helper:HelperService){}
   @Input('course') course: any;
   @Input('title') title!: string;
+  @Input('resourceType') resourceType!:string
   popup:boolean=false
   currentUrl: string = '';
   // bookmarked:boolean=false
