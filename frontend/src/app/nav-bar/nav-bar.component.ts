@@ -1,3 +1,4 @@
+import { HelperService } from './../helper.service';
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 // import { TokenCookieService } from '../tokken-cookie.service';
@@ -12,11 +13,11 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class NavBarComponent implements AfterViewInit {
 
-  @Input("activeIndex") activeIndex:number=-1
   login:boolean=false;
   currentUrl: string = '';
   constructor(
-    private router:Router
+    private router:Router,
+    private helper:HelperService
     // public data:DataService,
     // public helper:FormDataService
   )
@@ -29,15 +30,12 @@ export class NavBarComponent implements AfterViewInit {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
         console.log(this.currentUrl); // This will now give the correct route URL
+        this.helper.setUrl(this.currentUrl)
       }
     });
   }
 
-  active(activeIndex:number)
-  {
-    this.activeIndex=activeIndex
-    console.log(activeIndex)
-  }
+  
   logincheck(login: boolean) 
   {
     this.login=login 

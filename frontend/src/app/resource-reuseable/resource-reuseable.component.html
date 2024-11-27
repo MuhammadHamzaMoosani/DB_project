@@ -1,0 +1,63 @@
+<div *ngIf="!course" class="loader">
+    <mat-spinner></mat-spinner>
+  </div>
+<div class="main" *ngIf="course">
+    <div class="heading_box">
+        <div class="headingIcon">
+            <h2>{{course.Course_name | uppercase}}</h2>
+            <ng-container *ngIf="logged">
+                
+            </ng-container>
+        </div>
+        <div class="course_details">
+            <p>{{course.Course_Code}} | {{course.School}}</p>
+        </div>
+    </div>
+    <div class="body">
+        <div class="resource_list">
+            <div class="resoruce_button">
+                <button [ngClass]="{'active':currentUrl==='LectureNotes'}" >Lecture Notes</button>
+                <button [ngClass]="{'active':currentUrl==='Assignments'}">Assignments</button>
+                <button [ngClass]="{'active':currentUrl==='StudentNotes'}">Student Notes</button>
+                <button [ngClass]="{'active':currentUrl==='PastProjects'}">Past Projects</button>
+                <button [ngClass]="{'active':currentUrl==='Exam'}" >Examinations</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="heading">
+                    <h4>
+                        {{title}}
+                    </h4>
+                    <mat-icon (click)="openPopUp()">note_add</mat-icon>
+            </div>
+            <div class="resource">
+                <div class="icon_text">
+                    <mat-icon>book</mat-icon>
+                    <h6>
+                        Lesson 01: Introduction to Databases
+                    </h6>
+                </div>
+                <mat-icon> download     </mat-icon>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="popup" [ngClass]="{ 'show': popup }">
+   
+    <div class="popupContent" >
+        <div class="close_heading">
+            <mat-icon class="close-btn" (click)="close()">
+                close
+            </mat-icon>
+            <h3>Add New Lecture</h3>
+        </div>
+        <form>
+            <label for="lecture-title">Lecture Title:</label>
+            <input type="text" id="lecture-title" placeholder="Enter lecture title" required>
+            <label for="lecture-file">Upload File:</label>
+            <input type="file" id="lecture-file" required>
+            <button type="submit" class="submit-btn" (click)="complete()">Add Lecture</button>
+        </form>
+    </div>
+    
+</div>

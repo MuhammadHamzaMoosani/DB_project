@@ -13,6 +13,7 @@ export class CoursepageComponent implements OnInit {
   show:boolean=false
   course: any;
   id:number=-1
+  courseName:string=''
   pdfUrl: string | null = null;
   logged:boolean=false
   bookmark()
@@ -22,6 +23,7 @@ export class CoursepageComponent implements OnInit {
   constructor(private api:DataApiService,private router:Router,private route: ActivatedRoute)
   {
    this.id= +route.snapshot.paramMap.get('id')!;
+   this.courseName=route.snapshot.paramMap.get('course')!;
   }
   ngOnInit(): void 
   {
@@ -76,5 +78,9 @@ export class CoursepageComponent implements OnInit {
     } else {
       console.error('PDF URL is not available.');
     }
+  }
+  navigate(url:string)
+  {
+    this.router.navigateByUrl(`course/${this.courseName}/${this.id}/${url}`)
   }
 }

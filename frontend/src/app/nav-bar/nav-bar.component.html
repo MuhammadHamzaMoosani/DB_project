@@ -37,8 +37,8 @@
         </div>
         <div class="nav-item">
             <ul *ngIf="!login;else logged">
-                <li><a [ngClass]="{'active':currentUrl=='/signIn'}" [ngStyle]="{'pointer-events':currentUrl=='/signIn' ? 'none':'auto'}" href="login" ><h6>Sign In</h6></a></li>
-                <li><a [ngClass]="{'active':currentUrl=='/signUp'}" [ngStyle]="{'pointer-events':currentUrl=='/signUp' ? 'none':'auto'}" href="signup" ><h6>Sign Up</h6></a></li>
+                <li><a [ngClass]="{'active':currentUrl=='/signIn'}" [ngStyle]="{'pointer-events':currentUrl=='/signIn' ? 'none':'auto'}" href="SignIn" ><h6>Sign In</h6></a></li>
+                <li><a [ngClass]="{'active':currentUrl=='/signUp'}" [ngStyle]="{'pointer-events':currentUrl=='/signUp' ? 'none':'auto'}" href="SignUp" ><h6>Sign Up</h6></a></li>
             </ul>
             <ng-template #logged>
                 <ul>

@@ -17,6 +17,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AsyncPipe } from '@angular/common';
+import { SignInPageComponent } from './sign-in-page/sign-in-page.component';
+import { ResourceReuseableComponent } from './resource-reuseable/resource-reuseable.component';
+import { LectureNotesComponent } from './lecture-notes/lecture-notes.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { AsyncPipe } from '@angular/common';
     NavBarComponent,
     CoursepageComponent,
     FormsComponent,
-    PagenotfoundComponent
+    PagenotfoundComponent,
+    SignInPageComponent,
+    ResourceReuseableComponent,
+    LectureNotesComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +47,12 @@ import { AsyncPipe } from '@angular/common';
     RouterModule.forRoot([
       {path:'',component:HomepageComponent},
       {path:'course/:course/:id',component:CoursepageComponent},
+      {path:'course/:course/:id/LectureNotes',component:LectureNotesComponent},
+      {path:'course/:course/:id/Assignments',component:CoursepageComponent},
+      {path:'course/:course/:id/StudentNotes',component:CoursepageComponent},
+      {path:'course/:course/:id/PastProjects',component:CoursepageComponent},
+      {path:'course/:course/:id/Exam',component:CoursepageComponent},
+      {path:'SignIn',component:SignInPageComponent},
       { path: '**', component:PagenotfoundComponent },
     ])
   ],
