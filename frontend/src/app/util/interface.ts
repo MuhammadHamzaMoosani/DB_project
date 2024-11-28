@@ -1,4 +1,4 @@
-type tags='input'|'select'|'checkbox' |'location'
+type tags='input'|'select'|'checkbox' |'textarea'
 type input_types='text'|'password'|'email'|'number'|'date'|'file'|'radio'|'submit'|'reset'|'button'|'hidden'
 export interface FormElement{
     label:string
@@ -9,7 +9,7 @@ export interface FormElement{
     id?:string
     value?:string
     placeholder?:string
-    space?:boolean
+    width:string
   }
 export interface Course {
   Course_ID: number;

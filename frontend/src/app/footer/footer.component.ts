@@ -5,10 +5,7 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })
-export class FooterComponent implements OnInit {
-  constructor(private renderer: Renderer2){}
-  ngOnInit(): void {
-    // this.renderer.setStyle(document.body, 'overflow-x', 'hidden');
-  }
+export class FooterComponent  {
+  
 
 }

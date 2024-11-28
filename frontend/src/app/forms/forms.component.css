@@ -1,0 +1,94 @@
+form
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.formStyle
+{
+    padding: 3vw;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1vw;
+    row-gap: 1.5vw;
+}
+mat-form-field{
+    width: 100%;
+}
+.createButton
+{    width: 30%;
+
+    font-size: 1.1vw;
+    font-weight: bold;
+    color: white;
+    background-color: #650909;
+    border: 1px solid #0a090980;
+    padding: 1vw 2.5vw;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+}
+/* Set a minimum width for the leading outline */
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading {
+    width: max(30px, var(--mdc-shape-small, 10px)) !important;
+  }
+  
+  /* Set rounded corners for the leading outline */
+  ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading {
+    border-top-left-radius: 6px !important;
+    border-bottom-left-radius: 6px !important;
+  }
+  
+  /* Set rounded corners for the trailing outline */
+  ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+    border-top-right-radius: 6px !important;
+    border-bottom-right-radius: 6px !important;
+  }
+  
+  /* Add padding to the text fields for spacing */
+  :host ::ng-deep.mdc-text-field--outlined .mdc-notched-outline__notch
+  {
+    border-left: none!important;
+  }
+  
+  :host ::ng-deep.mdc-text-field--outlined .mdc-notched-outline__leading
+  {
+    width: 6% !important;
+  }
+  
+  
+  :host ::ng-deep.mdc-text-field--outlined .mdc-notched-outline__leading,
+  :host ::ng-deep.mdc-text-field--outlined .mdc-notched-outline__notch,
+  :host ::ng-deep.mdc-text-field--outlined .mdc-notched-outline__trailing
+  {
+    
+    border-color: rgba(0, 0, 0, 0.719)!important;
+  }
+  :host ::ng-deep .mdc-text-field--outlined:focus-within .mdc-notched-outline__leading,
+  :host ::ng-deep .mdc-text-field--outlined:focus-within .mdc-notched-outline__notch,
+  :host ::ng-deep .mdc-text-field--outlined:focus-within .mdc-notched-outline__trailing {
+      border-color: #650909 !important; /* Change this to your desired hover color */
+  }
+ 
+  ::ng-deep .mat-mdc-option.mdc-list-item--selected {
+    background-color: #650909 !important;
+    color: white;
+  }
+  
+  ::ng-deep .mat-mdc-option.mat-mdc-option-active {
+    background-color: #650909 !important;
+    color: white !important;
+  }
+  ::ng-deep .mat-mdc-option.mat-mdc-option-active span.mdc-list-item__primary-text
+  {
+    color: white!important;
+  }
+  ::ng-deep .mat-mdc-option.mat-mdc-option-active mat-pseudo-checkbox
+  {
+    display: none;
+  }
+  
+  
+  ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-select-arrow {
+    color: #8b0000 !important; /* Color when focused */
+  }

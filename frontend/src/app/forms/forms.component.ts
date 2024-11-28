@@ -1,17 +1,21 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FormElement } from '../util/interface';
 
 @Component({
-  selector: 'app-forms',
+  selector: 'archieve-forms',
   templateUrl: './forms.component.html',
   styleUrl: './forms.component.css'
 })
-export class FormsComponent {
+export class FormsComponent implements OnInit {
 @Input('formElement') form!:FormElement[]
+same_line:FormElement[]=[]
 
-submit(_t5: NgForm) {
-throw new Error('Method not implemented.');
+submit(formData: NgForm) {
+  console.log(formData)
+}
+ngOnInit(): void {
+  // this.same_line=this.form.filter(element=>element.same_line)
 }
 
 }

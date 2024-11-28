@@ -28,6 +28,8 @@ import { ExploreSearchComponent } from './explore-search/explore-search.componen
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ExploreComponent } from './explore/explore.component';
 import { FooterComponent } from './footer/footer.component';
+import { AddCourseComponent } from './add-course/add-course.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { FooterComponent } from './footer/footer.component';
     ExploreComponent,
     ExploreSearchComponent,
     SignUpComponent,
-    FooterComponent
+    FooterComponent,
+    AddCourseComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +62,7 @@ import { FooterComponent } from './footer/footer.component';
     MatProgressSpinnerModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
+    MatSelectModule,
     AsyncPipe,
     RouterModule.forRoot([
       {path:'',component:HomepageComponent},
@@ -70,6 +74,7 @@ import { FooterComponent } from './footer/footer.component';
       {path:'course/:course/:id/Examinations',component:ExamComponent},
       {path:'explore',component:ExploreComponent},
       {path:'SignIn',component:SignInPageComponent},
+      {path:'admin/addCourse',component:AddCourseComponent},
       { path: '**', component:PagenotfoundComponent },
     ])
   ],
