@@ -24,6 +24,8 @@ import { AssignmentsComponent } from './assignments/assignments.component';
 import { StudentNotesComponent } from './student-notes/student-notes.component';
 import { PastProjectComponent } from './past-project/past-project.component';
 import { ExamComponent } from './exam/exam.component';
+import { ExploreSearchComponent } from './explore-search/explore-search.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { ExamComponent } from './exam/exam.component';
     AssignmentsComponent,
     StudentNotesComponent,
     PastProjectComponent,
-    ExamComponent
+    ExamComponent,
+    ExploreSearchComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
