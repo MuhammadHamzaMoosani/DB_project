@@ -26,6 +26,8 @@ import { PastProjectComponent } from './past-project/past-project.component';
 import { ExamComponent } from './exam/exam.component';
 import { ExploreSearchComponent } from './explore-search/explore-search.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { ExploreComponent } from './explore/explore.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -42,8 +44,10 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     StudentNotesComponent,
     PastProjectComponent,
     ExamComponent,
+    ExploreComponent,
     ExploreSearchComponent,
-    SignUpComponent
+    SignUpComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +67,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
       {path:'course/:course/:id/Assignments',component:AssignmentsComponent},
       {path:'course/:course/:id/StudentNotes',component:StudentNotesComponent},
       {path:'course/:course/:id/PastProjects',component:PastProjectComponent},
-      {path:'course/:course/:id/Exam',component:ExamComponent},
+      {path:'course/:course/:id/Examinations',component:ExamComponent},
+      {path:'explore',component:ExploreComponent},
       {path:'SignIn',component:SignInPageComponent},
       { path: '**', component:PagenotfoundComponent },
     ])

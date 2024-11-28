@@ -39,6 +39,12 @@ module.exports=class Courses
         const sql='SELECT * from Course';
         return db.execute(sql)
     }
+    static find(courseName)
+    {
+        const sql='SELECT * from Course where Course_name like ?';
+        const values=[`%${courseName}%`]
+        return db.execute(sql,values)
+    }
     // static delete(id)
     // {
     //     const sql=`Delete from Users 

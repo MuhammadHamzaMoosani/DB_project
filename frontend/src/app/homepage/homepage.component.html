@@ -4,17 +4,17 @@
 <div class="main" *ngIf="courses">
     <div class="image">
         <img src="assets/imgs/HomePage/iba_building.jpg" alt="" >
-        <!-- <div class="overlay-input">
+        <div class="overlay-input">
             <p class="overlay-text">"Access free lecture notes, exams, past resources, and videos from IBA courses. Discover in-depth material across various subjects, guided by expert instructors." </p>
             <div class="input-group">
                 <input type="text" placeholder="Enter text here" class="input_field">
                 <mat-icon class="menu">menu</mat-icon>
                 <mat-icon class="search">search</mat-icon>
             </div>
-        </div> -->
+        </div>
     </div>
     <div class="body">
-      <div class="searchButton">
+      <!-- <div class="searchButton">
         <mat-form-field appearance="outline">
             <input
               type="text"
@@ -36,7 +36,7 @@
             </mat-autocomplete>
           </mat-form-field>
         <button (click)="search()" >Search</button>
-      </div>
+      </div> -->
         <h2>Popular Courses</h2>
         <div class="course-list" >
             <div class="card" *ngFor="let course of courses; let i = index" (click)="navigate(i)">
@@ -60,4 +60,6 @@
             </div> -->
         </div>
     </div>
+<footer></footer>
+
 </div>

@@ -19,8 +19,28 @@ exports.getCourse=(req,res,next)=>
                             message:err
                         })
                 })
-    }
-
+}
+exports.FindCourse=(req,res,next)=>
+{
+    courseName=req.body.courseName
+    Course.find(courseName).then(
+        ([courses])=>
+            {
+                res.status(200).json({
+                    success: true,
+                    Courses: courses // The rows from the database query
+                })
+            })
+        .catch(err=>
+            {
+                console.error(err);
+                res.status(401).json(
+                    {
+                        success:false,
+                        message:err
+                    })
+            })
+}
 exports.getPopularCourses = (req, res, next) => {
     Course.updatePopularityScores().then(() => {
             return Course.fetchTopCourses(); // Fetch after updating scores

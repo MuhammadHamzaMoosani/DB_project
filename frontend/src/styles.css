@@ -15,4 +15,7 @@ body { margin: 0;
 .pac-container {
     width: 26.04vw !important;
   }
-  
+app-root
+{
+  display: block;
+}

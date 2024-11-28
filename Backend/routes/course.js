@@ -13,6 +13,8 @@ const upload = multer({ storage });
 router.get('/', Course.getCourse);
 // Route to get popular courses
 router.get('/landing', Course.getPopularCourses);
+router.post('/find', Course.FindCourse);
+
 // Upload course material
 router.post('/upload', upload.single('file'), Course.uploadFileController);
 router.get('program/:program', (req, res) => {

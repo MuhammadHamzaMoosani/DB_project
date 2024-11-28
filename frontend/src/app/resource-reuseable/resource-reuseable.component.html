@@ -16,11 +16,11 @@
     <div class="body">
         <div class="resource_list">
             <div class="resoruce_button">
-                <button [ngClass]="{'active':currentUrl==='LectureNotes'}" >Lecture Notes</button>
-                <button [ngClass]="{'active':currentUrl==='Assignments'}">Assignments</button>
-                <button [ngClass]="{'active':currentUrl==='StudentNotes'}">Student Notes</button>
-                <button [ngClass]="{'active':currentUrl==='PastProjects'}">Past Projects</button>
-                <button [ngClass]="{'active':currentUrl==='Exam'}" >Examinations</button>
+                <button [ngClass]="{'active':currentUrl==='LectureNotes'}" (click)="navigate('LectureNotes')">Lecture Notes</button>
+                <button [ngClass]="{'active':currentUrl==='Assignments'}" (click)="navigate('Assignments')">Assignments</button>
+                <button [ngClass]="{'active':currentUrl==='StudentNotes'}" (click)="navigate('StudentNotes')">Student Notes</button>
+                <button [ngClass]="{'active':currentUrl==='PastProjects'}" (click)="navigate('PastProjects')">Past Projects</button>
+                <button [ngClass]="{'active':currentUrl==='Exam'}" (click)="navigate('Examinations')">Examinations</button>
             </div>
         </div>
         <div class="content">

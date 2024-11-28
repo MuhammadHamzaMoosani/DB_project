@@ -1,23 +1,26 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { HelperService } from '../helper.service';
+import { DataApiService } from '../data-api.service';
 
 @Component({
   selector: 'resource-reuseable',
   templateUrl: './resource-reuseable.component.html',
   styleUrl: './resource-reuseable.component.css'
 })
-export class ResourceReuseableComponent implements AfterViewInit {
+export class ResourceReuseableComponent implements AfterViewInit,OnInit {
 complete() {
   this.popup=false
 }
 close() {
   this.popup=false
 }
-  constructor(private router:Router,private helper:HelperService){}
-  @Input('course') course: any;
+  constructor(private router:Router,private helper:HelperService,private api:DataApiService){}
+  course: any;
   @Input('title') title!: string;
   @Input('resourceType') resourceType!:string
+  @Input('id') id!:number
+  courseName:string=''
   popup:boolean=false
   currentUrl: string = '';
   // bookmarked:boolean=false
@@ -25,6 +28,34 @@ close() {
   // id:number=-1
   pdfUrl: string | null = null;
   logged:boolean=false
+  ngOnInit(): void 
+  {
+    this.api.addUrl(`course/${this.id}`)
+    this.api.getAll().subscribe(
+      {
+        next:res=>
+          {
+            console.log(res)
+            this.course=res.data
+            console.log(this.course[0])
+            this.course=this.course[0]
+            console.log(this.course)
+            this.courseName=this.course.Course_name
+            console.log(this.id)
+          },
+        error:er=>
+          {
+            console.log(er)
+            // this.showAlert=true
+            // setTimeout(() => {
+            //   this.showAlert=false
+            //   this.router.navigateByUrl('login')
+            // }, 3000);
+            
+          }
+      }
+    )
+  }
   ngAfterViewInit(): void {
    this.currentUrl=this.helper.getUrl()
     let splitString=this.currentUrl.split('/')
@@ -59,6 +90,10 @@ close() {
     } else {
       console.error('PDF URL is not available.');
     }
+  }
+  navigate(url:string)
+  {
+    this.router.navigateByUrl(`course/${this.courseName}/${this.id}/${url}`)
   }
   addResource() 
   {
