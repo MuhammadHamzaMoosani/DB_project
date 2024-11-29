@@ -1,4 +1,5 @@
 USE ibacoursearchieve;
+-- DROP TRIGGER logDeletedUsers
 -- Course table
 -- CREATE TABLE IF NOT EXISTS Course (
 --     Course_ID int AUTO_INCREMENT PRIMARY KEY,

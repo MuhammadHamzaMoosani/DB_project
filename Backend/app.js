@@ -6,7 +6,7 @@ const Insert=require('./util/updateCourse')
 const userRoutes = require('./routes/user');
 const courseRoutes = require('./routes/course');
 const cors = require('cors'); 
-
+const cookieParser=require('cookie-parser')
 Tables.createTables()
 .then(result=>
     {
@@ -25,10 +25,11 @@ Tables.createTables()
 //     {
 //         console.log('Table creation error:',err)
 //     })
-
+app.use(cookieParser());
 app.use(cors({
     origin: 'http://localhost:4200', // Replace with your frontend URL or '*' to allow all origins
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allowed HTTP methods
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allowed HTTP methods,
+    credentials: true
 }));
 app.use(express.json()); 
 app.use('/users',userRoutes);
