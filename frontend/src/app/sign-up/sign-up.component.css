@@ -10,6 +10,13 @@ form
     flex-direction: column;
 
 }
+.login-form
+{
+    display: flex;
+    gap: 1vw;
+    flex-direction: column;
+    align-items: center
+}
 .password_button
 {   border: 0;
     background-color: inherit!important;
@@ -18,7 +25,7 @@ form
 
 .background {
     background: url('/assets/imgs/HomePage/iba_building.jpg');
-    height: 100%;
+    height: 89.2%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -125,17 +132,25 @@ mat-label
   }
  /* Ensure no background or shadow is applied on autofill */
 /* General autofill styling for inputs */
-input:-webkit-autofill {
-    box-shadow: 0 0 0 1000px #fff inset !important; /* Match the container's background color */
-    -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5) inset !important;
-    -webkit-text-fill-color: #fff !important; /* Match the input's text color */
-  }
-  
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
   /* For Angular Material inputs specifically */
-  ::ng-deep .mat-mdc-form-field input:-webkit-autofill {
+  ::ng-deep .mat-mdc-form-field input:-webkit-autofill,
+  ::ng-deep .mat-mdc-form-field input:-webkit-autofill:hover,
+  ::ng-deep .mat-mdc-form-field input:-webkit-autofill:focus,
+  ::ng-deep .mat-mdc-form-field input:-webkit-autofill:active
+   {
     box-shadow: 0 0 0 1000px #fff inset !important;
     -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5) inset !important;
     background-color: #fff !important; /* Explicit background color */
     -webkit-text-fill-color: #fff !important; /* Match input text color */
   }
-  
+mat-spinner
+{
+    height: 100%!important;
+    width: 100%!important;
+}

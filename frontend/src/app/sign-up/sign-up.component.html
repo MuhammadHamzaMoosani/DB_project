@@ -1,11 +1,23 @@
+<alert [showAlert]="showAlert" [success]="success" [error]="error" [message]="message" ></alert>
 <div class="background">
     <div class="login-container">
-     <form class="login-form" >
+     <form #f="ngForm" (ngSubmit)="submit(f)" autocomplete="off" class="login-form" >
          <h2>Sign In</h2>
          <div class="login">
+            <mat-form-field >
+                <mat-label>Email</mat-label>
+                <input
+                ngModel
+                name="name"
+                type="text"
+                matInput
+              />
+            </mat-form-field>
              <mat-form-field >
                 <mat-label>Email</mat-label>
                 <input
+                ngModel
+                name="email"
                 matInput
               />
             </mat-form-field>
@@ -13,7 +25,8 @@
                 <mat-label>Password</mat-label>
                 <input
                 matInput
-                autocomplete="off"
+                ngModel
+                name="password"
                 [type]="hide ? 'password' : 'text'"
               />
               <button
@@ -27,9 +40,27 @@
                           <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
                         </button>
             </mat-form-field>
+            <mat-form-field >
+                <mat-label>Confirm Password</mat-label>
+                <input
+                matInput
+                ngModel
+                name="confirm_password"
+                [type]="hide2 ? 'password' : 'text'"
+              />
+              <button
+                          mat-icon-button
+                          matSuffix
+                          type="button"
+                          aria-label="Toggle password visibility"
+                          class="password_button"
+                          (click)="hide = !hide"
+                        >
+                          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+            </mat-form-field>
          </div>
-         <button type="submit" class="sign-in-btn">Sign In</button>
-         <p class="sign-up">Don't have an account? <a href="SignUp">Sign up here</a></p>
+         <button type="submit" class="sign-in-btn"><mat-spinner *ngIf="spinner"></mat-spinner><span *ngIf="!spinner">Sign In</span></button>
      </form>
  </div>
 </div>
