@@ -30,6 +30,8 @@ import { ExploreComponent } from './explore/explore.component';
 import { FooterComponent } from './footer/footer.component';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { MatSelectModule } from '@angular/material/select';
+import { OtpEnterComponent } from './otp-enter/otp-enter.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { MatSelectModule } from '@angular/material/select';
     ExploreSearchComponent,
     SignUpComponent,
     FooterComponent,
-    AddCourseComponent
+    AddCourseComponent,
+    OtpEnterComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +78,8 @@ import { MatSelectModule } from '@angular/material/select';
       {path:'course/:course/:id/Examinations',component:ExamComponent},
       {path:'explore',component:ExploreComponent},
       {path:'SignIn',component:SignInPageComponent},
+      {path:'SignUp',component:SignUpComponent},
+      {path:'otp',component:OtpEnterComponent},
       {path:'admin/addCourse',component:AddCourseComponent},
       { path: '**', component:PagenotfoundComponent },
     ])

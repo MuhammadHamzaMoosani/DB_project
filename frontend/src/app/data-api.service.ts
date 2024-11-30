@@ -15,7 +15,7 @@ export class DataApiService {
   }
   getAll() {
     // const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
-    return this.http.get<any>(this.url).pipe(
+    return this.http.get<any>(this.url,{withCredentials: true}).pipe(
       catchError(this.handleError)
     );
   }
@@ -23,22 +23,23 @@ export class DataApiService {
   patch(item:any)
   {
     // const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
-    return this.http.patch<any>(this.url,item).pipe(catchError(this.handleError))
+    return this.http.patch<any>(this.url,item,{withCredentials: true}).pipe(catchError(this.handleError))
   }
   
   post(item:any)
   {
     // const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
-      return this.http.post<any>(this.url,item).pipe(catchError(this.handleError))
+      return this.http.post<any>(this.url,item,{withCredentials: true}).pipe(catchError(this.handleError))
     }
     update(item:any)
     {
       // const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
-    return this.http.put<any>(this.url,item).pipe(catchError(this.handleError))
+    return this.http.put<any>(this.url,item,{withCredentials: true}).pipe(catchError(this.handleError))
   }
   private handleError(error:HttpErrorResponse)
   {
-    return throwError(() => new Error(error.error.Error));
+    const errorMessage = error.error?.message || error.message || 'An unknown error occurred';
+    return throwError(() => new Error(errorMessage));
     //use the method below to remove error logs
     // const errorMsg = error.error.Error || 'An unknown error occurred';
   

@@ -1,0 +1,19 @@
+<div class="background">
+    <div class="login-container">
+     <form #f="ngForm" (ngSubmit)="submit(f)" autocomplete="off" class="login-form" >
+         <h2>Please enter you email OTP</h2>
+         <div class="login">
+             <mat-form-field >
+                <mat-label>Otp</mat-label>
+                <input
+                ngModel
+                name="otp"
+                matInput
+              />
+            </mat-form-field>
+         </div>
+         <button type="submit" class="sign-in-btn">Sign In</button>
+         <p class="sign-up">Don't have an account? <a href="SignUp">Sign up here</a></p>
+     </form>
+ </div>
+</div>

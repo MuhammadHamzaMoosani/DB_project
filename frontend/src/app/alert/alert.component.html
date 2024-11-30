@@ -1,0 +1,11 @@
+<div *ngIf="showAlert && success" class="alert alert-success" role="alert"> 
+    {{message}}
+    <!-- need to show it on top most area -->
+</div>
+<div *ngIf="showAlert && error" class="alert alert-danger" role="alert"> 
+    {{message}}
+    <!-- need to show it on top most area -->
+</div>
+<div *ngIf="showAlert && loginALert" class="alert alert-danger" role="alert">
+    You need to login
+  </div>

@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 
 const jwt = require('jsonwebtoken'); // Import 'jsonwebtoken' for JWT operations.
 const crypto=require('crypto');
+const { response } = require('express');
 
 const secretKey = process.env.SECRET_KEY; // A secret key for signing the token (keep it private).
 
@@ -108,15 +109,16 @@ exports.loginUser=async (req,res,next)=>
     User.findByEmail(email)
     .then(async ([response])=>
         {
-            if(response.length==0)
+            if(response.length==0 || response ==undefined) 
                 {
                     res.status(403).json(
                         {
                             success:true,
                             message:"Incorrect credentials "
                         })
+                    return
                 }
-            console.log(response[0])
+            console.log(response)
             checkPassword=await verifyPassword(password,response[0].User_password)
             if(checkPassword)
             {
@@ -124,13 +126,7 @@ exports.loginUser=async (req,res,next)=>
                 let text=`The otp is ${otp}`
                 sendEmail(email, 'Otp', text);
                 User.saveCode(response[0].User_ID,otp)
-                let tokken=createToken({email:email,password:password})
-                res.cookie('myCookie', tokken, {
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: 'none',
-                    maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
-                });
+                
                 res.status(200).json(
                     {
                         success:true,
@@ -156,6 +152,42 @@ exports.loginUser=async (req,res,next)=>
                 })
         })
 }
+exports.otpCheck=(req,res,next)=>
+    {
+        const otp=req.body.otp
+        console.log(otp)
+        const id=req.body.id
+        User.getCode(id).then(async ([response])=>
+            {
+                if (otp==response[0].code)
+                    {
+                        check=await User.deleteCode(id)
+                        console.log(check)
+                        let tokken=createToken({email:email,password:password})
+                        res.cookie('myCookie', tokken, {
+                            httpOnly: true,
+                            secure: true,
+                            sameSite: 'none',
+                            maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
+                        });
+                        
+                        res.status(200).json(
+                        {
+                            success:true,
+                            message:'Login complete'
+                        })  
+                    }
+            })
+            .catch((err)=>
+                {
+                    console.log(err)
+                    res.status(401).json(
+                        {
+                            success:false,
+                            messsage:err
+                        })
+                })
+    }
 
 exports.signUp=async (req,res,next)=>
     {

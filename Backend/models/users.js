@@ -21,6 +21,20 @@ module.exports=class Users
         const values=[code,id]
         return db.execute(sql,values);
     }
+    static deleteCode(id)
+    {
+      const sql=`UPDATE Users
+      set code=NULL where User_ID=?` ;
+      const values=[id]
+      return db.execute(sql,values); 
+    }
+    static getCode(id)
+    {
+      const sql=`Select code from Users
+                  where User_ID=?` ;
+        const values=[id]
+        return db.execute(sql,values);
+    }
     update(User_name,User_email,User_password,User_ID)
     {
         const sql=`UPDATE Users

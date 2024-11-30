@@ -66,6 +66,7 @@ ul {
 .text_icon
 {
     display: flex;
+    align-items: center;
 }
 
 li a {

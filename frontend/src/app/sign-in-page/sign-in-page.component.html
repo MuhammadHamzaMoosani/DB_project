@@ -1,18 +1,36 @@
+<alert [showAlert]="showAlert" [success]="success" [error]="error" [message]="message" ></alert>
 <div class="background">
     <div class="login-container">
-     <form class="login-form">
+     <form #f="ngForm" (ngSubmit)="submit(f)" autocomplete="off" class="login-form" >
          <h2>Sign In</h2>
-         <div class="input-group">
-             <label for="username">Username</label>
-             <input type="text" id="username" placeholder="username">
-         </div>
-         <div class="input-group">
-             <label for="password">Password</label>
-             <input type="password" id="password" placeholder="password">
-         </div>
-         <div class="checkbox-group">
-             <input type="checkbox" id="terms">
-             <label for="terms">I agree to the terms and conditions</label>
+         <div class="login">
+             <mat-form-field >
+                <mat-label>Email</mat-label>
+                <input
+                ngModel
+                name="email"
+                matInput
+              />
+            </mat-form-field>
+            <mat-form-field >
+                <mat-label>Password</mat-label>
+                <input
+                matInput
+                ngModel
+                name="password"
+                [type]="hide ? 'password' : 'text'"
+              />
+              <button
+                          mat-icon-button
+                          matSuffix
+                          type="button"
+                          aria-label="Toggle password visibility"
+                          class="password_button"
+                          (click)="hide = !hide"
+                        >
+                          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        </button>
+            </mat-form-field>
          </div>
          <button type="submit" class="sign-in-btn">Sign In</button>
          <p class="sign-up">Don't have an account? <a href="SignUp">Sign up here</a></p>
