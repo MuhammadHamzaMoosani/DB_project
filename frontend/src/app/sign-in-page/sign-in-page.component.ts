@@ -2,6 +2,7 @@ import { Component, Renderer2 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DataApiService } from '../data-api.service';
 import { Router } from '@angular/router';
+import { HelperService } from '../helper.service';
 
 @Component({
   selector: 'app-sign-in-page',
@@ -10,13 +11,13 @@ import { Router } from '@angular/router';
 })
 export class SignInPageComponent {
   hide:boolean=true
-  spinner:boolean=true
+  spinner:boolean=false
 
   showAlert=false
   message:string=''
   success:boolean=false;
   error:boolean=false;
-  constructor(private renderer: Renderer2,private api:DataApiService,private router:Router){}
+  constructor(private renderer: Renderer2,private api:DataApiService,private router:Router,private helper:HelperService){}
   ngOnInit(): void {
     const appRoot = document.querySelector('app-root'); // Select the app-root element
     if (appRoot) {
@@ -39,18 +40,23 @@ export class SignInPageComponent {
   
             this.showAlert=false
             this.spinner=false
-
+            this.helper.setId(res.user[0].User_ID)
+            console.log(res.user)
             this.router.navigateByUrl('otp')
           }, 1000);
         },
         error:er=>
           {
+          this.spinner=true
+
             this.message=er
             this.success=false
             this.error=true
             this.showAlert=true
             setTimeout(() => {
               this.showAlert=false
+              this.spinner=false
+              
             }, 3000);
             
           }

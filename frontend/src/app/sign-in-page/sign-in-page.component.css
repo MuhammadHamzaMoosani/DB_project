@@ -149,4 +149,8 @@ input:-webkit-autofill:active {
     background-color: #fff !important; /* Explicit background color */
     -webkit-text-fill-color: #fff !important; /* Match input text color */
   }
-  
+mat-spinner
+{
+    height: 100%!important;
+    width: 100%!important;
+}

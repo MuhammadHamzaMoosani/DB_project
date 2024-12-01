@@ -32,7 +32,7 @@
                         </button>
             </mat-form-field>
          </div>
-         <button type="submit" class="sign-in-btn">Sign In</button>
+         <button type="submit" class="sign-in-btn"><mat-spinner *ngIf="spinner"></mat-spinner><span *ngIf="!spinner">Sign In</span></button>
          <p class="sign-up">Don't have an account? <a href="SignUp">Sign up here</a></p>
      </form>
  </div>

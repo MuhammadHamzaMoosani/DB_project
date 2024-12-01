@@ -167,8 +167,7 @@ exports.loginUser=async (req,res,next)=>
                 res.status(200).json(
                     {
                         success:true,
-                        message:'Logged In',
-                        token // Send the token to the client //Added by Asna
+                        message:'Logged In'
                     })
             }
             else
@@ -190,6 +189,51 @@ exports.loginUser=async (req,res,next)=>
                 })
         })
 }
+exports.active_user=(req,res,next)=>{
+    const id=req.body.id
+    User.getStatus(id).then(([response])=>
+        {
+            res.status(200).json(
+                {
+                    success:true,
+                    active:response[0]
+                })
+        })
+    .catch((err)=>
+        {
+            console.log(err)
+            res.status(401).json(
+                {
+                    success:false,
+                    messsage:err
+                })
+        })
+
+}
+exports.checkOtpExit=(req,res,next)=>
+    {
+        let id=req.body.id
+        User.getCode(id).then(([response])=>
+            {
+                if (response[0].code!=null)
+                    {
+                        res.status(200).json(
+                            {
+                                success:true,
+                                otpExist:true
+                            })
+                    }
+            })
+            .catch((err)=>
+                {
+                    console.log(err)
+                    res.status(401).json(
+                        {
+                            success:false,
+                            messsage:err
+                        })
+                })
+    }
 exports.otpCheck=(req,res,next)=>
     {
         const otp=req.body.otp
@@ -200,13 +244,13 @@ exports.otpCheck=(req,res,next)=>
                 if (otp==response[0].code)
                     {
                         check=await User.deleteCode(id)
-                        console.log(check)
-                        let tokken=createToken({email:email,password:password})
-                        res.cookie('myCookie', tokken, {
+                        statusUpdate=await User.setStatus(id,'true')
+                        let tokken=createToken({email:response[0].User_email,password:response[0].User_password})
+                        res.cookie('user', tokken, {
                             httpOnly: true,
                             secure: true,
                             sameSite: 'none',
-                            maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
+                            maxAge: 2*60 * 60 * 1000 // 1 day in milliseconds
                         });
                         
                         res.status(200).json(
@@ -226,7 +270,26 @@ exports.otpCheck=(req,res,next)=>
                         })
                 })
     }
-
+exports.logOut=(req,res,next)=>
+    {
+        let id=req.body.id
+        User.setStatus(id,'false').then(([response])=>
+            {
+                res.status(200).json(
+                    {
+                        success:true,
+                    })
+            })
+        .catch((err)=>
+            {
+                console.log(err)
+                res.status(401).json(
+                    {
+                        success:false,
+                        messsage:err
+                    })
+            })
+    }
 exports.signUp=async (req,res,next)=>
     {
         const email = req.body.User_email;

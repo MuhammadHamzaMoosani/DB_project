@@ -28,9 +28,24 @@ module.exports=class Users
       const values=[id]
       return db.execute(sql,values); 
     }
+    static getStatus(id)
+    {
+      const sql=`Select active from Users
+                  where User_ID=?` ;
+        const values=[id]
+        return db.execute(sql,values);
+    }
+    static setStatus(id,status)
+    {
+      const sql=`UPDATE Users
+      set active=?
+      where User_ID=?` ;
+      const values=[id,status]
+      return db.execute(sql,values);
+    }
     static getCode(id)
     {
-      const sql=`Select code from Users
+      const sql=`Select User_email,User_password,code from Users
                   where User_ID=?` ;
         const values=[id]
         return db.execute(sql,values);
