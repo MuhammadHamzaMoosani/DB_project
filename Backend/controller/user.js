@@ -162,7 +162,7 @@ exports.loginUser=async (req,res,next)=>
                 let otp=generateRandomString()
                 let text=`The otp is ${otp}`
                 sendEmail(email, 'Otp', text);
-                User.saveCode(response[0].User_ID,otp)
+                code=await User.saveCode(response[0].User_ID,otp)
                 
                 res.status(200).json(
                     {
