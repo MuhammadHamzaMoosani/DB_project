@@ -32,6 +32,7 @@ import { AddCourseComponent } from './add-course/add-course.component';
 import { MatSelectModule } from '@angular/material/select';
 import { OtpEnterComponent } from './otp-enter/otp-enter.component';
 import { AlertComponent } from './alert/alert.component';
+import { AdminReportComponent } from './admin-report/admin-report.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { AlertComponent } from './alert/alert.component';
     FooterComponent,
     AddCourseComponent,
     OtpEnterComponent,
-    AlertComponent
+    AlertComponent,
+    AdminReportComponent
   ],
   imports: [
     BrowserModule,
