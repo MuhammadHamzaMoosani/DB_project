@@ -77,6 +77,28 @@ module.exports=class Users
         const values=[id];
         return db.execute(sql,values);
     }   
+    // Save temporary user details during signup
+    static saveTemporaryUser(name, email, password, otp, userType, expiresAt) {
+        const query = `INSERT INTO temporary_users (name, email, password, otp, user_type, expires_at)
+                       VALUES (?, ?, ?, ?, ?, ?)
+                       ON DUPLICATE KEY UPDATE 
+                       password = VALUES(password), 
+                       otp = VALUES(otp), 
+                       expires_at = VALUES(expires_at)`;
+        return db.execute(query, [name, email, password, otp, userType, expiresAt]);
+    }
+
+    // Find temporary user by email
+    static findTemporaryUserByEmail(email) {
+        const query = `SELECT * FROM temporary_users WHERE email = ? AND expires_at > NOW()`;
+        return db.execute(query, [email]);
+    }
+
+    // Delete temporary user
+    static deleteTemporaryUser(email) {
+        const query = `DELETE FROM temporary_users WHERE email = ?`;
+        return db.execute(query, [email]);
+    }
     static createTrigger()
     {
         const sql=`
@@ -141,25 +163,12 @@ module.exports=class Users
               }
           });
   }
-  static getBookmarks(userId) {
-        // Step 1: Get all bookmarks for the user from the Bookmark table
-        const getBookmarksQuery = `
-            SELECT b.Bookmark_ID, c.Course_ID, c.Course_Name, bm.Material_ID, cm.Material_Type, cm.Material_Description
-            FROM Bookmark b
-            JOIN Course c ON b.Course_ID = c.Course_ID
-            LEFT JOIN Bookmark_Material bm ON b.Bookmark_ID = bm.Bookmark_ID
-            LEFT JOIN Course_Material cm ON bm.Material_ID = cm.Material_ID
-            WHERE b.User_ID = ?
-        `;
-        
-        return db.query(getBookmarksQuery, [userId], (error, results) => {
-            if (error) {
-                console.error('Error while fetching bookmarks:', error);
-            }
+  static async getBookmarks(userId) {
+        const query = `SELECT Course_Code, Course_name, Course_type, Program, Semester_Year, Course_description from Course c JOIN Bookmark b ON c.Course_ID=b.Course_ID where b.User_ID = ? `;
+        const [rows] = await db.execute(query, [userId]);
 
-            // Step 2: Return the results
-            resolve(results);
-        });
+        console.log("Query result (parsed):", rows);
+        return rows;
 }
 };
 (async function defineTrigger() {

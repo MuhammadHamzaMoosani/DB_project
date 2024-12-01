@@ -118,23 +118,24 @@ USE ibacoursearchieve;
 -- (12, 5); -- Dr. Eve
 
 
--- -- -- Course Material
--- -- INSERT INTO Course_Material (Course_ID, Material_type, Material_Description, Material_File, Material_Link, Additional_resources) VALUES
--- -- (1, 'Course_Outline', 'Programming course outline', NULL, 'https://example.com/cs101-outline', NULL),
--- -- (2, 'Lecture Notes', 'Linear Algebra Lecture 1 Notes', NULL, 'https://example.com/math201-lecture1', NULL);
+-- Course Material
+-- INSERT INTO Course_Material (Course_ID, Material_type, Material_Description, Material_File, Material_Link, Additional_resources) VALUES
+-- (1, 'Course_Outline', 'Programming course outline', NULL, 'https://example.com/cs101-outline', NULL),
+-- (2, 'Lecture Notes', 'Linear Algebra Lecture 1 Notes', NULL, 'https://example.com/math201-lecture1', NULL);
 
 -- -- -- Users
 -- -- INSERT INTO Users (User_name, User_email, User_password, User_Type) VALUES
 -- -- ('John Doe', 'john.doe@example.com', 'password123', 'Student'),
 -- -- ('Jane Admin', 'jane.admin@example.com', 'adminpassword', 'Admin');
 
--- -- -- Bookmark
--- -- INSERT INTO Bookmark (User_ID, Course_ID) VALUES
--- -- (1, 1);
+-- Bookmark
+-- INSERT INTO Bookmark (User_ID, Course_ID) VALUES
+-- (7, 1);
 
--- -- -- Bookmark Material
--- -- INSERT INTO Bookmark_Material (Material_ID, Bookmark_ID, Material_Type) VALUES
--- -- (1, 1, 'Course_Outline');
+-- -- Bookmark Material
+-- INSERT INTO Bookmark_Material (Material_ID, Bookmark_ID, Material_Type) VALUES
+-- (1, 1, 'Course_Outline');
+
 -- DROP PROCEDURE IF EXISTS FetchCourseDetails_Instructor;
 
 
@@ -214,3 +215,21 @@ USE ibacoursearchieve;
 --     END IF;
 -- END;
 
+-- CREATE TABLE temporary_users (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     name VARCHAR(255) NOT NULL,
+--     email VARCHAR(255) UNIQUE NOT NULL,
+--     password VARCHAR(255) NOT NULL,
+--     otp VARCHAR(6) NOT NULL,
+--     user_type VARCHAR(50) NOT NULL,
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     expires_at TIMESTAMP
+-- );
+
+-- CREATE TRIGGER logDeletedUsers
+--                     AFTER DELETE ON Users
+--                     For each row
+--                     BEGIN
+--                         INSERT INTO Deleted_Users (User_ID, User_name, User_email, User_password, User_Type, deletedDate)
+--                         values(OLD.User_ID,OLD.User_name,OLD.User_email,OLD.User_password,OLD.User_Type,NOW());
+--                     END;

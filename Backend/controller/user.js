@@ -1,6 +1,8 @@
 const User=require('../models/users')
+const Course=require('../models/courses')
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 const jwt = require('jsonwebtoken'); // Import 'jsonwebtoken' for JWT operations.
 const crypto=require('crypto');
@@ -13,22 +15,47 @@ const createToken = (payload) => {
 };
 
 //Added by Asna
-exports.authenticateToken = (req, res, next) => {
-    const token = req.headers.authorization?.split(" ")[1]; // Extract token from `Authorization` header
+exports.authenticateToken = async (req, res, next) => {
+    const token = req.header("Authorization")?.split(" ")[1]; // Bearer <token>
 
     if (!token) {
-        return res.status(401).json({ success: false, message: "Access denied. No token provided." });
+        return res.status(401).json({ message: "Access denied. No token provided." });
     }
 
     try {
-        const decoded = jwt.verify(token, secretKey); // Verify the token
-        req.user = decoded; // Attach decoded user information to the request object
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        req.user = user; // Attach user data to the request
         next();
     } catch (error) {
-        res.status(403).json({ success: false, message: "Invalid or expired token." });
+        console.error("JWT Authentication error:", error);
+        res.status(403).json({ message: "Invalid token." });
     }
-};
+    // const token = req.headers.authorization?.split(" ")[1]; // Extract token from `Authorization` header
 
+    // if (!token) {
+    //     return res.status(401).json({ success: false, message: "Access denied. No token provided." });
+    // }
+
+    // try {
+    //     const decoded = jwt.verify(token, secretKey); // Verify the token
+    //     req.user = decoded; // Attach decoded user information to the request object
+    //     next();
+    // } catch (error) {
+    //     res.status(403).json({ success: false, message: "Invalid or expired token." });
+    // }
+};
+exports.isAdmin = (req, res, next) => {
+    if (req.user.user_type !== "Admin") {
+        return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+    next();
+};
 // const token = createToken({ userId: 123, email: 'user@example.com' }); // Example payload.
 // console.log('JWT Token:', token); // Print the generated token.
 const sendEmail = async (to, subject, text) => {
@@ -121,7 +148,7 @@ exports.deleteUser=(req,res,next)=>
 }
 exports.loginUser=async (req,res,next)=>
 {
-    const email = req.body.User_email;
+    const email = req.body.email;
     const password = req.body.User_password;
 
     const emailRegex = /^[^@]+@[^@]+\.com$/; //Added by Asna
@@ -167,7 +194,8 @@ exports.loginUser=async (req,res,next)=>
                 res.status(200).json(
                     {
                         success:true,
-                        message:'Logged In'
+                        message:'Logged In',
+                        token
                     })
             }
             else
@@ -292,20 +320,17 @@ exports.logOut=(req,res,next)=>
     }
 exports.signUp=async (req,res,next)=>
     {
-        const email = req.body.User_email;
-        let password = req.body.User_password;
+        const email = req.body.email;
+        let password = req.body.password;
+        const name = req.body.name;
 
         const emailRegex = /^[^@]+@[^@]+\.com$/; //Added by Asna
         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; //Added by Asna
+        console.log(emailRegex.test(email))
         //Added by Asna from here
-        if (emailRegex.test(email)) {
-            console.log("Valid email");
-        } else {
-            return res.status(400).json({
-                success: false,
-                message: 'Invalid email format.',
-            });
-        }
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ success: false, message: 'Invalid email format.' });
+        } 
 
         if (!passwordRegex.test(password)) {
             return res.status(400).json({
@@ -313,11 +338,43 @@ exports.signUp=async (req,res,next)=>
                 message: 'Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.',
             });
         }
+        try {
         //Added by Asna to here
-        password=await hashPassword(password)
-        const name=req.body.User_name;
+        password = await hashPassword(password)
+
+        const otp = generateRandomString(6);
+        const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
         const User_Type='Student'
-        const user=new User(name,email,password,User_Type)
+        
+        // Save user in temporary_users table
+        await User.saveTemporaryUser(name, email, password, otp, User_Type, expiresAt);
+        // Send OTP via email
+        const text = `Your OTP is: ${otp}`;
+        await sendEmail(email, 'Signup OTP Verification', text);
+        
+        res.status(200).json({ success: true, message: 'OTP sent. Please verify to complete signup.' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ success: false, message: 'Signup failed. Try again later.' });
+        }
+};
+exports.verifyOtp = async (req, res, next) => {
+    const { email, otp } = req.body;
+
+    try {
+        // Find temporary user
+        const [rows] = await User.findTemporaryUserByEmail(email);
+        if (rows.length === 0) {
+            return res.status(400).json({ success: false, message: 'Invalid or expired OTP.' });
+        }
+
+        const tempUser = rows[0];
+
+        if (tempUser.otp !== otp) {
+            return res.status(400).json({ success: false, message: 'Incorrect OTP.' });
+        }
+        const user = new User(tempUser.name, tempUser.email, tempUser.password, tempUser.user_type);
+        // Save user to permanent table
         user.save()
         .then(([response])=>
             {
@@ -335,7 +392,51 @@ exports.signUp=async (req,res,next)=>
                         messsage:err
                     })
             })
+
+        // Delete temporary user
+        await User.deleteTemporaryUser(email);
+
+        res.status(200).json({ success: true, message: 'User verified and registered successfully.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'OTP verification failed.' });
     }
+};
+exports.resendOtp = async (req, res, next) => {
+    const { email } = req.body;
+
+    try {
+        // Find temporary user
+        const [rows] = await User.findTemporaryUserByEmail(email);
+        if (rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'No unverified account found with this email.' });
+        }
+
+        const tempUser = rows[0];
+
+        // Generate a new OTP and update the database
+        const newOtp = generateRandomString(6);
+        const newExpiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
+        await User.saveTemporaryUser(
+            tempUser.name,
+            tempUser.email,
+            tempUser.password,
+            newOtp,
+            tempUser.user_type,
+            newExpiresAt
+        );
+
+        // Send the new OTP via email
+        const text = `Your new OTP is: ${newOtp}`;
+        await sendEmail(tempUser.email, 'Resend OTP for Verification', text);
+
+        res.status(200).json({ success: true, message: 'New OTP sent to your email.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to resend OTP. Try again later.' });
+    }
+};
+
     
     //Added by Asna
     exports.addBookmark = async (req, res) => {
@@ -358,11 +459,83 @@ exports.signUp=async (req,res,next)=>
             const userId = req.user.id; // Access user ID from JWT
     
             const bookmarks = await User.getBookmarks(userId); // Model logic to fetch bookmarks
-            
+            console.log("Raw bookmarks:", bookmarks); // Debugging
             res.status(200).json({ success: true, data: bookmarks });
         } catch (error) {
             console.error("Fetch bookmarks error:", error);
             res.status(500).json({ success: false, message: "Error fetching bookmarks." });
         }
+    };
+    
+    exports.createCourse = async (req, res) => {
+        
+            const { Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Outline, Course_Status, School } = req.body;
+            const course = Course({
+                Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Outline, Course_Status, School,
+        });
+            course.save()
+            .then(([response])=>
+                {
+                    res.status(200).json(
+                        {
+                            success:true,
+                            data: course
+                        })
+                })
+            .catch((err)=>
+                {
+                    console.log(err)
+                    res.status(401).json(
+                        {
+                            success:false,
+                            messsage:"Error creating course."
+                        })
+                });
+    };
+
+    exports.deleteCourse = async (req, res) => {
+        try {
+            const { id } = req.params;
+            const course = await Course.findByID(id);
+            if (!course) {
+                return res.status(404).json({ success: false, message: "Course not found." });
+            }
+    
+            await course.delete(id);
+            res.status(200).json({ success: true, message: "Course deleted." });
+        } catch (error) {
+            console.error("Delete course error:", error);
+            res.status(500).json({ success: false, message: "Error deleting course." });
+        }
+    };
+    
+    // Upload a course outline
+    exports.uploadCourseOutline = async (req, res) => {
+        const { course_id } = req.body;
+    const file = req.file;
+    // Check if the file exists
+    if (!file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    const originalFileName = req.file.originalname; // The original name of the uploaded file
+    const fileExtension = path.extname(originalFileName); // Extract file extension (e.g., .pdf, .docx)
+
+    const Material_description = material_description || `${originalFileName}${fileExtension}`;
+     // Call the model function to save file details
+     Course.uploadFile(course_id, file.buffer).then(() => {
+         // Send success response
+         res.status(200).json({ message: 'File uploaded successfully' });
+     })
+     .catch((error) => {
+         console.error('Error uploading file:', error);
+
+         // Handle specific or generic errors
+         if (error.code === 'ER_BAD_FIELD_ERROR') {
+             return res.status(400).json({ message: 'Invalid input or database field mismatch' });
+         }
+
+         res.status(500).json({ message: 'Internal Server Error' });
+     });
     };
     
