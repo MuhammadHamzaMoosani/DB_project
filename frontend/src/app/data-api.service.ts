@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Inject, Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { HelperMethods } from './util/helper';
+import { CookieTokkenService } from './cookie-tokken.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,32 +10,32 @@ import { HelperMethods } from './util/helper';
 export class DataApiService {
   private main_url!:string
   private url!:string
-  constructor(public http:HttpClient) 
+  constructor(public http:HttpClient,private token:CookieTokkenService) 
   {
     this.main_url=HelperMethods.link
   }
   getAll() {
-    // const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
-    return this.http.get<any>(this.url,{withCredentials: true}).pipe(
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
+    return this.http.get<any>(this.url,{headers,withCredentials: true}).pipe(
       catchError(this.handleError)
     );
   }
 
   patch(item:any)
   {
-    // const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
-    return this.http.patch<any>(this.url,item,{withCredentials: true}).pipe(catchError(this.handleError))
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
+    return this.http.patch<any>(this.url,item,{headers,withCredentials: true}).pipe(catchError(this.handleError))
   }
   
   post(item:any)
   {
-    // const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
-      return this.http.post<any>(this.url,item,{withCredentials: true}).pipe(catchError(this.handleError))
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
+      return this.http.post<any>(this.url,item,{headers,withCredentials: true}).pipe(catchError(this.handleError))
     }
     update(item:any)
     {
-      // const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
-    return this.http.put<any>(this.url,item,{withCredentials: true}).pipe(catchError(this.handleError))
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${this.token.getToken()}`);
+    return this.http.put<any>(this.url,item,{headers,withCredentials: true}).pipe(catchError(this.handleError))
   }
   private handleError(error:HttpErrorResponse)
   {

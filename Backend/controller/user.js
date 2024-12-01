@@ -23,6 +23,7 @@ exports.authenticateToken = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, secretKey); // Verify the token
         req.user = decoded; // Attach decoded user information to the request object
+        console.log(req.user)
         next();
     } catch (error) {
         res.status(403).json({ success: false, message: "Invalid or expired token." });
@@ -188,6 +189,13 @@ exports.loginUser=async (req,res,next)=>
                 })
         })
 }
+exports.logInChecker=(req,res,next)=>
+    {
+        res.status(200).json(
+            {
+                success:true,
+            })
+    }
 exports.active_user=(req,res,next)=>{
     const id=req.body.id
     User.getStatus(id).then(([response])=>
@@ -356,9 +364,9 @@ exports.signUp=async (req,res,next)=>
     exports.getBookmarks = async (req, res) => {
         try {
             const userId = req.user.id; // Access user ID from JWT
-    
+            console.log(userId)
             const bookmarks = await User.getBookmarks(userId); // Model logic to fetch bookmarks
-            
+            console.log(bookmarks)
             res.status(200).json({ success: true, data: bookmarks });
         } catch (error) {
             console.error("Fetch bookmarks error:", error);

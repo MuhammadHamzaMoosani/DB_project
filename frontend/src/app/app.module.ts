@@ -34,6 +34,9 @@ import { OtpEnterComponent } from './otp-enter/otp-enter.component';
 import { AlertComponent } from './alert/alert.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
 import { BookmarkComponent } from './bookmark/bookmark.component';
+import { CookieService } from 'ngx-cookie-service';
+import { LoginCheckerComponent } from './login-checker/login-checker.component';
+import { AdminResourceComponent } from './admin-resource/admin-resource.component';
 
 
 @NgModule({
@@ -59,7 +62,9 @@ import { BookmarkComponent } from './bookmark/bookmark.component';
     OtpEnterComponent,
     AlertComponent,
     AdminReportComponent,
-    BookmarkComponent
+    BookmarkComponent,
+    LoginCheckerComponent,
+    AdminResourceComponent
   ],
   imports: [
     BrowserModule,
@@ -95,6 +100,7 @@ import { BookmarkComponent } from './bookmark/bookmark.component';
     provideAnimationsAsync(),
     provideClientHydration(),
     provideHttpClient(),
+    CookieService
   ],
   bootstrap: [AppComponent]
 })
