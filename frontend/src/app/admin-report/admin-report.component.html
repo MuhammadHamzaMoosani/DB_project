@@ -1,1 +1,79 @@
-<p>admin-report works!</p>
+<div *ngIf="!courses" class="loader">
+    <mat-spinner></mat-spinner>
+</div>
+<link rel="stylesheet" href="admin-report.component.css">
+<div class="container" *ngIf="courses">
+    <header class="header">
+      <div class="back-button">
+        <span>&larr;</span>
+      </div>
+      <h1>Reports</h1>
+      <div class="download">
+        <a href="#">&#128190; Download</a>
+      </div>
+    </header>
+
+    <div class="filters">
+        <input type="text" class="search-bar" placeholder="Search for a course report..." />
+
+    </div>
+    <div class="coursename">
+        <h5>Course name</h5>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+        <h2>Views</h2>
+        <p>10</p>
+      </div>
+      <div class="card">
+        <h2>Lecture Notes</h2>
+        <p>20</p>
+      </div>
+      <div class="card">
+        <h2>Assignments</h2>
+        <p>15</p>
+      </div>
+      <div class="card">
+        <h2>Student Notes</h2>
+        <p>10</p>
+      </div>
+      <div class="card">
+        <h2>Examinations</h2>
+        <p>4</p>
+      </div>
+      <div class="card">
+        <h2>Past Projects</h2>
+        <p>9</p>
+      </div>
+    </div>
+    <div class="card" *ngFor="let course of courses; let i = index" (click)="navigate(i)">
+
+    <div class="most-viewed">
+      <h3>Popular Courses</h3>
+        <div class="view-item">
+           <img src="" alt="Cyber Security">
+           <p>Database Management</p>
+        <div class="progress-bar">
+          <div style="width: 80%;"></div>
+        </div>
+        <span>230 views</span>
+      </div>
+      <div class="view-item">
+        <img src="" alt="Cyber Security">
+        <p>Cyber Security</p>
+        <div class="progress-bar">
+          <div style="width: 65%;"></div>
+        </div>
+        <span>190 views</span>
+      </div>
+      <div class="view-item">
+        <img src="" alt="Business Communication">
+        <p>Business Communication</p>
+        <div class="progress-bar">
+          <div style="width: 50%;"></div>
+        </div>
+        <span>150 views</span>
+      </div>
+    </div>
+  </div>
