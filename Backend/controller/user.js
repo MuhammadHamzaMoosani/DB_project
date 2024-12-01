@@ -149,15 +149,17 @@ exports.deleteUser=(req,res,next)=>
 exports.loginUser=async (req,res,next)=>
 {
     const email = req.body.email;
-    const password = req.body.User_password;
-
+    const password = req.body.password;
+    console.log(email)
     const emailRegex = /^[^@]+@[^@]+\.com$/; //Added by Asna
  
     //Added by Asna
     if (!emailRegex.test(email)) {
+
         return res.status(400).json({
             success: false,
             message: 'Invalid email.',
+        
         });
     }
 
@@ -179,23 +181,19 @@ exports.loginUser=async (req,res,next)=>
             {
                 //Added by Asna
                 // Generate JWT token
-                const token = createToken({
-                    id: response[0].User_ID,
-                    email: response[0].User_email,
-                    role: response[0].User_Type,
-                });
+             
 
 
                 let otp=generateRandomString()
                 let text=`The otp is ${otp}`
                 sendEmail(email, 'Otp', text);
-                User.saveCode(response[0].User_ID,otp)
+                code=await User.saveCode(response[0].User_ID,otp)
                 
                 res.status(200).json(
                     {
                         success:true,
                         message:'Logged In',
-                        token
+                        User_Id:response[0].User_ID
                     })
             }
             else
@@ -217,6 +215,13 @@ exports.loginUser=async (req,res,next)=>
                 })
         })
 }
+exports.logInChecker=(req,res,next)=>
+    {
+        res.status(200).json(
+            {
+                success:true,
+            })
+    }
 exports.active_user=(req,res,next)=>{
     const id=req.body.id
     User.getStatus(id).then(([response])=>
@@ -274,17 +279,18 @@ exports.otpCheck=(req,res,next)=>
                         check=await User.deleteCode(id)
                         statusUpdate=await User.setStatus(id,'true')
                         let tokken=createToken({email:response[0].User_email,password:response[0].User_password})
-                        res.cookie('user', tokken, {
-                            httpOnly: true,
-                            secure: true,
-                            sameSite: 'none',
-                            maxAge: 2*60 * 60 * 1000 // 1 day in milliseconds
-                        });
+                        // res.cookie('user', tokken, {
+                        //     httpOnly: true,
+                        //     secure: true,
+                        //     sameSite: 'none',
+                        //     maxAge: 2*60 * 60 * 1000 // 1 day in milliseconds
+                        // });
                         
                         res.status(200).json(
                         {
                             success:true,
-                            message:'Login complete'
+                            message:'Login complete',
+                            jwt:tokken
                         })  
                     }
             })
@@ -457,9 +463,10 @@ exports.resendOtp = async (req, res, next) => {
     exports.getBookmarks = async (req, res) => {
         try {
             const userId = req.user.id; // Access user ID from JWT
-    
+            console.log(userId)
             const bookmarks = await User.getBookmarks(userId); // Model logic to fetch bookmarks
-            console.log("Raw bookmarks:", bookmarks); // Debugging
+
+            console.log(bookmarks)
             res.status(200).json({ success: true, data: bookmarks });
         } catch (error) {
             console.error("Fetch bookmarks error:", error);

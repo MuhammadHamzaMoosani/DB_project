@@ -32,6 +32,12 @@ import { AddCourseComponent } from './add-course/add-course.component';
 import { MatSelectModule } from '@angular/material/select';
 import { OtpEnterComponent } from './otp-enter/otp-enter.component';
 import { AlertComponent } from './alert/alert.component';
+import { AdminReportComponent } from './admin-report/admin-report.component';
+import { BookmarkComponent } from './bookmark/bookmark.component';
+import { CookieService } from 'ngx-cookie-service';
+import { LoginCheckerComponent } from './login-checker/login-checker.component';
+import { AdminResourceComponent } from './admin-resource/admin-resource.component';
+
 
 @NgModule({
   declarations: [
@@ -54,7 +60,11 @@ import { AlertComponent } from './alert/alert.component';
     FooterComponent,
     AddCourseComponent,
     OtpEnterComponent,
-    AlertComponent
+    AlertComponent,
+    AdminReportComponent,
+    BookmarkComponent,
+    LoginCheckerComponent,
+    AdminResourceComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +90,8 @@ import { AlertComponent } from './alert/alert.component';
       {path:'SignIn',component:SignInPageComponent},
       {path:'SignUp',component:SignUpComponent},
       {path:'otp',component:OtpEnterComponent},
+      {path:'bookmark',component:BookmarkComponent},
+
       {path:'admin/addCourse',component:AddCourseComponent},
       { path: '**', component:PagenotfoundComponent },
     ])
@@ -88,6 +100,7 @@ import { AlertComponent } from './alert/alert.component';
     provideAnimationsAsync(),
     provideClientHydration(),
     provideHttpClient(),
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

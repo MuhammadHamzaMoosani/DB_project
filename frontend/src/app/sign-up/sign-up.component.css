@@ -25,7 +25,7 @@ form
 
 .background {
     background: url('/assets/imgs/HomePage/iba_building.jpg');
-    height: 89.2%;
+    height: 90.6%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -153,4 +153,11 @@ mat-spinner
 {
     height: 100%!important;
     width: 100%!important;
+}
+/* This hides the visibility toggle icon for password inputs */
+/* Hide the default Angular Material password toggle button */
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+  display: none;
 }

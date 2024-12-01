@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataApiService } from '../data-api.service';
 import { HelperService } from '../helper.service';
+import { CookieTokkenService } from '../cookie-tokken.service';
 
 @Component({
   selector: 'app-otp-enter',
@@ -14,7 +15,12 @@ export class OtpEnterComponent implements OnInit{
   message:string=''
   success:boolean=false;
   error:boolean=false;
-  constructor(private renderer: Renderer2,private api:DataApiService,private router:Router,private helper:HelperService){}
+  constructor(private renderer: Renderer2,
+    private api:DataApiService,
+    private router:Router,
+    private helper:HelperService,
+    private tokken:CookieTokkenService
+  ){}
   ngOnInit(): void {
     const appRoot = document.querySelector('app-root'); // Select the app-root element
     if (appRoot) {
@@ -63,6 +69,7 @@ export class OtpEnterComponent implements OnInit{
   }
   submit(form: NgForm) 
   {
+    console.log(this.helper.getId())
     let apiObject={'otp':form.value.otp,'id':this.helper.getId()}
     this.api.addUrl('users/otp')
     this.api.post(apiObject).subscribe(
@@ -72,10 +79,12 @@ export class OtpEnterComponent implements OnInit{
           this.error=false
           this.success=true
           this.message=res.message
+          console.log(res.jwt)
+          this.tokken.setToken(res.jwt);
           setTimeout(() => {
   
             this.showAlert=false
-            this.router.navigateByUrl('')
+            // this.router.navigateByUrl('')
           }, 1000);
         },
         error:er=>
