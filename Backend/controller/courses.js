@@ -1,4 +1,7 @@
 const Course=require('../models/courses')
+const path = require('path'); //Added by Asna
+const fs = require('fs'); //Added by Asna
+const mime = require('mime-types'); // To determine MIME type from file extensions
 
 exports.getCourse=(req,res,next)=>
     {
@@ -69,8 +72,12 @@ exports.uploadFileController = (req, res, next) => {
         return res.status(400).json({ message: 'No file uploaded' });
     }
 
+    const originalFileName = req.file.originalname; // The original name of the uploaded file
+    const fileExtension = path.extname(originalFileName); // Extract file extension (e.g., .pdf, .docx)
+
+    const Material_description = material_description || `${originalFileName}${fileExtension}`;
      // Call the model function to save file details
-     Course.uploadFile(course_id, material_type, material_description, file.buffer).then(() => {
+     Course.uploadFile(course_id, material_type, Material_description, file.buffer).then(() => {
          // Send success response
          res.status(200).json({ message: 'File uploaded successfully' });
      })
@@ -127,3 +134,38 @@ exports.getCourseByID = (courseID, res) => {
         res.status(500).json({ message: 'Error fetching course details', error: err.message });
     });
 }
+
+//Added by Asna
+exports.downloadMaterial = async (req, res) => {
+    try {
+        const materialId = req.params.materialId;
+        console.log('Material ID:', req.params.materialId);
+
+        // Fetch material from the database
+        const material = await Course.downloadFile(materialId);
+
+        if (!material || !material.Material_File) {
+            return res.status(404).json({ success: false, message: 'Material not found' });
+        }
+        console.log(material.Material_Description)
+        // Ensure Material_Description exists
+        const fileDescription = material.Material_Description || 'default.txt';
+        const fileBuffer = Buffer.from(material.Material_File, 'binary');
+        const fileExtension = path.extname(fileDescription) || '.bin'; // Default to .bin if no extension
+
+        // Set response headers to force file download
+        res.setHeader(
+            'Content-Disposition',
+            `attachment; filename="${fileDescription}"`
+        );
+        res.setHeader('Content-Type', 'application/pdf');
+        res.end(fileBuffer);
+
+        // Send the binary file
+        //res.send(Buffer.from(material.Material_File));
+    } catch (error) {
+        console.error('Error during file download:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+//Added by Asna

@@ -5,6 +5,7 @@ const Tables=require('./util/createTables')
 const Insert=require('./util/updateCourse')
 const userRoutes = require('./routes/user');
 const courseRoutes = require('./routes/course');
+const uploadRoutes = require('./routes/upload');
 const cors = require('cors'); 
 const cookieParser=require('cookie-parser')
 Tables.createTables()
@@ -34,6 +35,7 @@ app.use(cors({
 app.use(express.json()); 
 app.use('/users',userRoutes);
 app.use('/course',courseRoutes);
+app.use('/upload', uploadRoutes)
 // Catch-all handler for undefined routes
 app.use((req, res) => {
     res.status(404).send('Route not found');

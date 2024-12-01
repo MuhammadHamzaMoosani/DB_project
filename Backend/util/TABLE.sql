@@ -167,6 +167,7 @@ USE ibacoursearchieve;
 --     SET Views = Views + 1 
 --     WHERE Course_ID = input_course_ID;
 -- END;
+
 -- Procedure to View Course Details
 -- CREATE PROCEDURE FetchCourseDetails(IN input_course_ID INT)
 -- BEGIN
@@ -192,4 +193,24 @@ USE ibacoursearchieve;
 --     SET Views = Views + 1 
 --     WHERE Course_ID = input_course_ID; 
 -- END ;
+
+-- DELIMITER //
+-- CREATE PROCEDURE fetchPopularCourses() 
+-- BEGIN
+-- 	SELECT * 
+--     FROM Course 
+--     ORDER BY 
+--     Popularity_Score 
+--     DESC LIMIT 10;
+-- END //
+-- DELIMITER ;
+
+-- CREATE TRIGGER validate_signup BEFORE INSERT ON Users
+-- FOR EACH ROW
+-- BEGIN
+--     IF EXISTS (SELECT 1 FROM Users WHERE User_email = NEW.User_email) THEN
+--         SIGNAL SQLSTATE '45000'
+--         SET MESSAGE_TEXT = 'This email  is already associated with an account.';
+--     END IF;
+-- END;
 

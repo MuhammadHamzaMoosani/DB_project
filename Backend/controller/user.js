@@ -12,6 +12,23 @@ const createToken = (payload) => {
   return jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Create a token with a payload and expiration.
 };
 
+//Added by Asna
+exports.authenticateToken = (req, res, next) => {
+    const token = req.headers.authorization?.split(" ")[1]; // Extract token from `Authorization` header
+
+    if (!token) {
+        return res.status(401).json({ success: false, message: "Access denied. No token provided." });
+    }
+
+    try {
+        const decoded = jwt.verify(token, secretKey); // Verify the token
+        req.user = decoded; // Attach decoded user information to the request object
+        next();
+    } catch (error) {
+        res.status(403).json({ success: false, message: "Invalid or expired token." });
+    }
+};
+
 // const token = createToken({ userId: 123, email: 'user@example.com' }); // Example payload.
 // console.log('JWT Token:', token); // Print the generated token.
 const sendEmail = async (to, subject, text) => {
@@ -104,8 +121,19 @@ exports.deleteUser=(req,res,next)=>
 }
 exports.loginUser=async (req,res,next)=>
 {
-    const email = req.body.email;
-    const password = req.body.password;
+    const email = req.body.User_email;
+    const password = req.body.User_password;
+
+    const emailRegex = /^[^@]+@[^@]+\.com$/; //Added by Asna
+ 
+    //Added by Asna
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid email.',
+        });
+    }
+
     User.findByEmail(email)
     .then(async ([response])=>
         {
@@ -122,6 +150,15 @@ exports.loginUser=async (req,res,next)=>
             checkPassword=await verifyPassword(password,response[0].User_password)
             if(checkPassword)
             {
+                //Added by Asna
+                // Generate JWT token
+                const token = createToken({
+                    id: response[0].User_ID,
+                    email: response[0].User_email,
+                    role: response[0].User_Type,
+                });
+
+
                 let otp=generateRandomString()
                 let text=`The otp is ${otp}`
                 sendEmail(email, 'Otp', text);
@@ -130,7 +167,8 @@ exports.loginUser=async (req,res,next)=>
                 res.status(200).json(
                     {
                         success:true,
-                        message:'Logged In'
+                        message:'Logged In',
+                        token // Send the token to the client //Added by Asna
                     })
             }
             else
@@ -191,8 +229,28 @@ exports.otpCheck=(req,res,next)=>
 
 exports.signUp=async (req,res,next)=>
     {
-        const email = req.body.email;
-        let password = req.body.password;
+        const email = req.body.User_email;
+        let password = req.body.User_password;
+
+        const emailRegex = /^[^@]+@[^@]+\.com$/; //Added by Asna
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; //Added by Asna
+        //Added by Asna from here
+        if (emailRegex.test(email)) {
+            console.log("Valid email");
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid email format.',
+            });
+        }
+
+        if (!passwordRegex.test(password)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.',
+            });
+        }
+        //Added by Asna to here
         password=await hashPassword(password)
         const name=req.body.User_name;
         const User_Type='Student'
@@ -215,4 +273,33 @@ exports.signUp=async (req,res,next)=>
                     })
             })
     }
+    
+    //Added by Asna
+    exports.addBookmark = async (req, res) => {
+        try {
+            const { Course_id, Material_id, Material_type } = req.body;
+            const userId = req.user.id; // Access user ID from JWT
+    
+            await User.addBookmark(userId, Course_id, Material_id, Material_type); 
+    
+            res.status(200).json({ success: true, message: "Course bookmarked successfully." });
+        } catch (error) {
+            console.error("Bookmark error:", error);
+            res.status(500).json({ success: false, message: "Error adding bookmark." });
+        }
+    };
+    
+    //Added by Asna
+    exports.getBookmarks = async (req, res) => {
+        try {
+            const userId = req.user.id; // Access user ID from JWT
+    
+            const bookmarks = await User.getBookmarks(userId); // Model logic to fetch bookmarks
+            
+            res.status(200).json({ success: true, data: bookmarks });
+        } catch (error) {
+            console.error("Fetch bookmarks error:", error);
+            res.status(500).json({ success: false, message: "Error fetching bookmarks." });
+        }
+    };
     

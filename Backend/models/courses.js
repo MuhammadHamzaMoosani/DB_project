@@ -102,7 +102,27 @@ module.exports=class Courses
         const sql = `SELECT * FROM Course WHERE JSON_OVERLAPS(topic_tags, ?)`;
         const [rows] = await db.execute(sql, [tags]);
     }
+    //Added by Asna
+    static async downloadFile(materialId) {
+    const query = `
+        SELECT Material_Description, Material_File
+        FROM Course_Material
+        WHERE Material_ID = ?;
+    `;
 
+    try {
+        const [result] = await db.execute(query, [materialId]);
+
+        if (result.length === 0) {
+            return null; // Material not found
+        }
+
+        return result[0]; // Return the material's binary data and metadata
+    } catch (error) {
+        console.error("Error fetching course material from database:", error);
+        throw new Error("Database query failed.");
+    }
+    }
 };
 (async function defineTrigger() {
     try {

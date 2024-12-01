@@ -79,6 +79,73 @@ module.exports=class Users
         const sql=`CALL FetchCourseDetails(?)`;
         return db.execute(sql, [Course_ID]);
     }
+
+    static addBookmark(userId, courseId, materialId, materialType) {
+    
+          // Step 1: Check if bookmark already exists for this user and course
+          const checkBookmarkQuery = `SELECT Bookmark_ID FROM Bookmark WHERE User_ID = ? AND Course_ID = ?`;
+
+          return db.query(checkBookmarkQuery, [userId, courseId], (error, results) => {
+              if (error) {
+                  console.error('Error while checking for existing bookmark:', error);
+              }
+
+              if (results.length > 0) {
+                  // If bookmark exists, insert into Bookmark_Material
+                  const bookmarkId = results[0].Bookmark_ID;
+                  const insertBookmarkMaterialQuery = `INSERT INTO Bookmark_Material (Material_ID, Bookmark_ID, Material_Type) VALUES (?, ?, ?)`;
+
+                  db.query(insertBookmarkMaterialQuery, [materialId, bookmarkId, materialType], (insertError, insertResults) => {
+                      if (insertError) {
+                          console.error('Error while adding bookmark material:', insertError);
+                      }
+                      resolve(insertResults);
+                  });
+              } else {
+                  // If bookmark doesn't exist, first insert into Bookmark table
+                  const insertBookmarkQuery = `INSERT INTO Bookmark (User_ID, Course_ID) VALUES (?, ?)`;
+
+                  db.query(insertBookmarkQuery, [userId, courseId], (insertError, insertResults) => {
+                      if (insertError) {
+                          console.error('Error while adding bookmark:', insertError);
+                      }
+
+                      const newBookmarkId = insertResults.insertId;
+
+                      // Insert into Bookmark_Material table with the new Bookmark_ID
+                      const insertBookmarkMaterialQuery = `INSERT INTO Bookmark_Material (Material_ID, Bookmark_ID, Material_Type) VALUES (?, ?, ?)`;
+
+                      db.query(insertBookmarkMaterialQuery, [materialId, newBookmarkId, materialType], (insertMaterialError, insertMaterialResults) => {
+                          if (insertMaterialError) {
+                              console.error('Error while adding bookmark material:', insertMaterialError);
+                              return reject(new Error('Failed to add bookmark material'));
+                          }
+                          resolve(insertMaterialResults);
+                      });
+                  });
+              }
+          });
+  }
+  static getBookmarks(userId) {
+        // Step 1: Get all bookmarks for the user from the Bookmark table
+        const getBookmarksQuery = `
+            SELECT b.Bookmark_ID, c.Course_ID, c.Course_Name, bm.Material_ID, cm.Material_Type, cm.Material_Description
+            FROM Bookmark b
+            JOIN Course c ON b.Course_ID = c.Course_ID
+            LEFT JOIN Bookmark_Material bm ON b.Bookmark_ID = bm.Bookmark_ID
+            LEFT JOIN Course_Material cm ON bm.Material_ID = cm.Material_ID
+            WHERE b.User_ID = ?
+        `;
+        
+        return db.query(getBookmarksQuery, [userId], (error, results) => {
+            if (error) {
+                console.error('Error while fetching bookmarks:', error);
+            }
+
+            // Step 2: Return the results
+            resolve(results);
+        });
+}
 };
 (async function defineTrigger() {
     try {
