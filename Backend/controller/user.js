@@ -152,11 +152,7 @@ exports.loginUser=async (req,res,next)=>
             {
                 //Added by Asna
                 // Generate JWT token
-                const token = createToken({
-                    id: response[0].User_ID,
-                    email: response[0].User_email,
-                    role: response[0].User_Type,
-                });
+             
 
 
                 let otp=generateRandomString()
@@ -246,17 +242,18 @@ exports.otpCheck=(req,res,next)=>
                         check=await User.deleteCode(id)
                         statusUpdate=await User.setStatus(id,'true')
                         let tokken=createToken({email:response[0].User_email,password:response[0].User_password})
-                        res.cookie('user', tokken, {
-                            httpOnly: true,
-                            secure: true,
-                            sameSite: 'none',
-                            maxAge: 2*60 * 60 * 1000 // 1 day in milliseconds
-                        });
+                        // res.cookie('user', tokken, {
+                        //     httpOnly: true,
+                        //     secure: true,
+                        //     sameSite: 'none',
+                        //     maxAge: 2*60 * 60 * 1000 // 1 day in milliseconds
+                        // });
                         
                         res.status(200).json(
                         {
                             success:true,
-                            message:'Login complete'
+                            message:'Login complete',
+                            jwt:tokken
                         })  
                     }
             })

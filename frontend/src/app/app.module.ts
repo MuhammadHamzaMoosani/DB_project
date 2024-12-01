@@ -33,6 +33,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { OtpEnterComponent } from './otp-enter/otp-enter.component';
 import { AlertComponent } from './alert/alert.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
+import { BookmarkComponent } from './bookmark/bookmark.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { AdminReportComponent } from './admin-report/admin-report.component';
     AddCourseComponent,
     OtpEnterComponent,
     AlertComponent,
-    AdminReportComponent
+    AdminReportComponent,
+    BookmarkComponent
   ],
   imports: [
     BrowserModule,
@@ -82,6 +84,8 @@ import { AdminReportComponent } from './admin-report/admin-report.component';
       {path:'SignIn',component:SignInPageComponent},
       {path:'SignUp',component:SignUpComponent},
       {path:'otp',component:OtpEnterComponent},
+      {path:'bookmark',component:BookmarkComponent},
+
       {path:'admin/addCourse',component:AddCourseComponent},
       { path: '**', component:PagenotfoundComponent },
     ])
