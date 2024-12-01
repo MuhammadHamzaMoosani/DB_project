@@ -22,6 +22,17 @@
     height: 100%; /* full height of container */
     object-fit: cover; /* ensures the image scales without distortion */
   }
+  .explorecourse{
+    text-align: center;
+   }
+
+  .explorecourse h1{
+    color:black;
+    font-size: 40px;
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+  
+  }
   .overlay-input {
     display: flex;
     position: absolute;
@@ -50,9 +61,9 @@
 .input_field {
   background-color: rgba(255, 255, 255, 0.788);
   width: 80%;
-  height: 30px; /* Set a fixed height for better control */
+  height: 40px; /* Set a fixed height for better control */
   margin-bottom: 10px;
-  border-radius: 15px;
+  border-radius: 0px;
   border: 1px solid #cccccc4f;
   display: flex;
   margin: auto;
@@ -171,11 +182,13 @@ mat-form-field
     background-color: #6d1a24;
     border: 1px solid #0a090980;
     padding: 1vw 2.5vw;
-    border-radius: 8px;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+
     cursor: pointer;
     text-align: center;
     /* width: 100%; */
-    height: 4.5vw;
+    height: 3.5vw;
 }
 /* Set a minimum width for the leading outline */
 ::ng-deep .mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading {
@@ -190,8 +203,8 @@ mat-form-field
 
 /* Set rounded corners for the trailing outline */
 ::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
-  border-top-right-radius: 12px !important;
-  border-bottom-right-radius: 12px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
 }
 
 /* Add padding to the text fields for spacing */
