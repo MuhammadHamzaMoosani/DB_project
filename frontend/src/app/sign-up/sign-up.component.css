@@ -154,3 +154,10 @@ mat-spinner
     height: 100%!important;
     width: 100%!important;
 }
+/* This hides the visibility toggle icon for password inputs */
+/* Hide the default Angular Material password toggle button */
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+  display: none;
+}

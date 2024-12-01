@@ -63,6 +63,7 @@ export class OtpEnterComponent implements OnInit{
   }
   submit(form: NgForm) 
   {
+    console.log(this.helper.getId())
     let apiObject={'otp':form.value.otp,'id':this.helper.getId()}
     this.api.addUrl('users/otp')
     this.api.post(apiObject).subscribe(
@@ -75,7 +76,7 @@ export class OtpEnterComponent implements OnInit{
           setTimeout(() => {
   
             this.showAlert=false
-            this.router.navigateByUrl('')
+            // this.router.navigateByUrl('')
           }, 1000);
         },
         error:er=>

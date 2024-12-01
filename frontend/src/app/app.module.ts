@@ -35,6 +35,7 @@ import { AlertComponent } from './alert/alert.component';
 import { AdminReportComponent } from './admin-report/admin-report.component';
 import { BookmarkComponent } from './bookmark/bookmark.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

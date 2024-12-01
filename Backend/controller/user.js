@@ -121,16 +121,18 @@ exports.deleteUser=(req,res,next)=>
 }
 exports.loginUser=async (req,res,next)=>
 {
-    const email = req.body.User_email;
-    const password = req.body.User_password;
-
+    const email = req.body.email;
+    const password = req.body.password;
+    console.log(email)
     const emailRegex = /^[^@]+@[^@]+\.com$/; //Added by Asna
  
     //Added by Asna
     if (!emailRegex.test(email)) {
+
         return res.status(400).json({
             success: false,
             message: 'Invalid email.',
+        
         });
     }
 
@@ -163,7 +165,8 @@ exports.loginUser=async (req,res,next)=>
                 res.status(200).json(
                     {
                         success:true,
-                        message:'Logged In'
+                        message:'Logged In',
+                        User_Id:response[0].User_ID
                     })
             }
             else
