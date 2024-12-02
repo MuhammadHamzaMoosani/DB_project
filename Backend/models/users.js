@@ -65,6 +65,13 @@ module.exports=class Users
         const values=[email]
         return db.execute(sql,values);
     }
+    static findByID(id)
+    {
+        const sql=`Select * from Users
+                    where User_ID=? `;
+        const values=[id]
+        return db.execute(sql,values);
+    }
     static findByID(email)
     {
         const sql=`Select * from Users
@@ -94,7 +101,13 @@ module.exports=class Users
                        expires_at = VALUES(expires_at)`;
         return db.execute(query, [name, email, password, otp, userType, expiresAt]);
     }
-
+    static getCodeSignUp(id) 
+    {
+      const sql=`Select User_email,User_password,code from temporary_users
+                  where User_ID=?` ;
+        const values=[id]
+        return db.execute(sql,values);
+    }
     // Find temporary user by email
     static findTemporaryUserByEmail(email) {
         const query = `SELECT * FROM temporary_users WHERE email = ? AND expires_at > NOW()`;

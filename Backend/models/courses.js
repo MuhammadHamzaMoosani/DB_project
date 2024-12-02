@@ -29,7 +29,7 @@ module.exports=class Courses
     }
     static async uploadFile(course_id, material_type, material_description, fileBuffer) {
         const sql = `CALL insertCourseMaterial(?,?,?,?)`;
-        const values = [course_id, material_type, material_description, fileBuffer];
+        const values = [course_id, material_type, material_description, fileBuffer, 'Unapproved'];
         return db.execute(sql, values);
     }
     static async uploadOutline(course_id, fileBuffer) {
@@ -46,6 +46,14 @@ module.exports=class Courses
         const sql='SELECT * from Course where Course_ID = ?';
         const values=[`%${courseID}%`]
         return db.execute(sql,values)
+    }
+    static fetchCourseMaterial(id, type) {
+        const sql = `SELECT * from Course_Material WHERE Course_ID=? AND Material_type=?`;
+        const values = [id, type];
+        console.log(values)
+        const c = db.execute(sql, values);
+        console.log(c)
+        return c;
     }
     static find(courseName)
     {

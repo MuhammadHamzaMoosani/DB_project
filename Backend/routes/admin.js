@@ -1,4 +1,5 @@
 const express = require("express");
+const Course = require("../controller/courses");
 const User = require("../controller/user");
 const router = express.Router();
 
@@ -22,14 +23,14 @@ const upload = multer({
 
 router.get('/', User.getUsers);
 router.post('/login', User.loginUser);
-router.post('/otp',User.otpCheck)
-router.post('loginCheck',User.active_user)
-router.post('checkOtpExit',User.checkOtpExit)
-router.post('logOut',User.logOut)
-router.post('/signUp',User.signUp)
-router.delete('/delete',User.deleteUser);
-router.post("/courses", User.authenticateToken, User.isAdmin, User.createCourse);
-router.delete("/courses/:id", User.authenticateToken, User.isAdmin, User.deleteCourse);
-router.post("/courses/:id/outline", upload.single("file"), User.authenticateToken, User.isAdmin, User.uploadCourseOutline);
+router.post('/otp', User.otpCheck)
+router.post('loginCheck', User.active_user)
+router.post('checkOtpExit', User.checkOtpExit)
+router.post('logOut', User.logOut)
+router.post('/signUp', User.signUp)
+router.delete('/delete', User.deleteUser);
+router.post("/courses", User.authenticateToken, User.isAdmin, Course.createCourse);
+router.delete("/courses/:id", User.authenticateToken, User.isAdmin, Course.deleteCourse);
+router.post("/courses/:id/outline", upload.single("file"), User.authenticateToken, User.isAdmin, Course.uploadCourseOutline);
 
 module.exports = router;

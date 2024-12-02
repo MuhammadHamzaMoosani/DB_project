@@ -9,6 +9,7 @@ const crypto=require('crypto');
 const { response } = require('express');
 
 const secretKey = process.env.SECRET_KEY; // A secret key for signing the token (keep it private).
+console.log(secretKey)
 
 const createToken = (payload) => {
   return jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Create a token with a payload and expiration.
@@ -56,6 +57,7 @@ exports.isAdmin = (req, res, next) => {
     }
     next();
 };
+
 // const token = createToken({ userId: 123, email: 'user@example.com' }); // Example payload.
 // console.log('JWT Token:', token); // Print the generated token.
 const sendEmail = async (to, subject, text) => {
@@ -274,8 +276,10 @@ exports.otpCheck=(req,res,next)=>
         const id=req.body.id
         User.getCode(id).then(async ([response])=>
             {
+                console.log(otp)
                 if (otp==response[0].code)
                     {
+                        console.log(otp)
                         check=await User.deleteCode(id)
                         statusUpdate=await User.setStatus(id,'true')
                         let tokken=createToken({email:response[0].User_email,password:response[0].User_password,id:id})
@@ -384,22 +388,6 @@ exports.verifyOtp = async (req, res, next) => {
         const user = new User(tempUser.name, tempUser.email, tempUser.password, tempUser.user_type);
         // Save user to permanent table
         user.save()
-        .then(([response])=>
-            {
-                res.status(200).json(
-                    {
-                        success:true
-                    })
-            })
-        .catch((err)=>
-            {
-                console.log(err)
-                res.status(401).json(
-                    {
-                        success:false,
-                        messsage:err
-                    })
-            })
 
         // Delete temporary user
         await User.deleteTemporaryUser(email);
@@ -476,75 +464,4 @@ exports.resendOtp = async (req, res, next) => {
         }
     };
     
-    exports.createCourse = async (req, res) => {
-        
-            const { Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Outline, Course_Status, School } = req.body;
-            const course = Course({
-                Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Outline, Course_Status, School,
-        });
-            course.save()
-            .then(([response])=>
-                {
-                    res.status(200).json(
-                        {
-                            success:true,
-                            data: course
-                        })
-                })
-            .catch((err)=>
-                {
-                    console.log(err)
-                    res.status(401).json(
-                        {
-                            success:false,
-                            messsage:"Error creating course."
-                        })
-                });
-    };
-
-    exports.deleteCourse = async (req, res) => {
-        try {
-            const { id } = req.params;
-            const course = await Course.findByID(id);
-            if (!course) {
-                return res.status(404).json({ success: false, message: "Course not found." });
-            }
-    
-            await course.delete(id);
-            res.status(200).json({ success: true, message: "Course deleted." });
-        } catch (error) {
-            console.error("Delete course error:", error);
-            res.status(500).json({ success: false, message: "Error deleting course." });
-        }
-    };
-    
-    // Upload a course outline
-    exports.uploadCourseOutline = async (req, res) => {
-        const { course_id } = req.body;
-    const file = req.file;
-    // Check if the file exists
-    if (!file) {
-        return res.status(400).json({ message: 'No file uploaded' });
-    }
-
-    const originalFileName = req.file.originalname; // The original name of the uploaded file
-    const fileExtension = path.extname(originalFileName); // Extract file extension (e.g., .pdf, .docx)
-
-    const Material_description = material_description || `${originalFileName}${fileExtension}`;
-     // Call the model function to save file details
-     Course.uploadFile(course_id, file.buffer).then(() => {
-         // Send success response
-         res.status(200).json({ message: 'File uploaded successfully' });
-     })
-     .catch((error) => {
-         console.error('Error uploading file:', error);
-
-         // Handle specific or generic errors
-         if (error.code === 'ER_BAD_FIELD_ERROR') {
-             return res.status(400).json({ message: 'Invalid input or database field mismatch' });
-         }
-
-         res.status(500).json({ message: 'Internal Server Error' });
-     });
-    };
     

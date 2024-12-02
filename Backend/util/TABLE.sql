@@ -233,3 +233,5 @@ USE ibacoursearchieve;
 --                         INSERT INTO Deleted_Users (User_ID, User_name, User_email, User_password, User_Type, deletedDate)
 --                         values(OLD.User_ID,OLD.User_name,OLD.User_email,OLD.User_password,OLD.User_Type,NOW());
 --                     END;
+
+-- ALTER TABLE Course_Material ADD Column Approved ENUM('Approved', 'Unapproved');

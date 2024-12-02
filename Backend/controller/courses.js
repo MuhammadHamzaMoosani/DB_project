@@ -169,3 +169,99 @@ exports.downloadMaterial = async (req, res) => {
     }
 };
 //Added by Asna
+
+exports.createCourse = async (req, res) => {
+        
+    const { Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Outline, Course_Status, School } = req.body;
+    const course = Course({
+        Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Outline, Course_Status, School,
+});
+    course.save()
+    .then(([response])=>
+        {
+            res.status(200).json(
+                {
+                    success:true,
+                    data: course
+                })
+        })
+    .catch((err)=>
+        {
+            console.log(err)
+            res.status(401).json(
+                {
+                    success:false,
+                    messsage:"Error creating course."
+                })
+        });
+};
+
+exports.deleteCourse = async (req, res) => {
+try {
+    const { id } = req.params;
+    const course = await Course.findByID(id);
+    if (!course) {
+        return res.status(404).json({ success: false, message: "Course not found." });
+    }
+
+    await course.delete(id);
+    res.status(200).json({ success: true, message: "Course deleted." });
+} catch (error) {
+    console.error("Delete course error:", error);
+    res.status(500).json({ success: false, message: "Error deleting course." });
+}
+};
+
+// Upload a course outline
+exports.uploadCourseOutline = async (req, res) => {
+const { course_id } = req.body;
+const file = req.file;
+// Check if the file exists
+if (!file) {
+return res.status(400).json({ message: 'No file uploaded' });
+}
+
+const originalFileName = req.file.originalname; // The original name of the uploaded file
+const fileExtension = path.extname(originalFileName); // Extract file extension (e.g., .pdf, .docx)
+
+const Material_description = material_description || `${originalFileName}${fileExtension}`;
+// Call the model function to save file details
+
+Course.uploadFile(course_id, file.buffer).then(() => {
+ // Send success response
+ res.status(200).json({ message: 'File uploaded successfully' });
+})
+.catch((error) => {
+ console.error('Error uploading file:', error);
+
+ // Handle specific or generic errors
+ if (error.code === 'ER_BAD_FIELD_ERROR') {
+     return res.status(400).json({ message: 'Invalid input or database field mismatch' });
+ }
+
+ res.status(500).json({ message: 'Internal Server Error' });
+});
+};
+
+exports.getMaterialByType = async (req, res) => {
+    try {
+        const id = req.body.id;
+        const type = req.body.type;
+        const materials = await Course.fetchCourseMaterial(id, type);
+        
+        res.status(200).json({
+            success: true,
+            materials,
+        });
+    } 
+    catch (error) {
+        // Handle any errors
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch courses.",
+            error: error.message,
+        });
+    }
+}
+
