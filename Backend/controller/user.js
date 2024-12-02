@@ -474,7 +474,7 @@ exports.resendOtp = async (req, res, next) => {
             const bookmarks = await User.getBookmarks(userId); // Model logic to fetch bookmarks
 
             console.log(bookmarks)
-            res.status(200).json({ success: true, data: bookmarks });
+            res.status(200).json({ success: true, Courses: bookmarks });
         } catch (error) {
             console.error("Fetch bookmarks error:", error);
             res.status(500).json({ success: false, message: "Error fetching bookmarks." });

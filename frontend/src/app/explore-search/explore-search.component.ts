@@ -58,8 +58,11 @@ export class ExploreSearchComponent {
           }
         });
       }
-      console.log('here')
+      else
+      {
+        console.log('here')
         this.search()
+      }
   }
 
   // Filter courses based on the entered name
