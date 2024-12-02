@@ -30,11 +30,11 @@
                     </h4>
                     <mat-icon (click)="openPopUp()">note_add</mat-icon>
             </div>
-            <div class="resource">
+            <div class="resource" *ngFor="let resource of resources;let i = index">
                 <div class="icon_text">
                     <mat-icon>book</mat-icon>
                     <h6>
-                        Lesson 01: Introduction to Databases
+                        {{resource.Material_Description}}
                     </h6>
                 </div>
                 <mat-icon> download     </mat-icon>

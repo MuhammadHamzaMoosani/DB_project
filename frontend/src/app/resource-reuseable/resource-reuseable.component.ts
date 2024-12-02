@@ -2,7 +2,8 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { HelperService } from '../helper.service';
 import { DataApiService } from '../data-api.service';
-
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 @Component({
   selector: 'resource-reuseable',
   templateUrl: './resource-reuseable.component.html',
@@ -17,12 +18,16 @@ close() {
 }
   constructor(private router:Router,private helper:HelperService,private api:DataApiService){}
   course: any;
+  resources: any;
   @Input('title') title!: string;
   @Input('resourceType') resourceType!:string
+  @Input('resourceApi') resourceApi!:string
   @Input('id') id!:number
+  @Input('apiUrl') url!:string  
   courseName:string=''
   popup:boolean=false
   currentUrl: string = '';
+  done:boolean=false
   // bookmarked:boolean=false
   // show:boolean=false
   // id:number=-1
@@ -30,33 +35,39 @@ close() {
   logged:boolean=false
   ngOnInit(): void 
   {
-    this.api.addUrl(`course/${this.id}`)
-    this.api.getAll().subscribe(
-      {
-        next:res=>
-          {
-            console.log(res)
-            this.course=res.data
-            console.log(this.course[0])
-            this.course=this.course[0]
-            console.log(this.course)
-            this.courseName=this.course.Course_name
-            console.log(this.id)
-          },
-        error:er=>
-          {
-            console.log(er)
-            // this.showAlert=true
-            // setTimeout(() => {
-            //   this.showAlert=false
-            //   this.router.navigateByUrl('login')
-            // }, 3000);
-            
-          }
+    this.api.addUrl(`course/${this.id}`);
+    this.api.getAll().pipe(
+      switchMap((res: any) => {
+        console.log(res);
+        this.course = res.data[0];
+        this.courseName = this.course.Course_name;
+        console.log(this.course);
+        console.log(this.id);
+    
+        const apiObject = { id: this.course.Course_ID, type: this.resourceApi };
+        this.api.addUrl(`course/materials`);
+        return this.api.post(apiObject);
+      })
+    ).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.resources=res.materials
+        console.log(this.resources);
+      },
+      error: (err: any) => {
+        console.error(err);
+        // Handle error
+        // this.showAlert = true;
+        // setTimeout(() => {
+        //   this.showAlert = false;
+        //   this.router.navigateByUrl('login');
+        // }, 3000);
       }
-    )
+    });
+
   }
   ngAfterViewInit(): void {
+    
    this.currentUrl=this.helper.getUrl()
     let splitString=this.currentUrl.split('/')
     this.currentUrl=splitString[4]

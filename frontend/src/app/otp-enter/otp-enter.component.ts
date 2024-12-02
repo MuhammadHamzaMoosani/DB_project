@@ -70,7 +70,7 @@ export class OtpEnterComponent implements OnInit{
             this.router.navigateByUrl('SignIn')
           }, 1000);
       }
-      if(this.helper.getId()==1 && this.status=='SignUp')
+      if(this.helper.getEmail()=="" && this.status=='signUp')
         {
             this.showAlert=true
             this.error=true
@@ -83,39 +83,79 @@ export class OtpEnterComponent implements OnInit{
   }
   submit(form: NgForm) 
   {
-    console.log(this.helper.getId())
-    let apiObject={'otp':form.value.otp,'id':this.helper.getId()}
-    this.api.addUrl('users/otp')
-    this.api.post(apiObject).subscribe(
-      { next:res=>
-        {
-          this.showAlert=true
-          this.error=false
-          this.success=true
-          this.message=res.message
-          console.log(res.jwt)
-          this.tokken.setToken(res.jwt);
-          setTimeout(() => {
-  
-            this.showAlert=false
-            this.router.navigateByUrl('/').then(() => {
-              window.location.reload(); // Force page reload
-            });          
-          }, 1000);
-        },
-        error:er=>
-          {
+    if(this.status=='signUp')
+      {
+        let apiObject={'otp':form.value.otp,'email':this.helper.getEmail()}
+        this.api.addUrl('users/signUp/otp')
+        this.api.post(apiObject).subscribe(
+          { next:res=>
+            {
+              this.showAlert=true
+              this.error=false
+              this.success=true
+              this.message=res.message
+              console.log(res.jwt)
+              this.tokken.setToken(res.jwt);
+              setTimeout(() => {
+      
+                this.showAlert=false
+                this.router.navigateByUrl('/').then(() => {
+                  window.location.reload(); // Force page reload
+                });          
+              }, 1000);
+            },
+            error:er=>
+              {
 
-            this.message=er
-            this.success=false
-            this.error=true
+                this.message=er
+                this.success=false
+                this.error=true
+                this.showAlert=true
+                setTimeout(() => {
+                  this.showAlert=false
+                  
+                }, 3000);
+                
+              }
+          })
+      }
+    else
+    {
+
+      console.log(this.helper.getId())
+      let apiObject={'otp':form.value.otp,'id':this.helper.getId()}
+      this.api.addUrl('users/otp')
+      this.api.post(apiObject).subscribe(
+        { next:res=>
+          {
             this.showAlert=true
+            this.error=false
+            this.success=true
+            this.message=res.message
+            console.log(res.jwt)
+            this.tokken.setToken(res.jwt);
             setTimeout(() => {
+    
               this.showAlert=false
+              this.router.navigateByUrl('/').then(() => {
+                window.location.reload(); // Force page reload
+              });          
+            }, 1000);
+          },
+          error:er=>
+            {
+  
+              this.message=er
+              this.success=false
+              this.error=true
+              this.showAlert=true
+              setTimeout(() => {
+                this.showAlert=false
+                
+              }, 3000);
               
-            }, 3000);
-            
-          }
-      })
+            }
+        })
+    }
   }
 }

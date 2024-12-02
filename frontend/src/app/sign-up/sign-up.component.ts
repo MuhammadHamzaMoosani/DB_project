@@ -2,6 +2,7 @@ import { Component, Renderer2 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DataApiService } from '../data-api.service';
 import { Router } from '@angular/router';
+import { HelperService } from '../helper.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,7 +18,7 @@ export class SignUpComponent {
   message:string=''
   success:boolean=false;
   error:boolean=false;
-  constructor(private renderer: Renderer2,private router:Router,private api:DataApiService){}
+  constructor(private renderer: Renderer2,private router:Router,private api:DataApiService,private helper:HelperService){}
   ngOnInit(): void {
     const appRoot = document.querySelector('app-root'); // Select the app-root element
     if (appRoot) {
@@ -40,7 +41,9 @@ export class SignUpComponent {
             this.showAlert=false
             this.spinner=false
             console.log(res.user)
-            this.router.navigateByUrl('')
+            this.helper.setEmail(form.value.email)
+            console.log(this.helper.getEmail())
+            this.router.navigateByUrl('otp/signUp')
           }, 1000);
         },
         error:er=>

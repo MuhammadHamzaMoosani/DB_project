@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class HelperService {
   private current_url:string=''
   private id:number=-1
+  private email:string=''
   constructor() { }
   setUrl(currentUrl:string)
   {
@@ -14,6 +15,14 @@ export class HelperService {
   getUrl()
   {
     return this.current_url
+  }
+  setEmail(email:string)
+  {
+    this.email=email
+  }
+  getEmail()
+  {
+    return this.email
   }
   setId(id:number)
   {

@@ -13,7 +13,7 @@ router.get('/program/:program', (req, res) => {
     const { program } = req.params; // Extract 'id' from the URL parameter
     Course.getCourseByProgram(program, res); // Pass 'id' and 'res' to the controller
 })
-router.get('/materials', Course.getMaterialByType)
+router.post('/materials', Course.getMaterialByType)
 
 // Fet Course by Course_ID
 router.get('/', Course.getCourse);
