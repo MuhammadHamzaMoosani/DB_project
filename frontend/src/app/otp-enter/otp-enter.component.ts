@@ -84,7 +84,9 @@ export class OtpEnterComponent implements OnInit{
           setTimeout(() => {
   
             this.showAlert=false
-            // this.router.navigateByUrl('')
+            this.router.navigateByUrl('/').then(() => {
+              window.location.reload(); // Force page reload
+            });          
           }, 1000);
         },
         error:er=>

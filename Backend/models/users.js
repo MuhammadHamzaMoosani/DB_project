@@ -65,6 +65,13 @@ module.exports=class Users
         const values=[email]
         return db.execute(sql,values);
     }
+    static findByID(email)
+    {
+        const sql=`Select * from Users
+                    where User_ID=? `;
+        const values=[email]
+        return db.execute(sql,values);
+    }
     static fetchAll()
     {
         const sql='SELECT User_ID,User_name,User_email,User_Type from Users';

@@ -17,20 +17,20 @@ const createToken = (payload) => {
 //Added by Asna
 exports.authenticateToken = async (req, res, next) => {
     const token = req.header("Authorization")?.split(" ")[1]; // Bearer <token>
-
+    console.log(token)
     if (!token) {
         return res.status(401).json({ message: "Access denied. No token provided." });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.id);
-
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        console.log(decoded)
+        const user = await User.findByID(decoded.id);
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
 
-        req.user = user; // Attach user data to the request
+        req.user = user[0]; // Attach user data to the request
         next();
     } catch (error) {
         console.error("JWT Authentication error:", error);
@@ -51,7 +51,7 @@ exports.authenticateToken = async (req, res, next) => {
     // }
 };
 exports.isAdmin = (req, res, next) => {
-    if (req.user.user_type !== "Admin") {
+    if (req.user.User_Type !== "Admin") {
         return res.status(403).json({ message: "Access denied. Admins only." });
     }
     next();
@@ -278,7 +278,7 @@ exports.otpCheck=(req,res,next)=>
                     {
                         check=await User.deleteCode(id)
                         statusUpdate=await User.setStatus(id,'true')
-                        let tokken=createToken({email:response[0].User_email,password:response[0].User_password})
+                        let tokken=createToken({email:response[0].User_email,password:response[0].User_password,id:id})
                         // res.cookie('user', tokken, {
                         //     httpOnly: true,
                         //     secure: true,
@@ -306,7 +306,9 @@ exports.otpCheck=(req,res,next)=>
     }
 exports.logOut=(req,res,next)=>
     {
-        let id=req.body.id
+        console.log(req.user);
+        let id=req.user[0].User_ID
+        console.log(id)
         User.setStatus(id,'false').then(([response])=>
             {
                 res.status(200).json(
@@ -448,7 +450,7 @@ exports.resendOtp = async (req, res, next) => {
     exports.addBookmark = async (req, res) => {
         try {
             const { Course_id, Material_id, Material_type } = req.body;
-            const userId = req.user.id; // Access user ID from JWT
+            const userId = req.user.User_ID; // Access user ID from JWT
     
             await User.addBookmark(userId, Course_id, Material_id, Material_type); 
     
@@ -462,7 +464,7 @@ exports.resendOtp = async (req, res, next) => {
     //Added by Asna
     exports.getBookmarks = async (req, res) => {
         try {
-            const userId = req.user.id; // Access user ID from JWT
+            const userId = req.user.User_ID; // Access user ID from JWT
             console.log(userId)
             const bookmarks = await User.getBookmarks(userId); // Model logic to fetch bookmarks
 

@@ -7,7 +7,7 @@
         <div class="title">
             <ul>
                 <li><a [ngClass]="{'active':currentUrl=='/'}" [ngStyle]="{'pointer-events':currentUrl=='/' ? 'none':'auto'}" href="" ><h6>Home</h6></a></li>
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                        
                         <li><a [ngClass]="{'active':currentUrl=='/topics'}" [ngStyle]="{'pointer-events':currentUrl=='/topics' ? 'none':'auto'}" href="Request" ><div class="text_icon"><h6>Topics</h6><mat-icon>arrow_drop_down</mat-icon></div></a>
                         <div class="dropdown-content">
@@ -16,7 +16,7 @@
                             <a href="#">Link 3</a>
                           </div>
                     </li>
-                </div>
+                </div> -->
                 <div class="dropdown">
                        
                     <li><a [ngClass]="{'active':currentUrl=='/program'}" [ngStyle]="{'pointer-events':currentUrl=='/program' ? 'none':'auto'}" href="Request" ><div class="text_icon"><h6>Program</h6><mat-icon>arrow_drop_down</mat-icon></div></a>
@@ -32,7 +32,7 @@
                 </li>
             </div>
                 <li><a [ngClass]="{'active':currentUrl=='/explore'}" [ngStyle]="{'pointer-events':currentUrl=='/explore' ? 'none':'auto'}" href="explore" ><h6>Explore</h6></a></li>
-                <li><a [ngClass]="{'active':currentUrl=='/bookmark'}" [ngStyle]="{'pointer-events':currentUrl=='/bookmark' ? 'none':'auto'}" href="bookmark" ><h6>Bookmarked</h6></a></li>
+                <li *ngIf="login"><a [ngClass]="{'active':currentUrl=='/bookmark'}" [ngStyle]="{'pointer-events':currentUrl=='/bookmark' ? 'none':'auto'}" href="bookmark" ><h6>Bookmarked</h6></a></li>
             </ul>
         </div>
         <div class="nav-item">
@@ -42,8 +42,12 @@
             </ul>
             <ng-template #logged>
                 <ul>
-                    <li><a [ngClass]="{'active':currentUrl=='/profile'}" [ngStyle]="{'pointer-events':currentUrl=='/profile' ? 'none':'auto'}" href="logged/home"  ><h6>Profile</h6></a></li>
-                    <li><a [ngClass]="{'active':currentUrl=='/signOut'}" [ngStyle]="{'pointer-events':currentUrl=='/signOut' ? 'none':'auto'}" href="login" (click)="signOut()"><h6>Sign-Out</h6></a></li>
+                    <!-- <li><a [ngClass]="{'active':currentUrl=='/profile'}" [ngStyle]="{'pointer-events':currentUrl=='/profile' ? 'none':'auto'}" href="logged/home"  ><h6>Profile</h6></a></li> -->
+                    <li> <button class="logOut" mat-icon-button (click)="signOut()">
+                        <!-- <h6>Logout</h6> -->
+                        <mat-icon>logout</mat-icon>
+                      </button>
+                    </li>
                 </ul>
             </ng-template>
         </div>

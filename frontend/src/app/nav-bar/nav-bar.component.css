@@ -35,7 +35,13 @@ nav {
 .title {
     display: flex;
     align-items: center;
-    gap: 5vw;
+    gap: 10vw;
+}
+.logOut
+{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 .title h1 {
     color: white;

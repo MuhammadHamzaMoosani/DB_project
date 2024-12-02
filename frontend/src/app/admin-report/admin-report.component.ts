@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrl: './admin-report.component.css'
 })
 export class AdminReportComponent {
+courses: any;
+navigate(_t41: number) {
+throw new Error('Method not implemented.');
+}
 
 }

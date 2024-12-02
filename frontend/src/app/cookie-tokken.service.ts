@@ -24,6 +24,7 @@ export class CookieTokkenService {
     if (userCookie) {
       const tokenData = JSON.parse(userCookie);
       const jwt = tokenData.jwt; // This extracts the JWT
+      console.log(jwt)
       return jwt ;
     } else {
       console.log("User cookie not found");

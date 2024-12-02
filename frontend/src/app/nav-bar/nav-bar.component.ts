@@ -1,6 +1,8 @@
 import { HelperService } from './../helper.service';
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { DataApiService } from '../data-api.service';
+import { CookieTokkenService } from '../cookie-tokken.service';
 // import { TokenCookieService } from '../tokken-cookie.service';
 // import { DataService } from '../data.service';
 // import { HelperMethods2 } from '../util/helper';
@@ -17,8 +19,9 @@ export class NavBarComponent implements AfterViewInit {
   currentUrl: string = '';
   constructor(
     private router:Router,
-    private helper:HelperService
-    // public data:DataService,
+    private helper:HelperService,
+    private data:DataApiService,
+    private tokken:CookieTokkenService
     // public helper:FormDataService
   )
   {
@@ -43,10 +46,16 @@ export class NavBarComponent implements AfterViewInit {
   }
   signOut()
   {
-    // this.data.addUrl('user/logout')
-    // this.data.getAll().subscribe(res=>
-    //   {
-    //     console.log(res)
-    //   })
+    console.log('here')
+    this.data.addUrl('users/logOut')
+    this.data.getAll().subscribe(res=>
+      {
+        this.tokken.deleteToken();
+        console.log(res)  
+        this.router.navigateByUrl('/').then(() => {
+          window.location.reload(); // Force page reload
+        });
+        
+      })
   }
 }
