@@ -173,11 +173,20 @@ exports.downloadMaterial = async (req, res) => {
 //Added by Asna
 
 exports.createCourse = async (req, res) => {
-        
-    const { Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Outline, Course_Status, School } = req.body;
+    
+    const { Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Status, School } = req.body;
+    const file = req.file;
+    const img = req.img;
+    // Check if the file exists
+    if (!file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+    }
+    const filel = file.buffer;
+    const image = img.buffer;
+    // Call the model function to save file details
     const course = Course({
-        Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Outline, Course_Status, School,
-});
+        Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, filel , Course_Status, image, School
+    });
     course.save()
     .then(([response])=>
         {
@@ -226,7 +235,7 @@ return res.status(400).json({ message: 'No file uploaded' });
 const originalFileName = req.file.originalname; // The original name of the uploaded file
 const fileExtension = path.extname(originalFileName); // Extract file extension (e.g., .pdf, .docx)
 
-const Material_description = material_description || `${originalFileName}${fileExtension}`;
+const Material_description = Material_description || `${originalFileName}${fileExtension}`;
 // Call the model function to save file details
 
 Course.uploadFile(course_id, file.buffer).then(() => {
