@@ -29,7 +29,7 @@ module.exports=class Courses
     }
     static async uploadFile(course_id, material_type, material_description, fileBuffer) {
         const sql = `CALL insertCourseMaterial(?,?,?,?)`;
-        const values = [course_id, material_type, material_description, fileBuffer, 'Unapproved'];
+        const values = [course_id, material_type, material_description, fileBuffer];
         return db.execute(sql, values);
     }
     static async uploadOutline(course_id, fileBuffer) {

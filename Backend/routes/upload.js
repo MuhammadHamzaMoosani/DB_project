@@ -24,7 +24,7 @@ const upload = multer({
 
 
 // Upload course material
-router.post("/", upload.single("file"), User.authenticateToken, Course.uploadFileController);
+router.post("/", upload.single("file"), Course.uploadFileController);
 
 module.exports = upload;
 module.exports = router;

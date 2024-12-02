@@ -12,15 +12,15 @@ const secretKey = process.env.SECRET_KEY; // A secret key for signing the token 
 
 const createToken = (payload) => {
     console.log("Create Token")
-    const t = jwt.sign({payload, User_Type: payload.User_Type}, secretKey, { expiresIn: '1h' });
+    const t = jwt.sign({ User_ID: payload.User_ID, email: payload.email, User_Type: payload.User_Type }, secretKey, { expiresIn: '3h' });
     console.log("t: ", t)
   return t; // Create a token with a payload and expiration.
 };
 
 //Added by Asna
 exports.authenticateToken = async (req, res, next) => {
-    console.log("AuthenticateToken")
     const token = req.header("Authorization")?.split(" ")[1]; // Bearer <token>
+    console.log("Request headers:", req.headers);
     console.log("Token: ", token)
     if (!token) {
         return res.status(401).json({ message: "Access denied. No token provided." });
@@ -28,31 +28,20 @@ exports.authenticateToken = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, secretKey);
-        console.log("Decoded:", decoded)
-        const user = await User.findByEmail(decoded.payload.email);
+        console.log("Decoded:", decoded.email)
+        
+        const user = await User.findByEmail(decoded.email);
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
 
-        req.user = { email:user[0].email, password: user[0].password, User_Type: user[0].User_Type}; // Attach user data to the request
+        req.user = { User_ID: user.User_ID, email: user.email, User_Type: user.User_Type };
+        // { email:user[0].email, password: user[0].password, User_Type: user[0].User_Type}; // Attach user data to the request
         next();
     } catch (error) {
         console.error("JWT Authentication error:", error);
         res.status(403).json({ message: "Invalid token." });
     }
-    // const token = req.headers.authorization?.split(" ")[1]; // Extract token from `Authorization` header
-
-    // if (!token) {
-    //     return res.status(401).json({ success: false, message: "Access denied. No token provided." });
-    // }
-
-    // try {
-    //     const decoded = jwt.verify(token, secretKey); // Verify the token
-    //     req.user = decoded; // Attach decoded user information to the request object
-    //     next();
-    // } catch (error) {
-    //     res.status(403).json({ success: false, message: "Invalid or expired token." });
-    // }
 };
 exports.isAdmin = (req, res, next) => {
     if (req.user.User_Type !== "Admin") {
@@ -476,6 +465,7 @@ exports.resendOtp = async (req, res, next) => {
     
     //Added by Asna
     exports.getBookmarks = async (req, res) => {
+        console.log("Request user data:", req.user);
         try {
             const userId = req.user.User_ID; // Access user ID from JWT
             console.log(userId)

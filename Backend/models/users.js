@@ -58,13 +58,12 @@ module.exports=class Users
         const values=[User_name,User_email,User_password,User_ID]
         return db.execute(sql,values);
     }
-    static findByEmail(email)
+    static async findByEmail(email)
     {
         const sql=`Select * from Users
                     where User_email=? `;
-        const values=[email]
-        const hehe = db.execute(sql,values);
-        return hehe;
+        const [rows] = await db.query(sql, [email]);
+        return rows.length > 0 ? rows[0] : null;
     }
     static fetchAll()
     {
