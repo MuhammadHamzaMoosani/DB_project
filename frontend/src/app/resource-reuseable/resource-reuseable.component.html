@@ -39,7 +39,7 @@
                 No resources available RIGHT NOW
             </div>
             <div class="resource" *ngFor="let resource of resources;let i = index" >
-                <div class="icon_text" (click)="openPDF()">
+                <div class="icon_text" (click)="openPDF(i)">
                     <mat-icon>book</mat-icon>
                     <h6>
                         {{resource.Material_Description}}

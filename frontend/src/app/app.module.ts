@@ -39,6 +39,9 @@ import { LoginCheckerComponent } from './login-checker/login-checker.component';
 import { AdminResourceComponent } from './admin-resource/admin-resource.component';
 import { FetchByProgramComponent } from './fetch-by-program/fetch-by-program.component';
 import { SearchResultComponent } from './search-result/search-result.component';
+import { AdminOtpComponent } from './admin-otp/admin-otp.component';
+import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
+import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,10 @@ import { SearchResultComponent } from './search-result/search-result.component';
     LoginCheckerComponent,
     AdminResourceComponent,
     FetchByProgramComponent,
-    SearchResultComponent
+    SearchResultComponent,
+    AdminOtpComponent,
+    AdminSignInComponent,
+    AdminHomePageComponent
   ],
   imports: [
     BrowserModule,
@@ -96,7 +102,9 @@ import { SearchResultComponent } from './search-result/search-result.component';
       {path:'otp/:status',component:OtpEnterComponent},
       {path:'bookmark',component:BookmarkComponent},
       {path:'program/:program',component:FetchByProgramComponent},
+      {path:'fffeefefe/admin/SignIn',component:AdminSignInComponent},
       {path:'fffeefefe/admin/addCourse',component:AddCourseComponent},
+      {path:'fffeefefe/admin/otp',component:AdminOtpComponent},
       {path:'fffeefefe/admin/report',component:AdminReportComponent},
       { path: '**', component:PagenotfoundComponent },
     ])

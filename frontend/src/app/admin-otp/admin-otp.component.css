@@ -1,0 +1,152 @@
+form
+{
+    padding: 1vw;
+}
+.login
+{
+    padding: 0vw;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+}
+.login-form
+{
+    display: flex;
+    gap: 1vw;
+    flex-direction: column;
+    align-items: center
+}
+.password_button
+{   border: 0;
+    background-color: inherit!important;
+    min-width: 0;
+}
+
+.background {
+    background: url('/assets/imgs/HomePage/iba_building.jpg');
+    height: 89.2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    width: 34vw;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.login-form h2 {
+    margin-bottom: 40px;
+    font-family:'Times New Roman', Times, serif;
+    font-size: 35px;
+}
+
+.input-group {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.checkbox-group input {
+    margin-right: 10px;
+}
+
+.sign-in-btn {
+    background-color: #9b1a1a;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 40%;
+    height: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+
+}
+
+.sign-in-btn:hover {
+    background-color: #b71c1c;
+}
+
+.sign-up {
+    margin-top: 10px;
+}
+
+.sign-up a {
+    color: #e0e0e0;
+    text-decoration: underline;
+}
+mat-label
+{
+    color: #b0b0b0;
+}
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: white!important;
+    caret-color:white!important;
+  }
+  ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input::placeholder {
+    color: white!important;
+    caret-color:white!important;
+  }
+  ::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled)
+  {
+    background-color: inherit!important;
+  }
+::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label
+{
+    color: #b0b0b0 !important;
+}
+
+::ng-deep .mat-mdc-form-field .mdc-text-field {
+    --mdc-filled-text-field-container-color: rgb(252, 21, 21) !important; /* Default bottom border color */
+  }
+  
+  ::ng-deep .mat-mdc-form-field .mdc-text-field {
+    --mdc-filled-text-field-focus-active-indicator-color: #b0b0b0!important; /* Change active bottom border color */
+  }
+ /* Ensure no background or shadow is applied on autofill */
+/* General autofill styling for inputs */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+  /* For Angular Material inputs specifically */
+  ::ng-deep .mat-mdc-form-field input:-webkit-autofill,
+  ::ng-deep .mat-mdc-form-field input:-webkit-autofill:hover,
+  ::ng-deep .mat-mdc-form-field input:-webkit-autofill:focus,
+  ::ng-deep .mat-mdc-form-field input:-webkit-autofill:active
+   {
+    box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5) inset !important;
+    background-color: #fff !important; /* Explicit background color */
+    -webkit-text-fill-color: #fff !important; /* Match input text color */
+  }
+  

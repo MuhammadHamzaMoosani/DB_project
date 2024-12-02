@@ -24,7 +24,6 @@ export class ExploreSearchComponent {
 
   constructor(private api: DataApiService, private route: Router,private renderer:Renderer2) 
   {
-    console.log(this.searchString)
   }
   ngOnInit(): void {
     console.log(this.searchString)
@@ -60,7 +59,6 @@ export class ExploreSearchComponent {
       }
       else
       {
-        console.log('here')
         this.search()
       }
   }
@@ -81,6 +79,10 @@ export class ExploreSearchComponent {
     this.api.addUrl('course/find');
     console.log(this.searchCourse)
     console.log("in api"+this.searchCourse)
+    if(this.searchCourse=="")
+      {
+        this.searchCourse=this.selectedCourseName
+      }
     this.api.post({"courseName":this.searchCourse}).subscribe({
       next: (res) => {
         console.log(res);

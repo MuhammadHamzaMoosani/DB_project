@@ -1,6 +1,7 @@
 const express = require("express");
 const Course = require("../controller/courses");
 const User = require("../controller/user");
+const admin = require("../controller/admin");
 const router = express.Router();
 
 const path = require('path'); //Added by Asna
@@ -22,7 +23,7 @@ const upload = multer({
 });
 
 router.get('/', User.getUsers);
-router.post('/login', User.loginUser);
+router.post('/login',admin.loginUser );
 router.post('/otp', User.otpCheck)
 router.post('loginCheck', User.active_user)
 router.post('checkOtpExit', User.checkOtpExit)

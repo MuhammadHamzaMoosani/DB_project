@@ -109,18 +109,18 @@ close() {
       console.error('PDF URL is not available.');
     }
   }
-  openPDF()
+  openPDF(index:number)
   {
-    if(this.resources[0].Material_File){
-      this.pdfUrl = this.createPdfUrl(this.resources[0].Material_File.data);
+    if(this.resources[index].Material_File){
+      this.pdfUrl = this.createPdfUrl(this.resources[index].Material_File.data);
       window.open(this.pdfUrl, '_blank');
     }
   }
   download(index: number) {
-    if(this.resources[0].Material_File)
-      this.pdfUrl = this.createPdfUrl(this.resources[0].Material_File.data);
+    if(this.resources[index].Material_File)
+      this.pdfUrl = this.createPdfUrl(this.resources[index].Material_File.data);
     console.log(this.pdfUrl)
-    this.downloadPdf(this.resources[0].Material_Description)
+    this.downloadPdf(this.resources[index].Material_Description)
   }
   navigate(url:string)
   {
@@ -166,6 +166,7 @@ close() {
           this.error = false;
           this.success = true;
           this.message = res.message;
+          this.close()
           setTimeout(() => {
             this.showAlert = false;
           }, 1000);

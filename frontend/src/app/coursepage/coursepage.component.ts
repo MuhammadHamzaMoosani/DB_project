@@ -19,6 +19,29 @@ export class CoursepageComponent implements OnInit {
   bookmark()
   {
     this.bookmarked=!this.bookmarked;
+    this.api.addUrl(`course/${this.id}`)
+    this.api.getAll().subscribe(
+      {
+        next:res=>
+          {
+            this.course=res.data
+            this.course=this.course[0]
+            if(this.course.Course_Outline)
+              this.pdfUrl = this.createPdfUrl(this.course.Course_Outline.data);
+
+          },
+        error:er=>
+          {
+            console.log(er)
+            // this.showAlert=true
+            // setTimeout(() => {
+            //   this.showAlert=false
+            //   this.router.navigateByUrl('login')
+            // }, 3000);
+            
+          }
+      }
+    )
   }
   constructor(private api:DataApiService,private router:Router,private route: ActivatedRoute)
   {
@@ -32,14 +55,10 @@ export class CoursepageComponent implements OnInit {
       {
         next:res=>
           {
-            console.log(res)
             this.course=res.data
-            console.log(this.course[0])
             this.course=this.course[0]
-            console.log(this.course)
             if(this.course.Course_Outline)
               this.pdfUrl = this.createPdfUrl(this.course.Course_Outline.data);
-            console.log(this.pdfUrl)
 
           },
         error:er=>
@@ -58,7 +77,6 @@ export class CoursepageComponent implements OnInit {
   logincheck(login: boolean) 
   {
     this.logged=login 
-    console.log(this.logged)
   }
   createPdfUrl(bufferData: number[]): string {
     // Convert buffer array into Uint8Array
