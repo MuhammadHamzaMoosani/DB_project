@@ -4,12 +4,19 @@ import { HelperService } from '../helper.service';
 import { DataApiService } from '../data-api.service';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'resource-reuseable',
   templateUrl: './resource-reuseable.component.html',
   styleUrl: './resource-reuseable.component.css'
 })
 export class ResourceReuseableComponent implements AfterViewInit,OnInit {
+  showAlert=false
+  message:string=''
+  success:boolean=false;
+  error:boolean=false;
+  login: boolean=false;
+
 complete() {
   this.popup=false
 }
@@ -88,12 +95,12 @@ close() {
     // Generate a URL for the Blob
     return URL.createObjectURL(blob);
   }
-  downloadPdf(): void {
+  downloadPdf(material_name:string): void {
     if (this.pdfUrl) {
       // Create an anchor element to simulate the download
       const a = document.createElement('a');
       a.href = this.pdfUrl; // Set the blob URL
-      a.download = 'Course_Outline.pdf'; // Set the file name for the download
+      a.download = `${{material_name}}.pdf`; // Set the file name for the download
       a.click(); // Trigger the download
   
       // Clean up the object URL after download to free memory
@@ -102,12 +109,78 @@ close() {
       console.error('PDF URL is not available.');
     }
   }
+  openPDF()
+  {
+    if(this.resources[0].Material_File){
+      this.pdfUrl = this.createPdfUrl(this.resources[0].Material_File.data);
+      window.open(this.pdfUrl, '_blank');
+    }
+  }
+  download(index: number) {
+    if(this.resources[0].Material_File)
+      this.pdfUrl = this.createPdfUrl(this.resources[0].Material_File.data);
+    console.log(this.pdfUrl)
+    this.downloadPdf(this.resources[0].Material_Description)
+  }
   navigate(url:string)
   {
     this.router.navigateByUrl(`course/${this.courseName}/${this.id}/${url}`)
   }
-  addResource() 
+  logincheck(login: boolean) 
   {
-
+    this.login=login 
+    console.log(login)
   }
+  
+  selectedFile: File | null = null;
+
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0]; // Get the selected file
+      console.log('Selected file:', this.selectedFile);
+    }
+    console.log(input)
+  }
+
+  submit(form: any): void {
+    if (!this.selectedFile) {
+      alert('Please select a file');
+      return;
+    }
+  
+    // Create a FormData object
+    const formData = new FormData();
+    formData.append('material_description', form.value.material_description);
+    formData.append('course_id',this.course.Course_ID);
+    formData.append('material_type', this.resourceApi);
+    formData.append('file', this.selectedFile); // Append the file
+  
+    this.api.addUrl('upload/');
+    console.log(this.selectedFile);
+  
+    this.api.post(formData).subscribe(
+      {
+        next: (res) => {
+          this.showAlert = true;
+          this.error = false;
+          this.success = true;
+          this.message = res.message;
+          setTimeout(() => {
+            this.showAlert = false;
+          }, 1000);
+        },
+        error: (er) => {
+          this.message = er.message || 'Upload failed';
+          this.success = false;
+          this.error = true;
+          this.showAlert = true;
+          setTimeout(() => {
+            this.showAlert = false;
+          }, 3000);
+        },
+      }
+    );
+  }
+  
 }

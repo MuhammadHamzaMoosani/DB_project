@@ -16,9 +16,9 @@ export class ExploreSearchComponent {
   myControl = new FormControl<string | Course>('');
   @Input('title') title!:string
   @Input('apiUrl') apiUrl!:string
-  searchString:boolean=false
+  @Input('searchString') searchString:boolean=false
   selectedCourseName: string = '';
-  searchCourse:string=''
+  @Input('searchCourse') searchCourse:string=''
   // Filtered options observable
   filteredOptions!: Observable<Course[]>;
 
@@ -27,33 +27,39 @@ export class ExploreSearchComponent {
     console.log(this.searchString)
   }
   ngOnInit(): void {
+    console.log(this.searchString)
     // Fetch courses from API
-    this.api.addUrl(this.apiUrl);
-    this.api.getAll().subscribe({
-      next: (res) => {
-        console.log(res);
-        this.courses = res.Courses;
-        console.log(this.courses);
-        if(this.courses.length==0)
-          {
-            const appRoot = document.querySelector('app-root'); // Select the app-root element
-
-            if (appRoot) {
-              this.renderer.setStyle(appRoot, 'height', 'inherit'); // Apply the style
-            }
+    if(!this.searchString)
+      {
+        this.api.addUrl(this.apiUrl);
+        this.api.getAll().subscribe({
+          next: (res) => {
+            console.log(res);
+            this.courses = res.Courses;
+            console.log(this.courses);
+            if(this.courses.length==0)
+              {
+                const appRoot = document.querySelector('app-root'); // Select the app-root element
+    
+                if (appRoot) {
+                  this.renderer.setStyle(appRoot, 'height', 'inherit'); // Apply the style
+                }
+              }
+            // Initialize filtered options
+            this.filteredOptions = this.myControl.valueChanges.pipe(
+              startWith(''),
+              map((value) => (typeof value === 'string' ? value : value?.Course_name || '')),
+              map((name) => (name.trim() ? this.filterCourses(name) : []))
+              // map((name) => this.filterCourses(name))
+            );
+          },
+          error: (err) => {
+            console.error(err);
           }
-        // Initialize filtered options
-        this.filteredOptions = this.myControl.valueChanges.pipe(
-          startWith(''),
-          map((value) => (typeof value === 'string' ? value : value?.Course_name || '')),
-          map((name) => (name.trim() ? this.filterCourses(name) : []))
-          // map((name) => this.filterCourses(name))
-        );
-      },
-      error: (err) => {
-        console.error(err);
+        });
       }
-    });
+      console.log('here')
+        this.search()
   }
 
   // Filter courses based on the entered name

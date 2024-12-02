@@ -55,6 +55,11 @@ export class CoursepageComponent implements OnInit {
       }
     )
   }
+  logincheck(login: boolean) 
+  {
+    this.logged=login 
+    console.log(this.logged)
+  }
   createPdfUrl(bufferData: number[]): string {
     // Convert buffer array into Uint8Array
     const byteArray = new Uint8Array(bufferData);

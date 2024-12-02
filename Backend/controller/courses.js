@@ -65,8 +65,10 @@ exports.getPopularCourses = (req, res, next) => {
 };
 
 exports.uploadFileController = (req, res, next) => {
+    
     const { course_id, material_type, material_description } = req.body;
     const file = req.file;
+    console.log(material_description+","+material_type+","+course_id+"")
     // Check if the file exists
     if (!file) {
         return res.status(400).json({ message: 'No file uploaded' });

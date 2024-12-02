@@ -61,11 +61,9 @@ module.exports=class Users
     static findByID(id)
     {
         const sql=`Select * from Users
-                    where User_email=? `;
+                    where User_ID=? `;
         const values=[id]
-        const hehe = db.execute(sql,values);
-        console.log("hehe", hehe)
-        return hehe;
+        return db.execute(sql,values);
     }
     static async findByEmail(email)
     {

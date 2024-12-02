@@ -38,7 +38,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { LoginCheckerComponent } from './login-checker/login-checker.component';
 import { AdminResourceComponent } from './admin-resource/admin-resource.component';
 import { FetchByProgramComponent } from './fetch-by-program/fetch-by-program.component';
-
+import { SearchResultComponent } from './search-result/search-result.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +66,8 @@ import { FetchByProgramComponent } from './fetch-by-program/fetch-by-program.com
     BookmarkComponent,
     LoginCheckerComponent,
     AdminResourceComponent,
-    FetchByProgramComponent
+    FetchByProgramComponent,
+    SearchResultComponent
   ],
   imports: [
     BrowserModule,
@@ -89,12 +90,14 @@ import { FetchByProgramComponent } from './fetch-by-program/fetch-by-program.com
       {path:'course/:course/:id/PastProjects',component:PastProjectComponent},
       {path:'course/:course/:id/Examinations',component:ExamComponent},
       {path:'explore',component:ExploreComponent},
+      {path:'result/:courseName',component:SearchResultComponent},
       {path:'SignIn',component:SignInPageComponent},
       {path:'SignUp',component:SignUpComponent},
       {path:'otp/:status',component:OtpEnterComponent},
       {path:'bookmark',component:BookmarkComponent},
       {path:'program/:program',component:FetchByProgramComponent},
-      {path:'admin/addCourse',component:AddCourseComponent},
+      {path:'fffeefefe/admin/addCourse',component:AddCourseComponent},
+      {path:'fffeefefe/admin/report',component:AdminReportComponent},
       { path: '**', component:PagenotfoundComponent },
     ])
   ],

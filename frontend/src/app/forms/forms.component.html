@@ -29,6 +29,13 @@
                     <textarea  matInput ngModel name="{{element.name}}" placeholder="{{element.placeholder}}" ></textarea>
                 </mat-form-field>
             </ng-container>
+            <ng-container *ngIf="element.type === 'fileUpload'">
+            <label for="lecture-file">Upload File:</label>
+            <input type="file" 
+            (change)="onFileChange($event)" 
+            id="lecture-file" 
+            required >
+            </ng-container>
         </div>
     </div>
     <button class="createButton">Submit</button>

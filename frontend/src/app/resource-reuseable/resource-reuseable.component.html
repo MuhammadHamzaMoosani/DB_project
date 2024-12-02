@@ -1,3 +1,5 @@
+<login-checker (userLoggedIn)="logincheck($event)" [nav_bar]="true"></login-checker>
+<alert [showAlert]="showAlert" [success]="success" [error]="error" [message]="message" ></alert>
 <div *ngIf="!course" class="loader">
     <mat-spinner></mat-spinner>
   </div>
@@ -28,16 +30,22 @@
                     <h4>
                         {{title}}
                     </h4>
-                    <mat-icon (click)="openPopUp()">note_add</mat-icon>
+                    <mat-icon (click)="openPopUp()" *ngIf="login">note_add</mat-icon>
             </div>
-            <div class="resource" *ngFor="let resource of resources;let i = index">
-                <div class="icon_text">
+            <div *ngIf="!resources" class="loader">
+                <mat-spinner></mat-spinner>
+              </div>
+            <div *ngIf="resources.length==0">
+                No resources available RIGHT NOW
+            </div>
+            <div class="resource" *ngFor="let resource of resources;let i = index" >
+                <div class="icon_text" (click)="openPDF()">
                     <mat-icon>book</mat-icon>
                     <h6>
                         {{resource.Material_Description}}
                     </h6>
                 </div>
-                <mat-icon> download     </mat-icon>
+                <mat-icon (click)="download(i)"> download     </mat-icon>
             </div>
         </div>
     </div>
@@ -51,12 +59,15 @@
             </mat-icon>
             <h3>Add New {{resourceType}}</h3>
         </div>
-        <form>
+        <form #f="ngForm"  (ngSubmit)="submit(f)">
             <label for="lecture-title">{{resourceType}} Title:</label>
-            <input type="text" id="lecture-title" placeholder="Enter lecture title" required>
+            <input type="text" ngModel name="material_description" id="lecture-title" placeholder="Enter lecture title" required>
             <label for="lecture-file">Upload File:</label>
-            <input type="file" id="lecture-file" required>
-            <button type="submit" class="submit-btn" (click)="complete()">Add Lecture</button>
+            <input type="file" 
+            (change)="onFileChange($event)" 
+            id="lecture-file" 
+            required >
+            <button type="submit" class="submit-btn" >Add Lecture</button>
         </form>
     </div>
     

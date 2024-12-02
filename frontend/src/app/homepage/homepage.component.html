@@ -7,9 +7,9 @@
         <div class="overlay-input">
             <p class="overlay-text">"Access free lecture notes, exams, past resources, and videos from IBA courses. Discover in-depth material across various subjects, guided by expert instructors." </p>
             <div class="input-group">
-                <input type="text" placeholder="Enter text here" class="input_field">
+                <input type="text" [(ngModel)]="searchText"  placeholder="Enter text here" class="input_field" (keydown.enter)="search()">
                 <mat-icon class="menu">menu</mat-icon>
-                <mat-icon class="search">search</mat-icon>
+                <mat-icon class="search" (click)="search()" >search</mat-icon>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
-type tags='input'|'select'|'checkbox' |'textarea'
-type input_types='text'|'password'|'email'|'number'|'date'|'file'|'radio'|'submit'|'reset'|'button'|'hidden'
+type tags='input'|'select'|'checkbox' |'textarea'| 'fileUpload'
+type input_types='text'|'password'|'email'|'number'|'date'|'file'|'radio'|'submit'|'reset'|'button'|'hidden'| 'fileUpload'
 export interface FormElement{
     label:string
     type:tags

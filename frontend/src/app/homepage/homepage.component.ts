@@ -14,7 +14,7 @@ export class HomepageComponent implements OnInit {
   searchIndex:number=-1
   courses!: Course[] ; // Use the Course interface
   myControl = new FormControl<string | Course>(''); // Adjust typing for the control
-
+  searchText:string=''
   // Filtered options observable
   filteredOptions!: Observable<Course[]>;
 
@@ -56,7 +56,15 @@ export class HomepageComponent implements OnInit {
     this.route.navigateByUrl(`course/${this.courses[i].Course_name}/${this.courses[i].Course_ID}`);
   }
   search(): void {
-    this.route.navigateByUrl(`course/${this.courses[this.searchIndex].Course_name}/${this.courses[this.searchIndex].Course_ID}`);
+    // if(this.searchIndex!=-1)
+    //   {
+    //     this.route.navigateByUrl(`course/${this.courses[this.searchIndex].Course_name}/${this.courses[this.searchIndex].Course_ID}`);
+    //   }
+    // else
+    {
+      this.route.navigateByUrl(`result/${this.searchText}`);
+
+    }
   }
 
   // Display function for mat-autocomplete
@@ -74,4 +82,5 @@ export class HomepageComponent implements OnInit {
   
     // You can now use this index as needed
   }
+  
 }
