@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataApiService } from '../data-api.service';
 import { HelperService } from '../helper.service';
 import { CookieTokkenService } from '../cookie-tokken.service';
@@ -15,13 +15,16 @@ export class OtpEnterComponent implements OnInit{
   message:string=''
   success:boolean=false;
   error:boolean=false;
+  status:string=''
   constructor(private renderer: Renderer2,
     private api:DataApiService,
     private router:Router,
     private helper:HelperService,
-    private tokken:CookieTokkenService
+    private tokken:CookieTokkenService,
+    private route:ActivatedRoute
   ){}
   ngOnInit(): void {
+   this.status= this.route.snapshot.paramMap.get('status')!;
     const appRoot = document.querySelector('app-root'); // Select the app-root element
     if (appRoot) {
       this.renderer.setStyle(appRoot, 'height', 'inherit'); // Apply the style
@@ -56,7 +59,8 @@ export class OtpEnterComponent implements OnInit{
             
     //       }
     //   })
-    if(this.helper.getId()==-1)
+  
+    if(this.helper.getId()==-1 && this.status=='login')
       {
           this.showAlert=true
           this.error=true
@@ -66,6 +70,16 @@ export class OtpEnterComponent implements OnInit{
             this.router.navigateByUrl('SignIn')
           }, 1000);
       }
+      if(this.helper.getId()==1 && this.status=='SignUp')
+        {
+            this.showAlert=true
+            this.error=true
+            this.message="SignUp connection lost"
+            setTimeout(() => {
+              this.showAlert=false
+              this.router.navigateByUrl('SignUp')
+            }, 1000);
+        }
   }
   submit(form: NgForm) 
   {

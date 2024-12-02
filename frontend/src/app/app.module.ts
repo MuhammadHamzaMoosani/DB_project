@@ -37,6 +37,7 @@ import { BookmarkComponent } from './bookmark/bookmark.component';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginCheckerComponent } from './login-checker/login-checker.component';
 import { AdminResourceComponent } from './admin-resource/admin-resource.component';
+import { FetchByProgramComponent } from './fetch-by-program/fetch-by-program.component';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { AdminResourceComponent } from './admin-resource/admin-resource.componen
     AdminReportComponent,
     BookmarkComponent,
     LoginCheckerComponent,
-    AdminResourceComponent
+    AdminResourceComponent,
+    FetchByProgramComponent
   ],
   imports: [
     BrowserModule,
@@ -89,9 +91,9 @@ import { AdminResourceComponent } from './admin-resource/admin-resource.componen
       {path:'explore',component:ExploreComponent},
       {path:'SignIn',component:SignInPageComponent},
       {path:'SignUp',component:SignUpComponent},
-      {path:'otp',component:OtpEnterComponent},
+      {path:'otp/:status',component:OtpEnterComponent},
       {path:'bookmark',component:BookmarkComponent},
-
+      {path:'program/:program',component:FetchByProgramComponent},
       {path:'admin/addCourse',component:AddCourseComponent},
       { path: '**', component:PagenotfoundComponent },
     ])

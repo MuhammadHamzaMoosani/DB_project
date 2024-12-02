@@ -100,7 +100,7 @@ exports.getCourseByProgram = (Program, res) => {
             // Send the course details as response
             res.status(200).json({
                 message: 'Courses by program fetched successfully.',
-                data: rows[0] // Assuming the first row contains the course details
+                Courses: rows[0] // Assuming the first row contains the course details
             });
         } else {
             // If no course is found

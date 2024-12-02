@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Renderer2 } from '@angular/core';
 import { Course } from '../util/interface';
 import { Router } from '@angular/router';
 import { DataApiService } from '../data-api.service';
@@ -13,16 +13,16 @@ import { Observable, startWith, map } from 'rxjs';
 export class ExploreSearchComponent {
   courses!: Course[] ; // Use the Course interface
   searchIndex:number=-1
-  myControl = new FormControl<string | Course>(''); // Adjust typing for the control
+  myControl = new FormControl<string | Course>('');
   @Input('title') title!:string
   @Input('apiUrl') apiUrl!:string
   searchString:boolean=false
   selectedCourseName: string = '';
-
+  searchCourse:string=''
   // Filtered options observable
   filteredOptions!: Observable<Course[]>;
 
-  constructor(private api: DataApiService, private route: Router) 
+  constructor(private api: DataApiService, private route: Router,private renderer:Renderer2) 
   {
     console.log(this.searchString)
   }
@@ -34,7 +34,14 @@ export class ExploreSearchComponent {
         console.log(res);
         this.courses = res.Courses;
         console.log(this.courses);
+        if(this.courses.length==0)
+          {
+            const appRoot = document.querySelector('app-root'); // Select the app-root element
 
+            if (appRoot) {
+              this.renderer.setStyle(appRoot, 'height', 'inherit'); // Apply the style
+            }
+          }
         // Initialize filtered options
         this.filteredOptions = this.myControl.valueChanges.pipe(
           startWith(''),
@@ -63,13 +70,14 @@ export class ExploreSearchComponent {
   }
   search(): void {
     this.api.addUrl('course/find');
-    this.searchString=true
-    this.api.post({"courseName":this.selectedCourseName}).subscribe({
+    console.log(this.searchCourse)
+    console.log("in api"+this.searchCourse)
+    this.api.post({"courseName":this.searchCourse}).subscribe({
       next: (res) => {
         console.log(res);
         this.courses = res.Courses;
         console.log(this.courses);
-
+        this.searchString=true
         // Initialize filtered options
         this.filteredOptions = this.myControl.valueChanges.pipe(
           startWith(''),
@@ -86,12 +94,15 @@ export class ExploreSearchComponent {
   }
 
   // Display function for mat-autocomplete
-  displayFn(course: Course): string {
+  displayFn(course: Course | null): string {
     return course ? course.Course_name : '';
   }
+  
   onOptionSelected(event: any) {
-    this.selectedCourseName = event.option.value.Course_name;
-    console.log(this.selectedCourseName)
+    this.selectedCourseName = event.option.value;
+    console.log(this.selectedCourseName)  
+    this.myControl.setValue(this.selectedCourseName);
+    this.searchCourse = event.option.value.Course_name;
   }
 
   // onOptionSelected(event: any): void {

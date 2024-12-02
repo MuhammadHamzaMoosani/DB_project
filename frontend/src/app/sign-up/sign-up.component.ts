@@ -26,6 +26,7 @@ export class SignUpComponent {
   }
   submit(form: NgForm) 
   {
+    this.api.addUrl('users/signUp')
     this.api.post(form.value).subscribe(
       { next:res=>
         {

@@ -42,7 +42,7 @@ export class SignInPageComponent {
             this.spinner=false
             this.helper.setId(res.User_Id)
             console.log(res.user)
-            this.router.navigateByUrl('otp')
+            this.router.navigateByUrl('otp/login')
           }, 1000);
         },
         error:er=>
