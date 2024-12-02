@@ -28,6 +28,7 @@ router.post('loginCheck', User.active_user)
 router.post('checkOtpExit', User.checkOtpExit)
 router.post('logOut', User.logOut)
 router.post('/signUp', User.signUp)
+router.post('/signUp/otp', User.verifyOtp)
 router.delete('/delete', User.deleteUser);
 router.post("/courses", User.authenticateToken, User.isAdmin, Course.createCourse);
 router.delete("/courses/:id", User.authenticateToken, User.isAdmin, Course.deleteCourse);

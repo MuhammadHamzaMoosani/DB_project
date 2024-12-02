@@ -8,30 +8,33 @@ const jwt = require('jsonwebtoken'); // Import 'jsonwebtoken' for JWT operations
 const crypto=require('crypto');
 const { response } = require('express');
 
-const secretKey = process.env.SECRET_KEY; // A secret key for signing the token (keep it private).
-console.log(secretKey)
+const secretKey = process.env.SECRET_KEY; // A secret key for signing the token (keep it private)
 
 const createToken = (payload) => {
-  return jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Create a token with a payload and expiration.
+    console.log("Create Token")
+    const t = jwt.sign({payload, User_Type: payload.User_Type}, secretKey, { expiresIn: '1h' });
+    console.log("t: ", t)
+  return t; // Create a token with a payload and expiration.
 };
 
 //Added by Asna
 exports.authenticateToken = async (req, res, next) => {
+    console.log("AuthenticateToken")
     const token = req.header("Authorization")?.split(" ")[1]; // Bearer <token>
-    console.log(token)
+    console.log("Token: ", token)
     if (!token) {
         return res.status(401).json({ message: "Access denied. No token provided." });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        console.log(decoded)
-        const user = await User.findByID(decoded.id);
+        const decoded = jwt.verify(token, secretKey);
+        console.log("Decoded:", decoded)
+        const user = await User.findByEmail(decoded.payload.email);
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
 
-        req.user = user[0]; // Attach user data to the request
+        req.user = { email:user[0].email, password: user[0].password, User_Type: user[0].User_Type}; // Attach user data to the request
         next();
     } catch (error) {
         console.error("JWT Authentication error:", error);
@@ -152,8 +155,11 @@ exports.loginUser=async (req,res,next)=>
 {
     const email = req.body.email;
     const password = req.body.password;
+
     console.log(email)
-    const emailRegex = /^[^@]+@[^@]+\.com$/; //Added by Asna
+    console.log(password)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
  
     //Added by Asna
     if (!emailRegex.test(email)) {
@@ -167,25 +173,23 @@ exports.loginUser=async (req,res,next)=>
 
     User.findByEmail(email)
     .then(async ([response])=>
-        {
+        {   console.log("kutta", response)
             if(response.length==0 || response ==undefined) 
                 {
                     res.status(403).json(
                         {
+                            
                             success:true,
-                            message:"Incorrect credentials "
+                            message:"Incorrect credentials hi "
                         })
                     return
                 }
             console.log(response)
             checkPassword=await verifyPassword(password,response[0].User_password)
+            console.log(checkPassword)
             if(checkPassword)
             {
-                //Added by Asna
-                // Generate JWT token
-             
-
-
+                
                 let otp=generateRandomString()
                 let text=`The otp is ${otp}`
                 sendEmail(email, 'Otp', text);
@@ -276,13 +280,13 @@ exports.otpCheck=(req,res,next)=>
         const id=req.body.id
         User.getCode(id).then(async ([response])=>
             {
-                console.log(otp)
                 if (otp==response[0].code)
                     {
                         console.log(otp)
                         check=await User.deleteCode(id)
                         statusUpdate=await User.setStatus(id,'true')
-                        let tokken=createToken({email:response[0].User_email,password:response[0].User_password,id:id})
+                        console.log("Response: ", response[0].User_email, response[0].User_password, response[0].User_Type);
+                        let tokken=createToken({email:response[0].User_email,password:response[0].User_password, User_Type:response[0].User_Type, id:id})
                         // res.cookie('user', tokken, {
                         //     httpOnly: true,
                         //     secure: true,
@@ -336,7 +340,7 @@ exports.signUp=async (req,res,next)=>
         let password = req.body.password;
         const name = req.body.name;
 
-        const emailRegex = /^[^@]+@[^@]+\.com$/; //Added by Asna
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; //Added by Asna
         console.log(emailRegex.test(email))
         //Added by Asna from here
@@ -356,7 +360,7 @@ exports.signUp=async (req,res,next)=>
 
         const otp = generateRandomString(6);
         const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
-        const User_Type='Student'
+        const User_Type = req.body.User_Type || 'Student';
         
         // Save user in temporary_users table
         await User.saveTemporaryUser(name, email, password, otp, User_Type, expiresAt);
@@ -373,30 +377,51 @@ exports.signUp=async (req,res,next)=>
 exports.verifyOtp = async (req, res, next) => {
     const { email, otp } = req.body;
 
-    try {
-        // Find temporary user
-        const [rows] = await User.findTemporaryUserByEmail(email);
-        if (rows.length === 0) {
-            return res.status(400).json({ success: false, message: 'Invalid or expired OTP.' });
-        }
+    User.findTemporaryUserByEmail(email)
+        .then(async ([rows]) => {
+            if (rows.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid or expired OTP.',
+                });
+            }
 
-        const tempUser = rows[0];
+            const tempUser = rows[0];
 
-        if (tempUser.otp !== otp) {
-            return res.status(400).json({ success: false, message: 'Incorrect OTP.' });
-        }
-        const user = new User(tempUser.name, tempUser.email, tempUser.password, tempUser.user_type);
-        // Save user to permanent table
-        user.save()
+            if (otp === tempUser.otp) {
+                // Save user to permanent table
+                const user = new User(tempUser.name, tempUser.email, tempUser.password, tempUser.user_type);
+                await user.save();
 
-        // Delete temporary user
-        await User.deleteTemporaryUser(email);
+                // Delete temporary user
+                await User.deleteTemporaryUser(email);
 
-        res.status(200).json({ success: true, message: 'User verified and registered successfully.' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'OTP verification failed.' });
-    }
+                // Generate JWT
+                const token = jwt.sign(
+                    { email: user.email, user_type: user.user_type },
+                    secretKey, 
+                    { expiresIn: '1h' } 
+                );
+
+                res.status(200).json({
+                    success: true,
+                    message: 'User verified and registered successfully.',
+                    jwt: token,
+                });
+            } else {
+                res.status(400).json({
+                    success: false,
+                    message: 'Incorrect OTP.',
+                });
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({
+                success: false,
+                message: 'OTP verification failed.',
+            });
+        });
 };
 exports.resendOtp = async (req, res, next) => {
     const { email } = req.body;

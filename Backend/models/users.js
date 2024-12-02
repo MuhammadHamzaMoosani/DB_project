@@ -63,21 +63,8 @@ module.exports=class Users
         const sql=`Select * from Users
                     where User_email=? `;
         const values=[email]
-        return db.execute(sql,values);
-    }
-    static findByID(id)
-    {
-        const sql=`Select * from Users
-                    where User_ID=? `;
-        const values=[id]
-        return db.execute(sql,values);
-    }
-    static findByID(email)
-    {
-        const sql=`Select * from Users
-                    where User_ID=? `;
-        const values=[email]
-        return db.execute(sql,values);
+        const hehe = db.execute(sql,values);
+        return hehe;
     }
     static fetchAll()
     {
@@ -203,6 +190,7 @@ module.exports=class Users
       }
     }
   })();
+  
   (async function defineProcedure() {
     try {
       await module.exports.createProcedure();
