@@ -31,7 +31,6 @@ exports.authenticateToken = async (req, res, next) => {
         console.log("Decoded:", decoded.email)
         
         const user = await User.findByEmail(decoded.email);
-        console.log(user)
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
@@ -163,7 +162,7 @@ exports.loginUser=async (req,res,next)=>
     }
 
     User.findByEmail(email)
-    .then(async (response)=>
+    .then(async ([response])=>
         {   
             if(response.length==0 || response ==undefined) 
                 {
@@ -176,7 +175,7 @@ exports.loginUser=async (req,res,next)=>
                     return
                 }
             console.log(response)
-            checkPassword=await verifyPassword(password,response.User_password)
+            checkPassword=await verifyPassword(password,response[0].User_password)
             console.log(checkPassword)
             if(checkPassword)
             {
@@ -184,13 +183,13 @@ exports.loginUser=async (req,res,next)=>
                 let otp=generateRandomString()
                 let text=`The otp is ${otp}`
                 sendEmail(email, 'Otp', text);
-                code=await User.saveCode(response.User_ID,otp)
+                code=await User.saveCode(response[0].User_ID,otp)
                 
                 res.status(200).json(
                     {
                         success:true,
                         message:'Logged In',
-                        User_Id:response.User_ID
+                        User_Id:response[0].User_ID
                     })
             }
             else
@@ -306,7 +305,7 @@ exports.otpCheck=(req,res,next)=>
 exports.logOut=(req,res,next)=>
     {
         console.log(req.user);
-        let id=req.user[0].User_ID
+        let id=req.user.User_ID
         console.log(id)
         User.setStatus(id,'false').then(([response])=>
             {
@@ -453,10 +452,10 @@ exports.resendOtp = async (req, res, next) => {
     //Added by Asna
     exports.addBookmark = async (req, res) => {
         try {
-            const { Course_id, Material_id, Material_type } = req.body;
+            const { Course_id } = req.body;
             const userId = req.user.User_ID; // Access user ID from JWT
     
-            await User.addBookmark(userId, Course_id, Material_id, Material_type); 
+            await User.addBookmark(userId, Course_id); 
     
             res.status(200).json({ success: true, message: "Course bookmarked successfully." });
         } catch (error) {
@@ -467,18 +466,30 @@ exports.resendOtp = async (req, res, next) => {
     
     //Added by Asna
     exports.getBookmarks = async (req, res) => {
-        console.log("Request user data:", req.user);
         try {
             const userId = req.user.User_ID; // Access user ID from JWT
             console.log("BookMark UserID:", userId)
             const bookmarks = await User.getBookmarks(userId); // Model logic to fetch bookmarks
 
             console.log(bookmarks)
-            res.status(200).json({ success: true, Courses: bookmarks });
+            res.status(200).json({ success: true, data: bookmarks });
         } catch (error) {
             console.error("Fetch bookmarks error:", error);
             res.status(500).json({ success: false, message: "Error fetching bookmarks." });
         }
     };
     
-    
+
+    exports.deleteBookmarks = async (req, res) => {
+        const { courseId } = req.params; // Course ID from request params
+    const userId = req.user.User_ID; // User ID from authenticated user
+
+    try {
+        await User.deleteBookmarks(courseId, userId);
+        res.status(200).json({ success: true, message: "Bookmark removed successfully." });
+    } catch (error) {
+        console.error("Error deleting bookmark:", error);
+        res.status(500).json({ success: false, message: "Error deleting bookmark." });
+        
+    }
+};

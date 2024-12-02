@@ -250,7 +250,7 @@ exports.getMaterialByType = async (req, res) => {
         const id = req.body.id;
         const type = req.body.type;
         const materials = await Course.fetchCourseMaterial(id, type);
-        console.log(materials)
+        console.log(materials[0])
         
         res.status(200).json({
             success: true,

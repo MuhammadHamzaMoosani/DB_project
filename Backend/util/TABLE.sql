@@ -130,11 +130,13 @@ USE ibacoursearchieve;
 
 -- Bookmark
 -- INSERT INTO Bookmark (User_ID, Course_ID) VALUES
--- (7, 1);
+-- (13, 6);
 
--- -- Bookmark Material
+-- -- -- Bookmark Material
 -- INSERT INTO Bookmark_Material (Material_ID, Bookmark_ID, Material_Type) VALUES
--- (1, 1, 'Course_Outline');
+-- (6, 5, 'Assignment'),
+-- (7, 5, 'Assignment'),
+-- (8, 5, 'Assignment');
 
 -- DROP PROCEDURE IF EXISTS FetchCourseDetails_Instructor;
 

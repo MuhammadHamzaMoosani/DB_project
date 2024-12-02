@@ -47,10 +47,11 @@ module.exports=class Courses
         const values=[`%${courseID}%`]
         return db.execute(sql,values)
     }
-    static  fetchCourseMaterial(id, type) {
-        const sql = `SELECT * from Course_Material WHERE Course_ID=? AND Material_type=?`;
-        const values = [id, type];
-        console.log(values)
+    static async fetchCourseMaterial(id, type) {
+        const sql = `SELECT * from Course_Material WHERE Course_ID=? AND Material_type=? AND Approved=?`;
+        const ap = "Approved";
+        const values = [id, type, ap];
+        console.log("Values:", values)
         return db.execute(sql, values);
     }
     static find(courseName)
