@@ -31,11 +31,13 @@ exports.authenticateToken = async (req, res, next) => {
         console.log("Decoded:", decoded.email)
         
         const user = await User.findByEmail(decoded.email);
+        console.log(user)
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
 
         req.user = { User_ID: user.User_ID, email: user.email, User_Type: user.User_Type };
+        console.log("Userid:", req.user.User_ID)
         // { email:user[0].email, password: user[0].password, User_Type: user[0].User_Type}; // Attach user data to the request
         next();
     } catch (error) {
@@ -162,7 +164,7 @@ exports.loginUser=async (req,res,next)=>
 
     User.findByEmail(email)
     .then(async ([response])=>
-        {   console.log("kutta", response)
+        {   
             if(response.length==0 || response ==undefined) 
                 {
                     res.status(403).json(
@@ -468,7 +470,7 @@ exports.resendOtp = async (req, res, next) => {
         console.log("Request user data:", req.user);
         try {
             const userId = req.user.User_ID; // Access user ID from JWT
-            console.log(userId)
+            console.log("BookMark UserID:", userId)
             const bookmarks = await User.getBookmarks(userId); // Model logic to fetch bookmarks
 
             console.log(bookmarks)

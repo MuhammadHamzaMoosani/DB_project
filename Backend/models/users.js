@@ -58,12 +58,23 @@ module.exports=class Users
         const values=[User_name,User_email,User_password,User_ID]
         return db.execute(sql,values);
     }
+    static findByID(id)
+    {
+        const sql=`Select * from Users
+                    where User_email=? `;
+        const values=[id]
+        const hehe = db.execute(sql,values);
+        console.log("hehe", hehe)
+        return hehe;
+    }
     static async findByEmail(email)
     {
         const sql=`Select * from Users
                     where User_email=? `;
+        const values=[email];
         const [rows] = await db.query(sql, [email]);
-        return rows.length > 0 ? rows[0] : null;
+        //console.log("findByEmail result:", rows);
+        return rows[0];
     }
     static fetchAll()
     {
