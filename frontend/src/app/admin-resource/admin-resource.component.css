@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(253, 253, 253);
+    margin: 40px;
+    padding: 10px;
+  }
+  
+
+  
+  h1 {
+    font-size: 40px;
+    margin-bottom: 40px;
+    color: #333;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+  }
+  
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .btn {
+    padding: 10px 15px;
+    background-color: #812110;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #812110;
+  }
+  
+  .search-bar {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .resource-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-left:#812110;
+  }
+  
+  .resource-table th, .resource-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #923131;
+    font-size: larger;
+  }
+  
+  .resource-table th {
+    background-color: #812110;
+  }
+  
+  .resource-table .actions {
+    display: flex;
+    gap: 16px;
+    align-items: right;
+  }
+
+  .requests td{
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+    
+  }
+    
+  
+  .icon-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .icon-btn.approve {
+    color: #105320;
+  }
+  
+  .icon-btn.reject {
+    color: #d10317;
+  }
+  
+  .icon-btn.download {
+    color: #032549;
+  }
+  
+  .icon-btn:hover {
+    opacity: 0.8;
+  }
+  
+  #select-all {
+    cursor: pointer;
+  }
+  

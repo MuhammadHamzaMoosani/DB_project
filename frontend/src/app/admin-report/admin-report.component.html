@@ -1,8 +1,5 @@
-<div *ngIf="!courses" class="loader">
-    <mat-spinner></mat-spinner>
-</div>
 <link rel="stylesheet" href="admin-report.component.css">
-<div class="container" *ngIf="courses">
+<div class="container">
     <header class="header">
       <div class="back-button">
         <span>&larr;</span>
@@ -47,9 +44,8 @@
         <p>9</p>
       </div>
     </div>
-    <div class="card" *ngFor="let course of courses; let i = index" (click)="navigate(i)">
-
-    <div class="most-viewed">
+    <div class="card" >
+     <div class="most-viewed">
       <h3>Popular Courses</h3>
         <div class="view-item">
            <img src="" alt="Cyber Security">
@@ -77,3 +73,4 @@
       </div>
     </div>
   </div>
+</div>

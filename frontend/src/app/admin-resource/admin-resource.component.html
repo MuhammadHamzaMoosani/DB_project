@@ -1,1 +1,64 @@
-<p>admin-resource works!</p>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="admin-resource.component.css">
+  <title>Resource approval</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Resource Manager </h1>
+    <div class="toolbar">
+      <button class="btn approve-selected">Approve Selected</button>
+      <input type="text" class="search-bar" placeholder="Search Resources..." />
+    </div>
+    <table class="resource-table">
+      <thead>
+        <tr>
+          <th>
+            <input type="checkbox" id="select-all" />
+          </th>
+          <div class="bar-text">
+            <th>Resource</th>
+            <th>Submitted By</th>
+            <th>Course</th>
+            <th>Actions</th>
+          </div>
+        </tr>
+      </thead>
+      <tbody class="requests">
+        <tr>
+          <td>
+            <input type="checkbox" />
+          </td>
+          <td>
+            Lecture Note 1
+          </td>
+          <td>Hamza moosani</td>
+          <td>Database Management</td>
+          <td class="actions">
+            <button class="icon-btn approve"><span>&#10003;</span></button>
+            <button class="icon-btn reject"><span>&#10005;</span></button>
+            <button class="icon-btn download"><span>&#128190;</span></button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="checkbox" />
+          </td>
+          <td>Assignment 2</td>
+          <td>Asna Farooqi</td>
+          <td>Cyber Security</td>
+          <td class="actions">
+            <button class="icon-btn approve"><span>&#10003;</span></button>
+            <button class="icon-btn reject"><span>&#10005;</span></button>
+            <button class="icon-btn download"><span>&#128190;</span></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
