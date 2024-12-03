@@ -156,7 +156,7 @@ module.exports=class Users
   }
   
   static async getBookmarks(userId) {
-        const query = `SELECT Course_Code, Course_name, Course_type, Program, Semester_Year, Course_description from Course c JOIN Bookmark b ON c.Course_ID=b.Course_ID where b.User_ID = ? `;
+        const query = `SELECT * from Course c JOIN Bookmark b ON c.Course_ID=b.Course_ID where b.User_ID = ? `;
         const rows = await db.execute(query, [userId]);
 
         console.log("Query result (parsed):", rows);
