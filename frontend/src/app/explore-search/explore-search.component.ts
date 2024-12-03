@@ -36,8 +36,9 @@ export class ExploreSearchComponent {
             console.log(res);
             this.courses = res.Courses;
             console.log(this.courses);
-            if(this.courses.length==0)
+            if(this.courses==undefined||this.courses.length==0)
               {
+                console.log('here')
                 const appRoot = document.querySelector('app-root'); // Select the app-root element
     
                 if (appRoot) {

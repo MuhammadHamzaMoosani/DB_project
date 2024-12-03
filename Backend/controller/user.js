@@ -460,9 +460,9 @@ exports.resendOtp = async (req, res, next) => {
         try {
             const { Course_id } = req.body;
             const userId = req.user.User_ID; // Access user ID from JWT
-    
-            await User.addBookmark(userId, Course_id); 
-    
+            console.log(userId)
+            reuslt=await User.addBookmark(userId, Course_id); 
+        console.log(reuslt)
             res.status(200).json({ success: true, message: "Course bookmarked successfully." });
         } catch (error) {
             console.error("Bookmark error:", error);
@@ -477,8 +477,8 @@ exports.resendOtp = async (req, res, next) => {
             console.log("BookMark UserID:", userId)
             const bookmarks = await User.getBookmarks(userId); // Model logic to fetch bookmarks
 
-            console.log(bookmarks)
-            res.status(200).json({ success: true, data: bookmarks });
+            console.log(bookmarks[0])
+            res.status(200).json({ success: true, Courses: bookmarks[0] });
         } catch (error) {
             console.error("Fetch bookmarks error:", error);
             res.status(500).json({ success: false, message: "Error fetching bookmarks." });

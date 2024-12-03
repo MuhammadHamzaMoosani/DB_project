@@ -132,33 +132,33 @@ module.exports=class Users
         return db.execute(sql, [Course_ID]);
     }
 
-    static addBookmark(userId, courseId) {
-    
-          // Step 1: Check if bookmark already exists for this user and course
+    static async addBookmark(userId, courseId) {
+      try {
+          // Check if the bookmark already exists
           const checkBookmarkQuery = `SELECT Bookmark_ID FROM Bookmark WHERE User_ID = ? AND Course_ID = ?`;
-
-          return db.query(checkBookmarkQuery, [userId, courseId], (error, results) => {
-              if (error) {
-                  console.error('Error while checking for existing bookmark:', error);
-              }
-
-              if (results.length > 0) {
-                  // If bookmark exists, insert into Bookmark_Material
-                  const bookmarkId = results[0].Bookmark_ID;
-                  const insertBookmarkMaterialQuery = `INSERT INTO Bookmark (User_ID, Course_ID) VALUES (?, ?)`;
-
-                  db.query(insertBookmarkMaterialQuery, [userId, bookmarkId], (insertError, insertResults) => {
-                      if (insertError) {
-                          console.error('Error while adding bookmark:', insertError);
-                      }
-                      resolve(insertResults);
-                  });
-              }
-          });
+          const [results] = await db.execute(checkBookmarkQuery, [userId, courseId]);
+  
+          if (results.length == 0) {
+              // If bookmark exists, insert into Bookmark_Material
+              const bookmarkId = results[0].Bookmark_ID;
+              const insertBookmarkMaterialQuery = `INSERT INTO Bookmark_Material (User_ID, Bookmark_ID) VALUES (?, ?)`;
+              const [insertResults] = await db.execute(insertBookmarkMaterialQuery, [userId, bookmarkId]);
+  
+              console.log('Bookmark material added successfully:', insertResults);
+              return insertResults;
+          } else {
+              console.log(' existing bookmark found.');
+              return null; // Resolve with null if no bookmark exists
+          }
+      } catch (error) {
+          console.error('Error while adding bookmark:', error);
+          throw error;
+      }
   }
+  
   static async getBookmarks(userId) {
         const query = `SELECT Course_Code, Course_name, Course_type, Program, Semester_Year, Course_description from Course c JOIN Bookmark b ON c.Course_ID=b.Course_ID where b.User_ID = ? `;
-        const [rows] = await db.execute(query, [userId]);
+        const rows = await db.execute(query, [userId]);
 
         console.log("Query result (parsed):", rows);
         return rows;

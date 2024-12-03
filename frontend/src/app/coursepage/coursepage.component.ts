@@ -19,16 +19,12 @@ export class CoursepageComponent implements OnInit {
   bookmark()
   {
     this.bookmarked=!this.bookmarked;
-    this.api.addUrl(`course/${this.id}`)
-    this.api.getAll().subscribe(
+    this.api.addUrl(`users/bookmark`)
+    this.api.post({Course_id:this.id}).subscribe(
       {
         next:res=>
           {
-            this.course=res.data
-            this.course=this.course[0]
-            if(this.course.Course_Outline)
-              this.pdfUrl = this.createPdfUrl(this.course.Course_Outline.data);
-
+           
           },
         error:er=>
           {
