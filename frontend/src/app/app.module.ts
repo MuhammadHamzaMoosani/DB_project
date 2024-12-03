@@ -110,6 +110,7 @@ import { EditCourseComponent } from './edit-course/edit-course.component';
       {path:'fffeefefe/admin/otp',component:AdminOtpComponent},
       {path:'fffeefefe/admin/report',component:AdminReportComponent},
       {path:'fffeefefe/admin/:course/:id',component:EditCourseComponent},
+      {path:'fffeefefe/admin/Resource',component:AdminResourceComponent},
       { path: '**', component:PagenotfoundComponent },
     ])
   ],

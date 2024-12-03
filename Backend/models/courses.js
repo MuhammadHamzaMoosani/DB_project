@@ -57,6 +57,34 @@ module.exports=class Courses
         console.log("Values:", values)
         return db.execute(sql, values);
     }
+    static setApprove(status,id)
+    {
+        const sql=`UPDATE Course_Material
+            set Approved=?
+            where Material_ID=?`
+        const values=[status,id]
+        return db.execute(sql,values)
+
+    }
+    static GetApprove()
+    {
+        const sql = `
+        SELECT 
+                *
+        FROM 
+          Course_Material
+        JOIN 
+          Course 
+        ON 
+          Course_Material.Course_ID = Course.Course_ID
+        WHERE 
+          Course_Material.Approved = 'Unapproved'
+      `;
+      
+      return db.execute(sql);
+      
+
+    }
     static find(courseName)
     {
         const sql='SELECT * from Course where Course_name like ?';

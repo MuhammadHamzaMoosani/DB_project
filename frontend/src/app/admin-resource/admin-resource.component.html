@@ -1,24 +1,18 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="admin-resource.component.css">
-  <title>Resource approval</title>
-</head>
-<body>
-  <div class="container">
+<alert [showAlert]="showAlert" [success]="success" [error]="error" [message]="message" ></alert>
+<div *ngIf="!materials">
+  <mat-spinner></mat-spinner>
+</div>
+  <div class="container" *ngIf="materials">
     <h1>Resource Manager </h1>
     <div class="toolbar">
-      <button class="btn approve-selected">Approve Selected</button>
+      <button class="btn approve-selected" (click)="approve()">Approve Selected</button>
       <input type="text" class="search-bar" placeholder="Search Resources..." />
     </div>
     <table class="resource-table">
       <thead>
         <tr>
           <th>
-            <input type="checkbox" id="select-all" />
+            <input type="checkbox" id="select-all" [(ngModel)]="selectAllChecked" (change)="toggleSelectAll()" />
           </th>
           <div class="bar-text">
             <th>Resource</th>
@@ -28,37 +22,22 @@
           </div>
         </tr>
       </thead>
-      <tbody class="requests">
+      <tbody class="requests" *ngFor="let material of materials;let i = index">
         <tr>
           <td>
-            <input type="checkbox" />
+            <input type="checkbox"  [(ngModel)]="selectedMaterials[i]"/>
           </td>
           <td>
-            Lecture Note 1
+            {{material.Material_Description}}
           </td>
-          <td>Hamza moosani</td>
-          <td>Database Management</td>
+          <td>{{material.Course_name}}</td>
           <td class="actions">
             <button class="icon-btn approve"><span>&#10003;</span></button>
             <button class="icon-btn reject"><span>&#10005;</span></button>
             <button class="icon-btn download"><span>&#128190;</span></button>
           </td>
         </tr>
-        <tr>
-          <td>
-            <input type="checkbox" />
-          </td>
-          <td>Assignment 2</td>
-          <td>Asna Farooqi</td>
-          <td>Cyber Security</td>
-          <td class="actions">
-            <button class="icon-btn approve"><span>&#10003;</span></button>
-            <button class="icon-btn reject"><span>&#10005;</span></button>
-            <button class="icon-btn download"><span>&#128190;</span></button>
-          </td>
-        </tr>
+        
       </tbody>
     </table>
   </div>
-</body>
-</html>

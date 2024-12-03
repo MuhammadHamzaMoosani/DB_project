@@ -44,6 +44,12 @@ exports.authenticateToken = async (req, res, next) => {
         res.status(403).json({ message: "Invalid token." });
     }
 };
+exports.adminChecker = (req, res, next) => {
+    if (req.user.User_Type !== "Admin") {
+        return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+    res.status(200).json({admin:true})
+};
 exports.isAdmin = (req, res, next) => {
     if (req.user.User_Type !== "Admin") {
         return res.status(403).json({ message: "Access denied. Admins only." });

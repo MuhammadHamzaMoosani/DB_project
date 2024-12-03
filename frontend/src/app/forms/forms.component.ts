@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FormElement } from '../util/interface';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,10 +9,11 @@ import { DataApiService } from '../data-api.service';
   templateUrl: './forms.component.html',
   styleUrl: './forms.component.css'
 })
-export class FormsComponent implements OnInit {
+export class FormsComponent implements OnInit,AfterViewInit {
 @Input('formElement') form!:FormElement[]
 @Input('ApiUrl') apiUrl!:string
 @Input('course') course: { [key: string]: any } = {}; // Ensure it's initialized
+@Input('edit') edit:boolean=false
 showAlert=false
 message:string=''
 success:boolean=false;
@@ -22,12 +23,27 @@ constructor(private api:DataApiService,private router:Router)
 {
 
 }
+  ngAfterViewInit(): void {
+    console.log(this.course)
+    this.filePreviewUrl=this.createPdfUrl(this.course['Course_Outline'].data)
+  }
+createPdfUrl(bufferData: number[]): string {
+  // Convert buffer array into Uint8Array
+  const byteArray = new Uint8Array(bufferData);
+
+  // Create a Blob from the binary data
+  const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+  // Generate a URL for the Blob
+  return URL.createObjectURL(blob);
+}
 submit(form: any): void {
   if (!this.selectedFile) {
     alert('Please select a file');
     return;
   }
 
+  
   // Create a FormData object
   const formData = new FormData();
 
@@ -38,6 +54,7 @@ submit(form: any): void {
       formData.append(element.name, fieldValue);
     }
   });
+  
   formData.append('file',this.selectedFile)
   console.log(formData)
 
@@ -69,6 +86,7 @@ submit(form: any): void {
   );
 }
 selectedFile: File | null = null;
+filePreviewUrl: string | null = null;
 
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -80,6 +98,8 @@ selectedFile: File | null = null;
   }
 ngOnInit(): void {
   // this.same_line=this.form.filter(element=>element.same_line)
+ 
+
 }
 
 }

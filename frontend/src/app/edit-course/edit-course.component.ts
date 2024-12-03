@@ -14,6 +14,7 @@ export class EditCourseComponent implements OnInit {
   id: number = -1;
   courseName: string = '';
   pdfUrl: string | null = null;
+  
 
   constructor(private api: DataApiService, private router: Router, private route: ActivatedRoute,private renderer: Renderer2) {
     // Safely parse route parameters
@@ -72,7 +73,7 @@ export class EditCourseComponent implements OnInit {
     {
       label: 'Description',
       type: 'textarea',
-      name: 'Course_Description',
+      name: 'Course_description',
       width: '100%',
       placeholder:'Some Description'
     },
@@ -102,6 +103,18 @@ export class EditCourseComponent implements OnInit {
   ]
   ngOnInit(): void {
     this.renderer.setStyle(document.body, 'background-color', '#f4f4f9');
+    this.course = {
+      Course_name: '',
+      Course_Code: '',
+      Semester_Year: '',
+      Course_type: '',
+      Program: '',
+      Course_Status: '',
+      Course_description: '',
+      Course_image: '',
+      School: '',
+      file: null,
+    };
     this.api.addUrl(`course/${this.id}`);
     this.api.getAll().subscribe({
       next: (res) => {

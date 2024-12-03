@@ -39,7 +39,11 @@
             required 
             
             >
+            <ng-container *ngIf="edit">\
+                <a [href]="filePreviewUrl" target="_blank" rel="noopener noreferrer"></a>
             </ng-container>
+            </ng-container>
+            
         </div>
     </div>
     <button class="createButton">Submit</button>

@@ -23,6 +23,51 @@ exports.getCourse=(req,res,next)=>
                         })
                 })
 }
+exports.setApprove=(req,res,next)=>
+    {
+        let id=req.body.id
+        let status=req.body.status
+        Course.setApprove(status,id).then
+        (
+            ([material])=>
+                {
+                    res.status(200).json({
+                        success: true,
+                        approved:true
+                        // material: material // The rows from the database query
+                    })
+                })
+            .catch(err=>
+                {
+                    console.error(err);
+                    res.status(401).json(
+                        {
+                            success:false,
+                            message:err
+                        })
+                })
+    }
+exports.getUnapproved=(req,res,next)=>
+    {
+        Course.GetApprove().then
+        (
+            ([material])=>
+                {
+                    res.status(200).json({
+                        success: true,
+                        material: material // The rows from the database query
+                    })
+                })
+            .catch(err=>
+                {
+                    console.error(err);
+                    res.status(401).json(
+                        {
+                            success:false,
+                            message:err
+                        })
+                })
+    }
 exports.FindCourse=(req,res,next)=>
 {
     courseName=req.body.courseName
@@ -154,7 +199,7 @@ exports.downloadMaterial = async (req, res) => {
 
 exports.createCourse = async (req, res) => {
     
-    const { Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Status, School,image } = req.body;
+    const { Course_Code, Course_name, Course_type, Program, Semester_Year, Course_description, Course_Status, School,image } = req.body;
     console.log(req.body)
     const file = req.file;
     console.log(req.file)
@@ -165,7 +210,7 @@ exports.createCourse = async (req, res) => {
     const filel = file.buffer;
     // Call the model function to save file details
     const course = new Course(
-        Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, filel , Course_Status, image, School);
+        Course_Code, Course_name, Course_type, Program, Semester_Year, Course_description, filel , Course_Status, image, School);
     course.save()
     .then(([response])=>
         {

@@ -14,8 +14,10 @@ router.post('/sem-year', Course.getCourseBySemYear);
 router.post('/topic', Course.getCourseByTopic);  
 router.post('/materials', Course.getMaterialByType)
 router.post('/delete',Course.deleteCourse)
+router.post('/setApprove',Course.setApprove)
 // Fet Course by Course_ID
 router.get('/', Course.getCourse);
+router.get('/getUnapproved',Course.getUnapproved)
 router.get('/:id', (req, res) => {
     const { id } = req.params; // Extract 'id' from the URL parameter
     Course.getCourseByID(id, res); // Pass 'id' and 'res' to the controller

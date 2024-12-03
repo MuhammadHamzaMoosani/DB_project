@@ -31,6 +31,7 @@ router.post('logOut', User.logOut)
 router.post('/signUp', User.signUp)
 router.post('/signUp/otp', User.verifyOtp)
 router.delete('/delete', User.deleteUser);
+router.get('/userType', User.authenticateToken, User.adminChecker)
 router.post("/courses", User.authenticateToken, User.isAdmin,upload.single('file'), Course.createCourse);
 router.delete("/courses/:id", User.authenticateToken, User.isAdmin, Course.deleteCourse);
 router.post("/courses/:id/outline", upload.single("file"), User.authenticateToken, User.isAdmin, Course.uploadCourseOutline);
