@@ -9,7 +9,7 @@ router.get('/landing', Course.getPopularCourses);
 router.post('/find', Course.FindCourse);
 router.get('/download/:materialId', Course.downloadMaterial);
 
-router.post('/program', Course.getCourseByProgram); 
+router.get('/program/:program', Course.getCourseByProgram); 
 router.post('/sem-year', Course.getCourseBySemYear);
 router.post('/topic', Course.getCourseByTopic);  
 router.post('/materials', Course.getMaterialByType)
