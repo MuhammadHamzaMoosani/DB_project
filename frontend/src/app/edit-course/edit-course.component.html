@@ -1,12 +1,13 @@
+<login-checker (userLoggedIn)="logincheck($event)" [nav_bar]="true"></login-checker>
 <div class="content">
     <div class="header">
-      <h1>ADD COURSE</h1>
+      <h1>Edit COURSE</h1>
       <p class="subheading">Fill in the course details to add a new course to the system.</p>
       <hr class="divider">
     </div>
   
     <div class="form-container">
-      <archieve-forms [formElement]="formElement" [ApiUrl]="'admin/courses'"></archieve-forms>
+      <archieve-forms [formElement]="formElement" [ApiUrl]="'admin/courses'" [course]="course"></archieve-forms>
     </div>
   </div>
 <footer></footer>

@@ -1,4 +1,4 @@
-
+<alert [showAlert]="showAlert" [success]="success" [error]="error" [message]="message" ></alert>
 <form #f="ngForm" (ngSubmit)="submit(f)">
     <div class="formStyle">
         <div class="signup"  *ngFor="let element of form; let i = index" [ngStyle]="{'width':element.width}">
@@ -8,7 +8,7 @@
                     <input
                     matInput
                     type="{{element.input_type}}"
-                    ngModel
+                    [ngModel]="course[element.name]"
                     name="{{ element.name }}"
                     class="input-control"
                     placeholder="{{element.placeholder}}"
@@ -17,8 +17,8 @@
             </ng-container>
             <ng-container *ngIf="element.type === 'select'">
                 <label>{{ element.label }}</label>
-                <mat-form-field appearance="outline">
-                    <mat-select ngModel name="{{element.name}}">
+                <mat-form-field appearance="outline" >
+                    <mat-select ngModel name="{{element.name}}"  [ngModel]="course[element.name]">
                         <mat-option *ngFor="let option of element.options" [value]="option">{{ option }}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -26,7 +26,8 @@
             <ng-container *ngIf="element.type === 'textarea'">
                 <label>{{element.label}}</label>
                 <mat-form-field appearance="outline">
-                    <textarea  matInput ngModel name="{{element.name}}" placeholder="{{element.placeholder}}" ></textarea>
+                   
+                    <textarea   matInput ngModel name="{{element.name}}" [ngModel]="course[element.name]" placeholder="{{element.placeholder}}" ></textarea>
                 </mat-form-field>
             </ng-container>
             <ng-container *ngIf="element.type === 'fileUpload'">
@@ -34,7 +35,10 @@
             <input type="file" 
             (change)="onFileChange($event)" 
             id="lecture-file" 
-            required >
+            class="file"
+            required 
+            
+            >
             </ng-container>
         </div>
     </div>

@@ -162,7 +162,7 @@ exports.loginUser=async (req,res,next)=>
     }
 
     User.findByEmail(email)
-    .then(async ([response])=>
+    .then(async (response)=>
         {   
             if(response.length==0 || response ==undefined) 
                 {
@@ -175,7 +175,7 @@ exports.loginUser=async (req,res,next)=>
                     return
                 }
             console.log(response)
-            checkPassword=await verifyPassword(password,response[0].User_password)
+            checkPassword=await verifyPassword(password,response.User_password)
             console.log(checkPassword)
             if(checkPassword)
             {
@@ -183,13 +183,13 @@ exports.loginUser=async (req,res,next)=>
                 let otp=generateRandomString()
                 let text=`The otp is ${otp}`
                 sendEmail(email, 'Otp', text);
-                code=await User.saveCode(response[0].User_ID,otp)
+                code=await User.saveCode(response.User_ID,otp)
                 
                 res.status(200).json(
                     {
                         success:true,
                         message:'Logged In',
-                        User_Id:response[0].User_ID
+                        User_Id:response.User_ID
                     })
             }
             else

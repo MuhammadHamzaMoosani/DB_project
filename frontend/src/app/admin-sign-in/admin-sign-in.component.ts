@@ -48,7 +48,7 @@ export class AdminSignInComponent {
             this.spinner=false
             this.helper.setId(res.User_Id)
             console.log(res.user)
-            // this.router.navigateByUrl('fffeefefe/admin/otp')
+            this.router.navigateByUrl('fffeefefe/admin/homepage')
           }, 1000);
         },
         error:er=>

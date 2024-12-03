@@ -154,25 +154,25 @@ exports.downloadMaterial = async (req, res) => {
 
 exports.createCourse = async (req, res) => {
     
-    const { Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Status, School } = req.body;
+    const { Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, Course_Status, School,image } = req.body;
+    console.log(req.body)
     const file = req.file;
-    const img = req.img;
+    console.log(req.file)
     // Check if the file exists
     if (!file) {
     return res.status(400).json({ message: 'No file uploaded' });
     }
     const filel = file.buffer;
-    const image = img.buffer;
     // Call the model function to save file details
-    const course = Course({
-        Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, filel , Course_Status, image, School
-    });
+    const course = new Course(
+        Course_Code, Course_name, Course_type, Program, Semester_Year, Course_Description, filel , Course_Status, image, School);
     course.save()
     .then(([response])=>
         {
             res.status(200).json(
                 {
                     success:true,
+                    message:"Course Added",
                     data: course
                 })
         })

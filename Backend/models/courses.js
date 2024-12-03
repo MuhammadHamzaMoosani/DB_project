@@ -9,12 +9,14 @@ module.exports=class Courses
 {
     constructor(Course_Code,Course_name,Course_type,Program,Semester_year,Course_description,Course_Outline,Course_Status, Course_image, School)
     {
+        console.log(Course_description)
         this.Course_Code=Course_Code;
         this.Course_name=Course_name;
         this.Course_type=Course_type;
         this.Program=Program;
         this.Semester_year=Semester_year;
         this.Course_description=Course_description;
+        console.log(this.Course_description)
         this.Course_Outline=Course_Outline;
         this.Course_Status=Course_Status;
         this.Course_image=Course_image;
@@ -25,6 +27,7 @@ module.exports=class Courses
     {
         const sql='CALL insertIntoCourse(?,?,?,?,?,?,?,?,?)';
         const values=[this.Course_Code,this.Course_name,this.Course_type,this.Program,this.Semester_year,this.Course_description,this.Course_Outline,this.Course_Status, this.School];
+        console.log(values)
         return db.execute(sql,values)
     }
     static async uploadFile(course_id, material_type, material_description, fileBuffer) {
@@ -59,6 +62,14 @@ module.exports=class Courses
         const sql='SELECT * from Course where Course_name like ?';
         const values=[`%${courseName}%`]
         return db.execute(sql,values)
+    }
+    update(User_name,User_email,User_password,User_ID)
+    {
+        const sql=`UPDATE Course
+                    set Course_name=?,Course_type=?,Program=?,Semester_year=?,Course_description=?,Course_Outline=?,Course_Status=?,Course_image=?,School=?
+                    where Course_Code=?` ;
+        const values=[User_name,User_email,User_password,User_ID]
+        return db.execute(sql,values);
     }
     static delete(id)
     {

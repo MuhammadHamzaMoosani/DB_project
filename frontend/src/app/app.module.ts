@@ -42,6 +42,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
 import { AdminOtpComponent } from './admin-otp/admin-otp.component';
 import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
+import { EditCourseComponent } from './edit-course/edit-course.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { AdminHomePageComponent } from './admin-home-page/admin-home-page.compon
     SearchResultComponent,
     AdminOtpComponent,
     AdminSignInComponent,
-    AdminHomePageComponent
+    AdminHomePageComponent,
+    EditCourseComponent
   ],
   imports: [
     BrowserModule,
@@ -104,8 +106,10 @@ import { AdminHomePageComponent } from './admin-home-page/admin-home-page.compon
       {path:'program/:program',component:FetchByProgramComponent},
       {path:'fffeefefe/admin/SignIn',component:AdminSignInComponent},
       {path:'fffeefefe/admin/addCourse',component:AddCourseComponent},
+      {path:'fffeefefe/admin/homepage',component:AdminHomePageComponent},
       {path:'fffeefefe/admin/otp',component:AdminOtpComponent},
       {path:'fffeefefe/admin/report',component:AdminReportComponent},
+      {path:'fffeefefe/admin/:course/:id',component:EditCourseComponent},
       { path: '**', component:PagenotfoundComponent },
     ])
   ],

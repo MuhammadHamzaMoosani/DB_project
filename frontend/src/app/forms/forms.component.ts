@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FormElement } from '../util/interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DataApiService } from '../data-api.service';
 
 @Component({
   selector: 'archieve-forms',
@@ -9,8 +11,17 @@ import { FormElement } from '../util/interface';
 })
 export class FormsComponent implements OnInit {
 @Input('formElement') form!:FormElement[]
+@Input('ApiUrl') apiUrl!:string
+@Input('course') course: { [key: string]: any } = {}; // Ensure it's initialized
+showAlert=false
+message:string=''
+success:boolean=false;
+error:boolean=false;
 same_line:FormElement[]=[]
+constructor(private api:DataApiService,private router:Router)
+{
 
+}
 submit(form: any): void {
   if (!this.selectedFile) {
     alert('Please select a file');
@@ -19,36 +30,43 @@ submit(form: any): void {
 
   // Create a FormData object
   const formData = new FormData();
-  // formData.append('material_description', form.value.material_description);
-  // formData.append('course_id',this.course.Course_ID);
-  // formData.append('material_type', this.resourceApi);
-  // formData.append('file', this.selectedFile); // Append the file
 
-  // this.api.addUrl('upload/');
-  // console.log(this.selectedFile);
+  // Iterate over the form elements and collect form values dynamically
+  this.form.forEach((element) => {
+    const fieldValue = form.value[element.name]; // Get the field value by name
+    if (fieldValue !== undefined && fieldValue !== null) {
+      formData.append(element.name, fieldValue);
+    }
+  });
+  formData.append('file',this.selectedFile)
+  console.log(formData)
 
-  // this.api.post(formData).subscribe(
-  //   {
-  //     next: (res) => {
-  //       this.showAlert = true;
-  //       this.error = false;
-  //       this.success = true;
-  //       this.message = res.message;
-  //       setTimeout(() => {
-  //         this.showAlert = false;
-  //       }, 1000);
-  //     },
-  //     error: (er) => {
-  //       this.message = er.message || 'Upload failed';
-  //       this.success = false;
-  //       this.error = true;
-  //       this.showAlert = true;
-  //       setTimeout(() => {
-  //         this.showAlert = false;
-  //       }, 3000);
-  //     },
-  //   }
-  // );
+  this.api.addUrl(this.apiUrl);
+  console.log(this.selectedFile);
+
+  this.api.post(formData).subscribe(
+    {
+      next: (res) => {
+        this.showAlert = true;
+        this.error = false;
+        this.success = true;
+        this.message = res.message;
+        setTimeout(() => {
+          this.showAlert = false;
+          this.router.navigateByUrl('fffeefefe/admin/homepage')
+        }, 1000);
+      },
+      error: (er) => {
+        this.message = er.message || 'Upload failed';
+        this.success = false;
+        this.error = true;
+        this.showAlert = true;
+        setTimeout(() => {
+          this.showAlert = false;
+        }, 3000);
+      },
+    }
+  );
 }
 selectedFile: File | null = null;
 

@@ -13,7 +13,7 @@ router.post('/program', Course.getCourseByProgram);
 router.post('/sem-year', Course.getCourseBySemYear);
 router.post('/topic', Course.getCourseByTopic);  
 router.post('/materials', Course.getMaterialByType)
-
+router.post('/delete',Course.deleteCourse)
 // Fet Course by Course_ID
 router.get('/', Course.getCourse);
 router.get('/:id', (req, res) => {

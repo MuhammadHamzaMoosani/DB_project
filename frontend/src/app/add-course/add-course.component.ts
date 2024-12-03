@@ -56,17 +56,39 @@ export class AddCourseComponent implements OnInit{
       label: 'Status ',
       type: 'select',
       options: ['Active', 'Archieved'],
-      name: 'Program',
+      name: 'Course_Status',
       width: '20%'
     },
    
     {
       label: 'Description',
       type: 'textarea',
-      name: 'Course_description',
+      name: 'Course_Description',
       width: '100%',
       placeholder:'Some Description'
     },
-   
+    {
+      label: 'Course Image',
+      type: 'input',
+      input_type: 'text',
+      name: 'Course_image',
+      width: '49%',
+      placeholder:'image_link'
+    },
+    {
+      label: 'School',
+      type: 'input',
+      input_type: 'text',
+      name: 'School',
+      width: '49%',
+      placeholder:'image_link'
+    },
+    {
+      label: '',
+      type: 'fileUpload',
+      name: 'file',
+      width: '100%',
+      placeholder:'Some Description'
+    }
   ]
 }
