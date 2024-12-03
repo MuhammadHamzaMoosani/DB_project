@@ -11,7 +11,10 @@ import { Course } from '../util/interface';
   styleUrl: './admin-home-page.component.css'
 })
 export class AdminHomePageComponent {
-
+  showAlert=false
+  message:string=''
+  success:boolean=false;
+  error:boolean=false;
   searchIndex:number=-1
   courses!: Course[] ; // Use the Course interface
   myControl = new FormControl<string | Course>(''); // Adjust typing for the control
@@ -61,20 +64,38 @@ export class AdminHomePageComponent {
     this.api.addUrl('course/delete');
     this.api.post({id:this.courses[i].Course_ID}).subscribe({
       next: (res) => {
-        console.log(res);
-        this.courses = res.Courses;
-        console.log(this.courses);
+        this.showAlert=true
+          this.error=false
+          this.success=true
+          this.message="Course deleted"
+          setTimeout(() => {
+  
+            this.showAlert=false
+            console.log(res.user)
+            window.location.reload();
+          }, 1000);
+        // console.log(res);
+        // this.courses = res.Courses;
+        // console.log(this.courses);
 
-        // Initialize filtered options
-        this.filteredOptions = this.myControl.valueChanges.pipe(
-          startWith(''),
-          map((value) => (typeof value === 'string' ? value : value?.Course_name || '')),
-          map((name) => (name.trim() ? this.filterCourses(name) : []))
-          // map((name) => this.filterCourses(name))
-        );
+        // // Initialize filtered options
+        // this.filteredOptions = this.myControl.valueChanges.pipe(
+        //   startWith(''),
+        //   map((value) => (typeof value === 'string' ? value : value?.Course_name || '')),
+        //   map((name) => (name.trim() ? this.filterCourses(name) : []))
+        //   // map((name) => this.filterCourses(name))
+        // );
       },
       error: (err) => {
         console.error(err);
+        this.message=err
+            this.success=false
+            this.error=true
+            this.showAlert=true
+            setTimeout(() => {
+              this.showAlert=false
+              
+            }, 3000);
       }
     });
   }

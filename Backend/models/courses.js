@@ -91,19 +91,21 @@ module.exports=class Courses
         const values=[`%${courseName}%`]
         return db.execute(sql,values)
     }
-    update(User_name,User_email,User_password,User_ID)
+    update()
     {
         const sql=`UPDATE Course
                     set Course_name=?,Course_type=?,Program=?,Semester_year=?,Course_description=?,Course_Outline=?,Course_Status=?,Course_image=?,School=?
                     where Course_Code=?` ;
-        const values=[User_name,User_email,User_password,User_ID]
+        const values=[this.Course_name,this.Course_type,this.Program,this.Semester_year,this.Course_description,this.Course_Outline,this.Course_Status,this.Course_image,this.School,this.Course_Code]
+        console.log(values)
         return db.execute(sql,values);
     }
     static delete(id)
     {
-        const sql=`Delete from Users 
-                    where User_ID=?`;
+        const sql=`Delete from Course 
+                    where Course_ID=?`;
         const values=[id];
+        console.log(id)
         return db.execute(sql,values);
     }   
     static fetchCourseDetails(Course_ID) {

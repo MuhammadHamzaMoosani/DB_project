@@ -2,6 +2,7 @@ const Course=require('../models/courses')
 const path = require('path'); //Added by Asna
 const fs = require('fs'); //Added by Asna
 const mime = require('mime-types'); // To determine MIME type from file extensions
+const { response } = require('express');
 
 exports.getCourse=(req,res,next)=>
     {
@@ -89,6 +90,34 @@ exports.FindCourse=(req,res,next)=>
                     })
             })
 }
+exports.update=(req,res,next)=>
+    {
+        Course_name=req.body.Course_name
+        Course_type=req.body.Course_type
+        Program=req.body.Program
+        Semester_Year=req.body.Semester_Year   
+        Course_description=req.body.Course_description
+        Course_Outline=req.file
+        Course_Status=req.body.Course_Status
+        Course_image=req.body.Course_image
+        School=req.body.School
+        let courses=new Course(1,Course_name,Course_type,Program,Semester_Year,Course_description,Course_Outline,Course_Status,Course_image,School)
+        courses.update().then(([response])=>
+            {
+                res.status(200).json({
+                    success: true,
+                    Courses: response, // Corrected: No extra array wrapping
+                    messsage:"Updated"
+                });   
+            })
+            .catch(err => {
+                console.error("Error in updating:", err);
+                res.status(401).json({
+                    success: false,
+                    message: err.message,
+                });
+            });
+    }
 exports.getPopularCourses = (req, res, next) => {
     Course.updatePopularityScores().then(() => {
             return Course.fetchTopCourses(); // Fetch after updating scores
@@ -234,14 +263,18 @@ exports.createCourse = async (req, res) => {
 
 exports.deleteCourse = async (req, res) => {
 try {
-    const { id } = req.params;
+    const { id } = req.body;
     const course = await Course.findByID(id);
     if (!course) {
         return res.status(404).json({ success: false, message: "Course not found." });
     }
 
-    await course.delete(id);
-    res.status(200).json({ success: true, message: "Course deleted." });
+    Course.delete(id).then(([response])=>
+        {
+            console.log('here')
+            console.log(response)
+            res.status(200).json({ success: true, message: "Course deleted." });
+        })
 } catch (error) {
     console.error("Delete course error:", error);
     res.status(500).json({ success: false, message: "Error deleting course." });
