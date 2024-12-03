@@ -95,26 +95,6 @@ exports.uploadFileController = (req, res, next) => {
      });
 }
 
-exports.getCourseByProgram = (Program, res) => {
-    Course.fetchCoursebyProgram(Program).then(([rows]) => {
-        console.log(rows)
-        if (rows && rows.length > 0) {
-            // Send the course details as response
-            res.status(200).json({
-                message: 'Courses by program fetched successfully.',
-                Courses: rows[0] // Assuming the first row contains the course details
-            });
-        } else {
-            // If no course is found
-            res.status(404).json({ message: 'Course not found' });
-        }
-        
-    })
-    .catch((err) => {
-        // Handle errors
-        res.status(500).json({ message: 'Error fetching course by program', error: err.message });
-    });
-}
 // Get course by id
 exports.getCourseByID = (courseID, res) => {
 
@@ -276,4 +256,67 @@ exports.getMaterialByType = async (req, res) => {
         });
     }
 }
+exports.getCourseByProgram = (req, res) => {
+    const program = req.body.program;
+    Course.fetchCoursebyProgram(program).then((rows) => {
+        if (rows && rows.length > 0) {
+            // Send the course details as response
+            res.status(200).json({
+                message: 'Courses by program fetched successfully.',
+                Courses: rows[0] // Assuming the first row contains the course details
+            });
+        } else {
+            // If no course is found
+            res.status(404).json({ message: 'Course not found' });
+        }
+        
+    })
+    .catch((err) => {
+        // Handle errors
+        res.status(500).json({ message: 'Error fetching course by program', error: err.message });
+    });
+}
 
+exports.getCourseBySemYear = (req, res) => {
+    const sem_year = req.body.sem_year;
+    Course.getCoursesBySemesterYear(sem_year).then((rows) => {
+        if (rows && rows.length > 0) {
+            // Send the course details as response
+            res.status(200).json({
+                message: 'Courses by Semester_Year fetched successfully.',
+                Courses: rows[0] // Assuming the first row contains the course details
+            });
+        } else {
+            // If no course is found
+            res.status(404).json({ message: 'Course not found' });
+        }
+        
+    })
+    .catch((err) => {
+        // Handle errors
+        res.status(500).json({ message: 'Error fetching course by Semester_Year', error: err.message });
+    });
+}
+
+exports.getCourseByTopic = async (req, res) => {
+    const topic = req.body.topic;
+    const topicArray = topic.split(',').map(topic => topic.trim().toLowerCase());
+    console.log("Topics array:", topicArray); // Log the array of topics
+    Course.getCoursesByTopic(topicArray).then((rows) => {
+        if (rows && rows.length > 0) {
+            // Send the course details as response
+            res.status(200).json({
+                message: 'Courses by topic fetched successfully.',
+                Courses: rows[0] // Assuming the first row contains the course details
+            });
+        } else {
+            // If no course is found
+            res.status(404).json({ message: 'Course not found' });
+        }
+        
+    })
+    .catch((err) => {
+        // Handle errors
+        res.status(500).json({ message: 'Error fetching course by topic', error: err.message });
+    });
+}

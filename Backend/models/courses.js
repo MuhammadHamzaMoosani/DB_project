@@ -126,6 +126,31 @@ module.exports=class Courses
         throw new Error("Database query failed.");
     }
     }
+
+    static async getCoursesBySemesterYear(semesterYear) {
+        const query = 'SELECT * FROM Course WHERE Semester_Year = ?';
+        const [courses] = await db.query(query, [semesterYear]);
+        console.log("Courses: " , semesterYear)
+        return courses;
+    };
+    
+    // Function to get courses by Topics (using wildcard search)
+    static async getCoursesByTopic(topicArray) {
+        let query = 'SELECT * FROM Course WHERE ';
+        let queryParams = [];
+        topicArray.forEach((topic, index) => {
+            query += `JSON_SEARCH(LOWER(Topics), 'one', ?) IS NOT NULL`; // Use LOWER for case-insensitive search
+            queryParams.push(`%${topic}%`); // Add wildcard characters for partial matching
+            if (index < topicArray.length - 1) {
+                query += ' OR '; // Use OR to combine multiple topics
+            }
+        });
+
+        const [courses] = await db.query(query, queryParams); // We wrap the topic in a JSON array
+        return courses;
+    };
+    
+    
 };
 (async function defineTrigger() {
     try {

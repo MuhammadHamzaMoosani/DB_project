@@ -9,10 +9,9 @@ router.get('/landing', Course.getPopularCourses);
 router.post('/find', Course.FindCourse);
 router.get('/download/:materialId', Course.downloadMaterial);
 
-router.get('/program/:program', (req, res) => {
-    const { program } = req.params; // Extract 'id' from the URL parameter
-    Course.getCourseByProgram(program, res); // Pass 'id' and 'res' to the controller
-})
+router.post('/program', Course.getCourseByProgram); 
+router.post('/sem-year', Course.getCourseBySemYear);
+router.post('/topic', Course.getCourseByTopic);  
 router.post('/materials', Course.getMaterialByType)
 
 // Fet Course by Course_ID
