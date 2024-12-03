@@ -34,7 +34,7 @@ export class ExploreSearchComponent {
         this.api.getAll().subscribe({
           next: (res) => {
             console.log(res);
-            this.courses = res.Courses[0];
+            this.courses = res.Courses;
             console.log(this.courses);
             if(this.courses==undefined||this.courses.length==0)
               {

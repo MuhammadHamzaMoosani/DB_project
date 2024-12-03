@@ -303,7 +303,7 @@ exports.getMaterialByType = async (req, res) => {
 }
 exports.getCourseByProgram = (req, res) => {
     const program = req.params.program;
-    Course.fetchCoursebyProgram(program).then((rows) => {
+    Course.fetchCoursebyProgram(program).then(([rows]) => {
         if (rows && rows.length > 0) {
             // Send the course details as response
             res.status(200).json({
