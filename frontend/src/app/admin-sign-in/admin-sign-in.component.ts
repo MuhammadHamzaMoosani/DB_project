@@ -48,7 +48,10 @@ export class AdminSignInComponent {
             this.spinner=false
             this.helper.setId(res.User_Id)
             console.log(res.user)
-            this.router.navigateByUrl('fffeefefe/admin/homepage')
+            this.router.navigateByUrl('fffeefefe/admin/homepage').then(()=>
+              {
+                window.location.reload();
+              })
           }, 1000);
         },
         error:er=>
