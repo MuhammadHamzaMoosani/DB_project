@@ -17,6 +17,7 @@ export class NavBarComponent implements AfterViewInit {
 
   login:boolean=false;
   currentUrl: string = '';
+  admin:boolean=false
   constructor(
     private router:Router,
     private helper:HelperService,
@@ -38,7 +39,12 @@ export class NavBarComponent implements AfterViewInit {
     });
   }
 
-  
+  admincheck(admin: boolean) 
+  {
+    this.admin= admin 
+    console.log(this.admin)
+  }
+
   logincheck(login: boolean) 
   {
     this.login=login 

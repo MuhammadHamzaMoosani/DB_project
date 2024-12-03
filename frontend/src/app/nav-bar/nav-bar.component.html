@@ -1,6 +1,6 @@
-<login-checker (userLoggedIn)="logincheck($event)" [nav_bar]="true"></login-checker>
+<login-checker (userLoggedIn)="logincheck($event)" (admin)="admincheck($event)" [nav_bar]="true"></login-checker>
 <div class="my-nav">
-    <nav>  
+    <nav *ngIf="!admin">  
         <div>
             <img src="assets/imgs/nav_bar/iba_logo.png" width="100%">
         </div>
@@ -51,6 +51,58 @@
                     </li>
                 </ul>
             </ng-template>
+        </div>
+        
+      </nav>
+      <nav *ngIf="admin">  
+        <div>
+            <img src="assets/imgs/nav_bar/iba_logo.png" width="100%">
+        </div>
+        <div class="title">
+            <ul>
+                <li><a [ngClass]="{'active':currentUrl=='/fffeefefe/admin/homepage'}" [ngStyle]="{'pointer-events':currentUrl=='/fffeefefe/admin/homepage' ? 'none':'auto'}" href="fffeefefe/admin/homepage" ><h6>Home</h6></a></li>
+                <!-- <div class="dropdown">
+                       
+                        <li><a [ngClass]="{'active':currentUrl=='/topics'}" [ngStyle]="{'pointer-events':currentUrl=='/topics' ? 'none':'auto'}" href="Request" ><div class="text_icon"><h6>Topics</h6><mat-icon>arrow_drop_down</mat-icon></div></a>
+                        <div class="dropdown-content">
+                            <a href="#">Link 1</a>
+                            <a href="#">Link 2</a>
+                            <a href="#">Link 3</a>
+                          </div>
+                    </li>
+                </div> -->
+                <!-- <div class="dropdown">
+                       
+                    <li><a [ngClass]="{'active':currentUrl=='/program'}" [ngStyle]="{'pointer-events':currentUrl=='/program' ? 'none':'auto'}" href="#" ><div class="text_icon"><h6>Program</h6><mat-icon>arrow_drop_down</mat-icon></div></a>
+                    <div class="dropdown-content">
+                        <a href="program/BSCS">BSCS</a>
+                        <a href="program/BBA">BBA</a>
+                        <a href="program/BSECO">BSECO</a>
+                        <a href="program/BSAF">BSAF</a>
+                        <a href="program/BSEM">BSEM</a>
+                        <a href="program/BSSS">BSSS</a>
+                        <a href="program/BSMath">BSMath</a>  
+                        <a href="program/BSECO&Math">BSECO&Math</a>  
+                      </div>
+                </li>
+            </div> -->
+
+                <li><a [ngClass]="{'active':currentUrl=='/explore'}" [ngStyle]="{'pointer-events':currentUrl=='/explore' ? 'none':'auto'}" href="explore" ><h6>Explore</h6></a></li>
+                <li><a [ngClass]="{'active':currentUrl=='/fffeefefe/admin/Resource'}" [ngStyle]="{'pointer-events':currentUrl=='/fffeefefe/admin/Resource' ? 'none':'auto'}" href="fffeefefe/admin/Resource" ><h6>Approve Resources</h6></a></li>
+                <li ><a [ngClass]="{'active':currentUrl=='/fffeefefe/admin/addCourse'}" [ngStyle]="{'pointer-events':currentUrl=='/fffeefefe/admin/addCourse' ? 'none':'auto'}" href="/fffeefefe/admin/addCourse" ><h6>Add Course</h6></a></li>
+            </ul>
+        </div>
+        <div class="nav-item">
+            <ng-container >
+                <ul>
+                    <!-- <li><a [ngClass]="{'active':currentUrl=='/profile'}" [ngStyle]="{'pointer-events':currentUrl=='/profile' ? 'none':'auto'}" href="logged/home"  ><h6>Profile</h6></a></li> -->
+                    <li> <button class="logOut" mat-icon-button (click)="signOut()">
+                        <!-- <h6>Logout</h6> -->
+                        <mat-icon>logout</mat-icon>
+                      </button>
+                    </li>
+                </ul>
+            </ng-container>
         </div>
         
       </nav>
