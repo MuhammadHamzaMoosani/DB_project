@@ -140,11 +140,10 @@ module.exports=class Users
   
           if (results.length == 0) {
               // If bookmark exists, insert into Bookmark_Material
-              const bookmarkId = results[0].Bookmark_ID;
-              const insertBookmarkMaterialQuery = `INSERT INTO Bookmark_Material (User_ID, Bookmark_ID) VALUES (?, ?)`;
-              const [insertResults] = await db.execute(insertBookmarkMaterialQuery, [userId, bookmarkId]);
+              const insertBookmarkMaterialQuery = `INSERT INTO Bookmark (User_ID, Course_ID) VALUES (?, ?)`;
+              const [insertResults] = await db.execute(insertBookmarkMaterialQuery, [userId, courseId]);
   
-              console.log('Bookmark material added successfully:', insertResults);
+              console.log('Bookmark added successfully:', insertResults);
               return insertResults;
           } else {
               console.log(' existing bookmark found.');

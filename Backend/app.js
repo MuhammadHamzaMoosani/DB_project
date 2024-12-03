@@ -34,7 +34,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json()); 
-app.use('/users',userRoutes);
+app.use('/users', userRoutes);
 app.use('/course',courseRoutes);
 app.use('/upload', uploadRoutes);
 app.use('/admin', adminRoutes);
