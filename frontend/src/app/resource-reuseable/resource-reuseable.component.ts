@@ -98,9 +98,10 @@ close() {
   downloadPdf(material_name:string): void {
     if (this.pdfUrl) {
       // Create an anchor element to simulate the download
+      console.log(material_name)
       const a = document.createElement('a');
       a.href = this.pdfUrl; // Set the blob URL
-      a.download = `${{material_name}}.pdf`; // Set the file name for the download
+      a.download = `${material_name}.pdf`; // Set the file name for the download
       a.click(); // Trigger the download
   
       // Clean up the object URL after download to free memory
